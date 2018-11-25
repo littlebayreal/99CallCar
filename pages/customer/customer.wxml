@@ -1,0 +1,21 @@
+<!--pages/customer/customer.wxml-->
+<view class='body'>
+  <view class='content'>
+    <view class='content_item'>
+      <text class='content_text'>客服电话</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    <view class='content_item'>
+      <text class='content_text'>用户条款</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    <view class='content_item'>
+      <text class='content_text'>用户投诉</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    <view class='content_item'>
+      <text class='content_text'>用户建议</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+  </view>
+</view>

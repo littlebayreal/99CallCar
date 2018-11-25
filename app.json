@@ -2,7 +2,10 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/personcenter/personcenter",
+    "pages/customer/customer",
+    "pages/myschedule/myschedule"
   ],
   "window": {
     "backgroundTextStyle": "light",

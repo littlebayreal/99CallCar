@@ -1,0 +1,27 @@
+/* pages/customer/customer.wxss */
+.content{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 40%;
+  width: 100%;
+  background: #fff;
+  margin-top: 20rpx;
+}
+.content_item{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 20rpx;
+  width: 100%;
+  margin-top: 2rpx;
+  align-items: center
+}
+.content_text{
+  margin-left: 20rpx;
+}
+.right_arrow{
+  height: 50rpx;
+  width: 50rpx;
+  margin-right: 20rpx;
+}

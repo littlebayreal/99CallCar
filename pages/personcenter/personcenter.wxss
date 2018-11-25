@@ -1,0 +1,48 @@
+/* pages/personcenter/personcenter.wxss */
+.header {
+  height: 25vh;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.header_img_class{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+}
+.header_nickName{
+  margin-top: 20rpx
+}
+.content{
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff;
+  margin-top: 20rpx;
+}
+.content_item{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 30rpx 10rpx
+}
+.content_text{
+  margin-left: 60rpx;
+}
+.right_arrow{
+  height: 50rpx;
+  width: 50rpx;
+}
+.left_image{
+  height: 50rpx;
+  width: 50rpx;
+  position: fixed;
+}
+.bottom_button{
+  width: 100%;
+  color: red
+}

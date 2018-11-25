@@ -53,7 +53,8 @@
   overflow: hidden;
   white-space: nowrap;
   line-height: 80rpx;
-  background: #ffffff;
+  background:#ffffff;
+  text-align: center;
   font-size: 16px;
 }
 .nav-item {

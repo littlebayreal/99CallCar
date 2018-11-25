@@ -1,0 +1,34 @@
+<!--pages/personcenter/personcenter.wxml-->
+<view class='body'>
+  <view class='header'>
+    <image src="{{headerImg}}" class='header_img_class'></image>
+    <text class='header_nickName'>{{userName}}</text>
+  </view>
+  <view class="content">
+  <navigator url="../myschedule/myschedule">
+    <view class="content_item">
+      <image class="left_image" src='../../image/orders.png'></image>
+      <text class='content_text'>我的行程</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    </navigator>
+    <view class="content_item">
+      <image class="left_image" src='../../image/package.png'></image>
+      <text class='content_text'>我的钱包</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    <navigator url="../customer/customer">
+      <view class="content_item">
+        <image class="left_image" src='../../image/help.png'></image>
+        <text class='content_text'>我的客服</text>
+        <image class="right_arrow" src='../../image/right_arrow.png'></image>
+      </view>
+    </navigator>
+    <view class="content_item">
+      <image class="left_image" src='../../image/rule.png'></image>
+      <text class='content_text'>计价规则</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+  </view>
+  <button class='bottom_button'>退出</button>
+</view>

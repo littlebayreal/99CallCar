@@ -2,11 +2,13 @@
 <view class="container">
   <view class='title_class'>
     <view class='title_me'>
-      <image src='../../image/nav-me.png' bindtap=''></image>
+      <navigator url="../personcenter/personcenter"> <image src='../../image/nav-me.png'>
+      </image>
+      </navigator>
     </view>
     <scroll-view scroll-x="true" class="nav" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}">
       <block wx:for="{{titleData}}">
-        <view class="nav-item {{currentTab == index ?'active':''}}" bindtap="switchNav">{{item}}</view>
+        <view class="nav-item {{currentTab == index ?'active':''}}" bindtap="switchNav" data-id="{{index}}">{{item}}</view>
       </block>
     </scroll-view>
   </view>
@@ -15,8 +17,8 @@
   </map>
   <view class="bottom {{isNow == 1?'bottom_large':''}}">
     <view class='bottom_toggle'>
-      <button class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</button>
-      <button class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</button>
+      <button id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</button>
+      <button id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</button>
     </view>
     <view wx:if="{{isNow == 1}}" class='bottom_time'>
       <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap='orderTimeListener' bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
