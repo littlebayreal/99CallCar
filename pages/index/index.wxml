@@ -21,7 +21,7 @@
       <button id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</button>
     </view>
     <view wx:if="{{isNow == 1}}" class='bottom_time'>
-      <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap='orderTimeListener' bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
+      <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap="orderTimeListener" bindcolumnchange="bindColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
     </view>
     <view class="bottom_start">
       <view class='circle_str'></view>
