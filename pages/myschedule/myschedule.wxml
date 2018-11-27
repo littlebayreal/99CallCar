@@ -9,19 +9,34 @@
     <!-- </block> -->
     <!-- </view> -->
   </view>
-  <block wx:if="{{!isNoData}}">
-    <view class='myschedule_class'>
+  <!-- <block wx:if="{{!isNoData}}"> -->
+  <view class='myschedule_class'>
+    <scroll-view scroll-y="true" class="scroll_class" style="height: 100%;">
       <block wx:for="{{myscheduleData}}">
         <view class='myschedule_item_class'>
           <view class='myschedule_item_title'>
             <text>{{item.orderNumber}}</text>
-            <text>{{item.state}}</text>
+            <text class='myschedule_item_state_text'>{{item.state}}</text>
+            <image class='myschedule_item_state_image' src='../../image/right_arrow.png'></image>
+          </view>
+          <view class='myschedule_item_content'>
+            <image class='circle_time' src='../../image/time.png'></image>
+            <text style="margin-left:10rpx">{{item.orderTime}}</text>
+          </view>
+          <view class='myschedule_item_content'>
+            <view class='circle_str'></view>
+            <text style="margin-left:10rpx">{{item.dep}}</text>
+          </view>
+          <view class='myschedule_item_content'>
+            <view class='circle_end'></view>
+            <text style="margin-left:10rpx">{{item.des}}</text>
           </view>
         </view>
       </block>
-    </view>
-  </block>
+    </scroll-view>
+  </view>
+  <!-- </block>
   <block wx:if="{{isNoData}}">
     <view>暂无数据</view>
-  </block>
+  </block> -->
 </view>

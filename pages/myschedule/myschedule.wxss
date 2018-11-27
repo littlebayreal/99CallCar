@@ -1,42 +1,103 @@
 /* pages/myschedule/myschedule.wxss */
-.toggle_button_class{
+
+.toggle_button_class {
   /* background: #fff; */
   height: 80rpx;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center
+  justify-content: center;
 }
-.toggle_button_text{
+
+.toggle_button_text {
   color: #d5d5d5;
   margin-left: 10rpx;
 }
-.myschedule_class{
-  margin-top: 20rpx;
-  height: 80%;
+
+.scroll_class {
+  white-space: nowrap;
+  overflow: hidden;
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.myschedule_class {
+  height: 100%;
+  width: 92%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 }
-.myschedule_item_class{
+
+.myschedule_item_class {
   border-radius: 10rpx;
   background: #fff;
-  width: 80%;
-  height: 100rpx;
+  width: 96%;
+  height: 260rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20rpx;
-  margin-bottom: 10rpx;
+  padding: 10rpx;
+  margin-bottom: 20rpx;
 }
-.myschedule_item_title{
+
+.myschedule_item_title {
+  position: relative;
+  width: 100%;
   display: flex;
   flex: row;
   justify-content: space-between;
-  
+  align-items: center;
+  padding: 10rpx;
 }
+
+.myschedule_item_state_text {
+  position: absolute;
+  right: 60rpx;
+  font-size: 30rpx;
+}
+
+.myschedule_item_state_image {
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  right: 10rpx;
+}
+
+.myschedule_item_content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 10rpx;
+}
+
+.circle_time {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.circle_str {
+  height: 30rpx;
+  width: 30rpx;
+  border-radius: 50%;
+  background: #3cbca3;
+}
+
+.circle_end {
+  height: 30rpx;
+  width: 30rpx;
+  border-radius: 50%;
+  background: #fc9153;
+}
+
 .segmentedControl {
   /*水平居中*/
   margin: 0 auto;
@@ -49,7 +110,9 @@
   /*控件高度*/
   height: 60rpx;
 }
+
 /*普通文本*/
+
 .segmentedControl text {
   /*水平排列*/
   float: left;
