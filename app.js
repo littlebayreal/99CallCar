@@ -1,6 +1,6 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -12,7 +12,7 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
-   // 获取用户信息
+    // 获取用户信息
     //获取用户授权信息
     wx.getSetting({
       success: res => {
@@ -33,6 +33,41 @@ App({
         }
       }
     })
+  },
+  getOrderStatusString: function(status) {
+    switch (status) {
+      case 0:
+        return "派单中";
+      case 1:
+        return "司机接单";
+      case 2:
+        return "到达约定地点";
+      case 3:
+        return "接到乘客";
+      case 4:
+        return "行程开始";
+      case 5:
+        return "待支付";
+      case 6:
+        return "已完成";
+      case 7:
+        return "乘客取消";
+      case 8:
+        return "司机撤销";
+      case 9:
+        return "司机违约"
+      case 10:
+        status = "到达目的地"
+        break;
+      case 11:
+        return "订单超时";
+      case 12:
+        return "抢单失败";
+      case 13:
+        return "预约订单行程还未开始";
+      case 14:
+        return "系统取消订单";
+    }
   },
   globalData: {
     userInfo: null

@@ -1,17 +1,27 @@
 <!--pages/myschedule/myschedule.wxml-->
 <view class='body'>
   <view class='toggle_button_class'>
-    <view class="segmentedControl">
-      <!-- 循环遍历 -->
-      <block wx:for="{{radioValues}}">
-        <text data-index="{{index}}" bindtap="indexChanged" class="{{clazz[index]}}">{{item.value}}</text>
+    <text class='toggle_button_text'>已完成订单</text>
+    <!--<view class="segmentedControl">-->
+    <!-- 循环遍历 -->
+    <!-- <block wx:for="{{radioValues}}"> -->
+    <!-- <text data-index="{{index}}" bindtap="indexChanged" class="{{clazz[index]}}">{{item.value}}</text> -->
+    <!-- </block> -->
+    <!-- </view> -->
+  </view>
+  <block wx:if="{{!isNoData}}">
+    <view class='myschedule_class'>
+      <block wx:for="{{myscheduleData}}">
+        <view class='myschedule_item_class'>
+          <view class='myschedule_item_title'>
+            <text>{{item.orderNumber}}</text>
+            <text>{{item.state}}</text>
+          </view>
+        </view>
       </block>
     </view>
-  </view>
-  <block wx:if="!isNoData">
-  <view></view>
   </block>
-  <block wx:if="isNoData">
-   <view>暂无数据</view>
+  <block wx:if="{{isNoData}}">
+    <view>暂无数据</view>
   </block>
-  </view>
+</view>

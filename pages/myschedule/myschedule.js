@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isNoData:true,
+    isNoData: false,
     radioValues: [{
         'value': '网约车行程',
         'selected': true
@@ -14,6 +14,31 @@ Page({
         'value': '出租车行程',
         'selected': false
       }
+    ],
+    myscheduleData: [{
+        "orderNumber": "XXXXXX",
+        "orderTime": "2016-10-3 8:00",
+        "depTime": "2016-10-3 8:10",
+        "desTime": "2017-10-3 8:52",
+        "orderSource": "3",
+        "dep": "苏州站",
+        "des": "南大研究生院-公交站",
+        "receivableMoney": "11.5",
+        "actualMoney": "11.5",
+        "state": 9,
+      },
+      {
+        "orderNumber": "XXXXXX",
+        "orderTime": "2016-10-3 8:00",
+        "depTime": "2016-10-3 8:10",
+        "desTime": "2017-10-3 8:52",
+        "orderSource": "3",
+        "dep": "苏州站",
+        "des": "南大研究生院-公交站",
+        "receivableMoney": "11.5",
+        "actualMoney": "11.5",
+        "state": 9
+      }
     ]
   },
 
@@ -21,6 +46,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    var items = this.data.myscheduleData;
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      item.state = getApp().getOrderStatusString(item.state);
+    };
+    this.setData({
+      myscheduleData:items
+    })
     this.clazzStatus();
   },
 
