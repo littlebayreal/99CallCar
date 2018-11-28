@@ -5,7 +5,8 @@
     "pages/login/login",
     "pages/personcenter/personcenter",
     "pages/customer/customer",
-    "pages/myschedule/myschedule"
+    "pages/myschedule/myschedule",
+    "pages/selectdestination/selectdestination"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -16,10 +16,10 @@ Page({
     multiArray: [],
     multiIndex: [],
     //动态改变底部的样式
-    bottom_clazz:'bottom',
+    bottom_clazz: 'bottom',
     //显示预计的花费价格
-    showCost:true,
-    isLoading:true
+    showCost: true,
+    isLoading: true
   },
   onLoad: function() {
     that = this;
@@ -40,12 +40,32 @@ Page({
       currentTab: ct
     })
   },
+  bottomInputListener: function(e) {
+    switch (e.target.id) {
+      case "input_destination":
+        wx.navigateTo({
+          url: '../selectdestination/selectdestination',
+          success: function(res) {
+
+          },
+          fail: function(res) {
+
+          },
+          complete: function(res) {
+
+          },
+        })
+        break;
+      case "input_car_type":
+        break;
+    }
+  },
   toggleListener: function(e) {
     switch (e.target.id) {
       case "nowBtn":
         that.setData({
           isNow: 0,
-          bottom_clazz:'bottom'
+          bottom_clazz: 'bottom'
         })
         break;
       case "orderBtn":
@@ -56,7 +76,7 @@ Page({
         break
     }
   },
-  bindColumnChange: function(e){
+  bindColumnChange: function(e) {
     var date = new Date();
     var monthDay = ['今天', '明天', '后天'];
     var hours = [];

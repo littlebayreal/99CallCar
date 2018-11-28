@@ -1,0 +1,16 @@
+<!--pages/selectdestination/selectdestination.wxml-->
+<view class='body'>
+<view class='view_input_class'>
+  <input type="text" class="input_class" value="{{destination}}" placeholder="请输入目的地" placeholder-color="#ccccccc" focus="{{false}}" bindtap='InputListener'/>
+</view>
+<view class='view_list'>
+  <scroll-view scroll-y="true" class="scroll_class">
+  <block wx:for="{{addressList}}">
+  <view class='address_item_class'>
+    <text>{{item.addressName}}</text>
+    <text style="font-size:24rpx">随便介绍一下</text>
+  </view>
+  </block>
+  </scroll-view>
+</view>
+</view>
