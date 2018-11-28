@@ -14,7 +14,12 @@ Page({
     isNow: 0,
     order_times: "预约时间",
     multiArray: [],
-    multiIndex: []
+    multiIndex: [],
+    //动态改变底部的样式
+    bottom_clazz:'bottom',
+    //显示预计的花费价格
+    showCost:true,
+    isLoading:true
   },
   onLoad: function() {
     that = this;
@@ -39,12 +44,14 @@ Page({
     switch (e.target.id) {
       case "nowBtn":
         that.setData({
-          isNow: 0
+          isNow: 0,
+          bottom_clazz:'bottom'
         })
         break;
       case "orderBtn":
         that.setData({
-          isNow: 1
+          isNow: 1,
+          bottom_clazz: 'bottom_large'
         })
         break
     }

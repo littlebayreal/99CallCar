@@ -1,28 +1,25 @@
 <!--index.wxml-->
-<view class="container">
-  <view class='title_class'>
+<view class="index_container">
+  <!-- <view class='title_class'>
     <view class='title_me'>
-      <navigator url="../personcenter/personcenter"> <image src='../../image/nav-me.png'>
-      </image>
+      <navigator url="../personcenter/personcenter">
+        <image src='../../image/nav-me.png'>
+        </image>
       </navigator>
-    </view>
-    <scroll-view scroll-x="true" class="nav" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}">
+    </view> -->
+  <!-- <scroll-view scroll-x="true" class="nav" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}">
       <block wx:for="{{titleData}}">
         <view class="nav-item {{currentTab == index ?'active':''}}" bindtap="switchNav" data-id="{{index}}">{{item}}</view>
       </block>
-    </scroll-view>
-  </view>
+    </scroll-view> -->
+  <!-- </view> -->
   <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}">
-
+    <!-- <cover-view class='bottom_toggle'>
+      <cover-view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</cover-view> 
+      <cover-view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</cover-view>
+    </cover-view> -->
   </map>
-  <view class="bottom {{isNow == 1?'bottom_large':''}}">
-    <view class='bottom_toggle'>
-      <button id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</button>
-      <button id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</button>
-    </view>
-    <view wx:if="{{isNow == 1}}" class='bottom_time'>
-      <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap="orderTimeListener" bindcolumnchange="bindColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
-    </view>
+  <view class="{{bottom_clazz}}">
     <view class="bottom_start">
       <view class='circle_str'></view>
       <text class="bottom_text_class">先随便写一个地方</text>
@@ -31,11 +28,30 @@
       <view class='circle_end'></view>
       <input type="text" class="botom_input_class" value="{{destination}}" placeholder="你要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" />
     </view>
+    <view class="bottom_start">
+      <view class='circle_end'></view>
+      <input type="text" class="botom_input_class" value="{{destination}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" />
+    </view>
     <view class='bottom_scan'>
       <image class='bottom_scan_img' src='../../image/scan.png'></image>
       <view class='bottom_scan_text'>扫描司机二维码,指定司机（可选）</view>
     </view>
-    <button class='bottom_button'>呼叫{{titleData[currentTab]}}</button>
+    <view wx:if="{{isNow == 1}}" class='bottom_time'>
+      <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap="orderTimeListener" bindcolumnchange="bindColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
+    </view>
+    <view wx:if="{{showCost}}" class='cost_class'>
+      <import src="../../templates/sprinner.wxml" />
+      <template is="sprinner" data='{{isLoading}}'>
+      </template>
+      <!-- <view class='cost_class'>约30元</view> -->
+    </view>
+    <view class='bottom_class'>
+      <view class='bottom_toggle'>
+        <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
+        <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
+      </view>
+      <button class='bottom_button'>呼叫{{titleData[currentTab]}}</button>
+    </view>
   </view>
 
 </view>

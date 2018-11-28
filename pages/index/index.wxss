@@ -1,51 +1,17 @@
-/**index.wxss**/
-/* .userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 200px;
-} */
-::-webkit-scrollbar{
+@import '../../templates/loading.wxss';
+::-webkit-scrollbar {
   width: 0;
   height: 0;
   color: transparent;
 }
-.title_class{
-  /* 钉死在页面顶部 */
-  position: fixed;
+.index_container{
+  height: 100vh;
   display: flex;
-  flex: row;
-  justify-content:space-between;
-  width: 100%;
-  height: 80rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
 }
-.title_me{
-  width: 12%;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  line-height: 80rpx;
-  text-align: center
-}
-.title_me image{
-  width: 100%;
-  height: 80rpx;
-}
-.nav{
+/* .nav {
   height: 80rpx;
   width: 70%;
   position: absolute;
@@ -53,10 +19,11 @@
   overflow: hidden;
   white-space: nowrap;
   line-height: 80rpx;
-  background:#ffffff;
+  background: #fff;
   text-align: center;
   font-size: 16px;
-}
+} */
+
 .nav-item {
   height: 100%;
   margin-left: 20rpx;
@@ -65,50 +32,83 @@
   line-height: 80rpx;
   text-align: center;
 }
-.nav-item.active{
+
+.nav-item.active {
   color: #fc975c;
 }
-.map_class{
-  position: relative;
-  top:80rpx;
-  height: 60%;
+
+.map_class {
+  height: 62vh;
   width: 100%;
 }
-.map_class_small{
-  height: 45%;
+
+.map_class_small {
+  height: 58vh;
 }
-.bottom{
+
+.bottom {
   width: 100%;
-  height: 33vh;
+  height: 30vh;
 }
-.bottom_large{
-  height: 48vh;
+
+.bottom_large {
+  width: 100%;
+  height: 32vh;
 }
-.bottom_toggle{
-  width: 30%;
+
+.bottom_toggle {
+  width: 40%;
   display: flex;
   flex-direction: row;
-  justify-content:flex-start;
-  align-content: flex-start
+  justify-content: flex-start;
+  align-items: center;
 }
-.bottom_active{
-  background: #ffffff;
-  font-size: 25rpx;
+
+.bottom_active {
+  width: 50%;
+  border-radius: 50rpx;
+  border: 1rpx solid#fc9153;
+  background: #fff;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 6vh;
+  height: 6vh;
 }
-.bottom_dis{
-  background: #ffffff;
-  font-size: 25rpx;
-}
-.bottom_dis::after{ 
-  border: none; 
-}
-.order_time{
-  height: 14vh;
-  width: 100%;
-  line-height: 14vh;
+
+.bottom_dis {
+  width: 50%;
+  height: 6vh;
+  background: #fff;
+  border-radius: 50rpx;
+  border:1rpx solid #d5d5d5;
+  font-size: 30rpx;
+  line-height: 6vh;
   text-align: center;
 }
-.bottom_start{
+
+.bottom_class {
+  display: flex;
+  height: 8vh;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bottom_dis::after {
+  border: none;
+}
+.bottom_time{
+  height: 70rpx;
+  width: 100%;
+}
+.order_time {
+  height: 70rpx;
+  line-height: 70rpx;
+  text-align: left;
+  margin-left: 40rpx;
+}
+
+.bottom_start {
   width: 100%;
   height: 70rpx;
   margin-top: 10rpx;
@@ -118,51 +118,67 @@
   flex-direction: row;
   align-items: center;
 }
-.circle_str{
+
+.circle_str {
   height: 30rpx;
   width: 30rpx;
   border-radius: 50%;
   background: #3cbca3;
   margin-left: 40rpx;
 }
-.bottom_text_class{
-  color: #333333;
+
+.bottom_text_class {
+  color: #333;
   margin-left: 10rpx;
 }
-.circle_end{
+
+.circle_end {
   height: 30rpx;
   width: 30rpx;
   border-radius: 50%;
   background: #fc9153;
   margin-left: 40rpx;
 }
-.botom_input_class{
-  color: #333333;
+
+.botom_input_class {
+  color: #333;
   text-align: left;
-  margin-left: 10rpx
+  margin-left: 10rpx;
 }
-.bottom_scan{
-  color: #cccccc;
+
+.bottom_scan {
+  color: #ccc;
   width: 100%;
   height: 80rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.bottom_scan_img{
+
+.bottom_scan_img {
   height: 30rpx;
   width: 30rpx;
   margin-left: 40rpx;
 }
-.bottom_scan_text{
+
+.bottom_scan_text {
   height: 80rpx;
   line-height: 80rpx;
   text-align: left center;
-  margin-left: 10rpx
-}
-.bottom_button{
-  background: #fc9153;
-  border-radius: 20rpx;
-  margin-top: 10rpx
+  margin-left: 10rpx;
 }
 
+.bottom_button {
+  background: #fc9153;
+  border-radius: 40rpx;
+  width: 60%;
+  text-align: center;
+  line-height: 8vh;
+}
+.cost_class{
+  position: relative;
+  width: 100%;
+  height: 80rpx;
+  text-align: center;
+  color: #fc9153;
+}
