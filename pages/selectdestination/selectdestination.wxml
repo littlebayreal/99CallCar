@@ -1,14 +1,15 @@
 <!--pages/selectdestination/selectdestination.wxml-->
 <view class='body'>
 <view class='view_input_class'>
-  <input type="text" class="input_class" value="{{destination}}" placeholder="请输入目的地" placeholder-color="#ccccccc" focus="{{false}}" bindtap='InputListener'/>
+  <input type="text" class="input_class" value="{{destination}}" placeholder="{{placeholder}}" placeholder-color="#ccccccc" focus="{{false}}" bindtap='inputListener' bindinput='inputChangeListener'/>
 </view>
 <view class='view_list'>
   <scroll-view scroll-y="true" class="scroll_class">
   <block wx:for="{{addressList}}">
-  <view class='address_item_class'>
+  <view class='address_item_class' bindtap='itemOnclickListener' data-item='{{item}}'>
+    <image class='address_itme_image' src='../../image/address.png'></image>
     <text>{{item.addressName}}</text>
-    <text style="font-size:24rpx">随便介绍一下</text>
+    <text class='address_info_class'>随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下</text>
   </view>
   </block>
   </scroll-view>

@@ -22,15 +22,15 @@
   <view class="{{bottom_clazz}}">
     <view class="bottom_start">
       <view class='circle_str'></view>
-      <text class="bottom_text_class">先随便写一个地方</text>
+      <input id="input_origin" type="text" class="botom_input_class" value="{{origin}}" placeholder="您的出发位置" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener'/>
     </view>
     <view class="bottom_start">
       <view class='circle_end'></view>
-      <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="你要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener'/>
+      <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener'/>
     </view>
     <view class="bottom_start">
       <view class='circle_end'></view>
-      <input id="input_car_type" type="text" class="botom_input_class" value="{{destination}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='bottomInputListener'/>
+      <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap=''/>
     </view>
     <view class='bottom_scan'>
       <image class='bottom_scan_img' src='../../image/scan.png'></image>

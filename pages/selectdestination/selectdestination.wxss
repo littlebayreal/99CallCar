@@ -27,6 +27,7 @@
 }
 
 .address_item_class {
+  position: relative;
   height: 100rpx;
   width: 100%;
   border-bottom: 2rpx solid #d5d5d5;
@@ -34,11 +35,29 @@
   display: flex;
   padding: 40rpx 80rpx;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
   color: transparent;
+}
+.address_info_class{
+  font-size: 24rpx;
+  color: #d5d5d5;
+  width: 50vw;
+  overflow:hidden;
+  /* 超出一行文字自动隐藏  */
+  text-overflow:ellipsis;
+  /* 文字隐藏后添加省略号 */ 
+  white-space:nowrap;
+  /* 强制不换行  */
+}
+.address_itme_image{
+  height: 30rpx;
+  width: 30rpx;
+  position: absolute;
+  left: 20rpx;
+  top: 48%
 }

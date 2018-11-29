@@ -41,24 +41,27 @@ Page({
     })
   },
   bottomInputListener: function(e) {
+    var typeNum = '';
     switch (e.target.id) {
-      case "input_destination":
-        wx.navigateTo({
-          url: '../selectdestination/selectdestination',
-          success: function(res) {
-
-          },
-          fail: function(res) {
-
-          },
-          complete: function(res) {
-
-          },
-        })
+      case "input_origin":
+        typeNum = 0;
         break;
-      case "input_car_type":
+      case "input_destination":
+        typeNum = 1;
         break;
     }
+    wx.navigateTo({
+      url: '../selectdestination/selectdestination?type=' + typeNum,
+      success: function(res) {
+
+      },
+      fail: function(res) {
+
+      },
+      complete: function(res) {
+
+      },
+    })
   },
   toggleListener: function(e) {
     switch (e.target.id) {
