@@ -9,7 +9,7 @@
   <view class='address_item_class' bindtap='itemOnclickListener' data-item='{{item}}'>
     <image class='address_itme_image' src='../../image/address.png'></image>
     <text>{{item.addressName}}</text>
-    <text class='address_info_class'>随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下随便介绍一下</text>
+    <text class='address_info_class'>{{item.addressInfo}}</text>
   </view>
   </block>
   </scroll-view>
