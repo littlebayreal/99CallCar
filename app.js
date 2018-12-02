@@ -55,10 +55,9 @@ App({
       case 8:
         return "司机撤销";
       case 9:
-        return "司机违约"
+        return "司机违约";
       case 10:
-        status = "到达目的地"
-        break;
+        return "到达目的地";
       case 11:
         return "订单超时";
       case 12:

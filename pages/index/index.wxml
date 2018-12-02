@@ -13,7 +13,12 @@
       </block>
     </scroll-view> -->
   <!-- </view> -->
-  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}">
+  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' bindregionchange='regionchangeListener'>
+    <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image>
+    <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image>
+    <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
+
+    <cover-image id='start_location' src='../../image/start.png' class="start_location"></cover-image>
     <!-- <cover-view class='bottom_toggle'>
       <cover-view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</cover-view> 
       <cover-view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</cover-view>
@@ -22,15 +27,15 @@
   <view class="{{bottom_clazz}}">
     <view class="bottom_start">
       <view class='circle_str'></view>
-      <input id="input_origin" type="text" class="botom_input_class" value="{{origin}}" placeholder="您的出发位置" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener'/>
+      <input id="input_origin" type="text" class="botom_input_class" value="{{origin}}" placeholder="您的出发位置" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
     </view>
     <view class="bottom_start">
       <view class='circle_end'></view>
-      <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener'/>
+      <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
     </view>
     <view class="bottom_start">
       <view class='circle_end'></view>
-      <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer'  data-statu="open" disabled='true'/>
+      <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer' data-statu="open" disabled='true' />
     </view>
     <view class='bottom_scan'>
       <image class='bottom_scan_img' src='../../image/scan.png'></image>
@@ -54,13 +59,26 @@
     </view>
   </view>
 
-<!--mask-->
-<view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if="{{showModalStatus}}"></view>  
-<view animation="{{animationData}}" class="drawer_box" wx:if="{{showModalStatus}}">
- 
-  <!--drawer content-->
-  <view class="drawer_title">弹窗标题</view>
-  <view class="drawer_content">
+  <!--mask-->
+  <cover-view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if="{{showModalStatus}}"></cover-view>
+  <cover-view animation="{{animationData}}" class="drawer_box" wx:if="{{showModalStatus}}">
+
+    <!--drawer content-->
+    <cover-view class="drawer_title">请选择车辆类型</cover-view>
+    <!-- <radio-group class="car_type_radio_group" bindchange="radioChange">
+  <label class="car_type_radio" wx:for="{{carTypeList}}">
+    <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+  </label>
+  </radio-group> -->
+    <cover-view class='car_type_radio_group'>
+      <block wx:for="{{carTypeList}}">
+        <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
+        <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
+        <cover-view>{{item.value}}</cover-view>
+        </cover-view>
+      </block>
+    </cover-view>
+    <!-- <view class="drawer_content">
     <view class="top grid">
       <label class="title col-0">标题</label>
       <input class="input_base input_h30 col-1" name="rName" value="可自行定义内容"></input>
@@ -81,7 +99,7 @@
       <label class="title col-0">备注</label>
       <input class="input_base input_h30 col-1" name="bz"></input>
     </view>
-  </view>
-  <view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</view>
-</view>
+  </view> -->
+    <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
+  </cover-view>
 </view>

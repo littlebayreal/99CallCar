@@ -1,16 +1,19 @@
 @import '../../templates/loading.wxss';
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
   color: transparent;
 }
-.index_container{
+
+.index_container {
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: stretch;
 }
+
 /* .nav {
   height: 80rpx;
   width: 70%;
@@ -37,7 +40,24 @@
   color: #fc975c;
 }
 
+.map_personal_center {
+  width: 80rpx;
+  height: 80rpx;
+  position: relative;
+  top: 30rpx;
+  left: 30rpx;
+}
+
+.map_phone {
+  position: absolute;
+  bottom: 30rpx;
+  left: 30rpx;
+  width: 240rpx;
+  height: 86rpx;
+}
+
 .map_class {
+  position: relative;
   height: 62vh;
   width: 100%;
 }
@@ -80,7 +100,7 @@
   height: 6vh;
   background: #fff;
   border-radius: 50rpx;
-  border:1rpx solid #d5d5d5;
+  border: 1rpx solid #d5d5d5;
   font-size: 30rpx;
   line-height: 6vh;
   text-align: center;
@@ -97,10 +117,12 @@
 .bottom_dis::after {
   border: none;
 }
-.bottom_time{
+
+.bottom_time {
   height: 70rpx;
   width: 100%;
 }
+
 .order_time {
   height: 70rpx;
   line-height: 70rpx;
@@ -144,6 +166,8 @@
   color: #333;
   text-align: left;
   margin-left: 10rpx;
+  font-size: 30rpx;
+  width: 100%
 }
 
 .bottom_scan {
@@ -175,7 +199,8 @@
   text-align: center;
   line-height: 8vh;
 }
-.cost_class{
+
+.cost_class {
   position: relative;
   width: 100%;
   height: 80rpx;
@@ -184,6 +209,7 @@
 }
 
 /*button*/
+
 .btn {
   width: 80%;
   padding: 20rpx 0;
@@ -193,8 +219,9 @@
   background: #000;
   color: #fff;
 }
- 
+
 /*mask*/
+
 .drawer_screen {
   width: 100%;
   height: 100%;
@@ -206,8 +233,9 @@
   opacity: 0.5;
   overflow: hidden;
 }
- 
+
 /*content*/
+
 .drawer_box {
   width: 650rpx;
   overflow: hidden;
@@ -215,30 +243,31 @@
   top: 50%;
   left: 0;
   z-index: 1001;
-  background: #FAFAFA;
+  background: #fafafa;
   margin: -150px 50rpx 0 50rpx;
   border-radius: 3px;
 }
- 
-.drawer_title{
-  padding:15px;
+
+.drawer_title {
+  padding: 15px;
   font: 20px "microsoft yahei";
   text-align: center;
 }
+
 .drawer_content {
   height: 210px;
-  overflow-y: scroll; /*超出父盒子高度可滚动*/
+  /* overflow-y: scroll; 超出父盒子高度可滚动 */
 }
- 
-.btn_ok{
+
+.btn_ok {
   padding: 10px;
   font: 20px "microsoft yahei";
   text-align: center;
-  border-top: 1px solid #E8E8EA;
-  color: #3CC51F;
+  border-top: 1px solid #e8e8ea;
+  color: #3cc51f;
 }
- 
-.top{
+
+/* .top{
 	padding-top:8px;
 }
 .bottom {
@@ -273,7 +302,7 @@
 }
  
 input {
-	font: 12px "microsoft yahei";
+	font: 16px "microsoft yahei";
 	background: #fff;
 	color:#000 ;
 }
@@ -284,4 +313,38 @@ radio{
 .col-0 {-webkit-box-flex:0;box-flex:0;}
 .col-1 {-webkit-box-flex:1;box-flex:1;}
 .fl { float: left;}
-.fr { float: right;}
+.fr { float: right;} */
+
+.car_type_radio_group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10rpx;
+}
+
+.car_type_radio {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center
+}
+
+.car_type_select{
+  height: 30rpx;
+  width: 30rpx;
+}
+.map_location{
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  bottom: 30rpx;
+  right: 30rpx;
+}
+.start_location{
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  top: 49%;
+  left: 49%;
+}
