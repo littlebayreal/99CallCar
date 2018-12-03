@@ -51,16 +51,16 @@ Page({
         qqmapsdk = new QQMapWX({
           key: 'JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF'
         });
-        // wx.getLocation({
-        //   type: "gcj02",
-        //   success: function(res) {
-        //     console.log(res)
-        //     that.setData({
-        //       cur_lng: res.longitude,
-        //       cur_lat: res.latitude
-        //     })
-        //   },
-        // })
+        wx.getLocation({
+          type: "gcj02",
+          success: function(res) {
+            console.log(res)
+            that.setData({
+              cur_lng: res.longitude,
+              cur_lat: res.latitude
+            })
+          },
+        })
         //手动载入一遍 否则第一次点击出来是空白
         that.orderTimeListener();
       },
@@ -368,7 +368,7 @@ Page({
         switch (e.currentTarget.id) {
           case "personal_center":
             wx.navigateTo({
-              url: '../login/login',
+              url: '../personcenter/personcenter',
               success: function(res) {},
               fail: function(res) {},
               complete: function(res) {},

@@ -5,6 +5,14 @@
     <text class='header_nickName'>{{userName}}</text>
   </view>
   <view class="content">
+  <navigator url="../login/login">
+    <view class="content_item">
+      <image class="left_image" src='../../image/phone_number.png'></image>
+      <text class='content_text'>手机号</text>
+      <text class='right_text'>暂无手机号</text>
+      <image class="right_arrow" src='../../image/right_arrow.png'></image>
+    </view>
+    </navigator>
   <navigator url="../myschedule/myschedule">
     <view class="content_item">
       <image class="left_image" src='../../image/orders.png'></image>

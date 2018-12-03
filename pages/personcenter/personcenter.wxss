@@ -28,6 +28,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 30rpx 10rpx
 }
 .content_text{
@@ -36,6 +37,15 @@
 .right_arrow{
   height: 50rpx;
   width: 50rpx;
+}
+.right_text{
+  height: 50rpx;
+  width: 60%;
+  font-size: 24rpx;
+  padding-right: 20rpx;
+  line-height: 50rpx;
+  text-align: right;
+  justify-self: flex-end
 }
 .left_image{
   height: 50rpx;
