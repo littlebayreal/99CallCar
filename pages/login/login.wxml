@@ -1,2 +1,15 @@
 <!--pages/login/login.wxml-->
-<text>pages/login/login.wxml</text>
+<view class='body'>
+ <view class='login_title_class'>
+ <text>绑定手机号</text>
+ </view>
+ <view class='login_content_class'>
+  <input id="input_number" type="text" class="input_number_class" value="{{phone_number}}" placeholder="输入您的手机号" placeholder-color="#ccccccc" focus="{{false}}"/>
+  <view class='login_message_verify'>
+   <input id="input_message" type="text" class="input_message_class" value="{{message_number}}" placeholder="短信验证码" placeholder-color="#ccccccc" focus="{{false}}"/>
+   <button class='message_button' disabled='{{send_disabled?true:false}}' bindtap='sendSMSCode'>{{send_text}}</button>
+  </view>
+  <button class='bind_button_class'>绑定</button>
+ </view>
+</view>
+ 

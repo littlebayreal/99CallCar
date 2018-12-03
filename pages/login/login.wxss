@@ -1,1 +1,59 @@
 /* pages/login/login.wxss */
+
+.login_title_class {
+  height: 200rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.login_content_class {
+  width: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20rpx;
+}
+
+.input_number_class {
+  width: 100%;
+  text-align: left;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  padding-left:30rpx;
+  border-bottom: 1rpx solid #d5d5d5;
+}
+.login_message_verify{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.input_message_class{
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  text-align: left;
+  padding-left:30rpx;
+  width: 70%;
+  border-right: 1rpx solid #fff
+}
+.message_button{
+  width: 30%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 10rpx;
+  font-size: 20rpx;
+}
+.bind_button_class{
+  width: 90%;
+  height: 100rpx;
+  text-align: center;
+  background: #fc975c;
+}
+

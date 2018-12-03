@@ -42,7 +42,8 @@ Page({
         showCost: true,
         isLoading: true,
         showModalStatus: false,
-        carType: ""
+        carType: "",
+        scale: 16,
       },
       onLoad: function() {
         that = this;
@@ -50,22 +51,22 @@ Page({
         qqmapsdk = new QQMapWX({
           key: 'JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF'
         });
-        wx.getLocation({
-          type: "gcj02",
-          success: function(res) {
-            console.log(res)
-            that.setData({
-              cur_lng: res.longitude,
-              cur_lat: res.latitude
-            })
-          },
-        })
+        // wx.getLocation({
+        //   type: "gcj02",
+        //   success: function(res) {
+        //     console.log(res)
+        //     that.setData({
+        //       cur_lng: res.longitude,
+        //       cur_lat: res.latitude
+        //     })
+        //   },
+        // })
         //手动载入一遍 否则第一次点击出来是空白
         that.orderTimeListener();
       },
       onReady: function() {
         this.mapCtx = wx.createMapContext("99CallCarMap"); // 地图组件的id
-        // this.movetoPosition()
+        that.movetoPosition()
       },
       switchNav: function(e) {
         var ct = e.currentTarget.dataset.id;
@@ -367,7 +368,7 @@ Page({
         switch (e.currentTarget.id) {
           case "personal_center":
             wx.navigateTo({
-              url: '../personcenter/personcenter',
+              url: '../login/login',
               success: function(res) {},
               fail: function(res) {},
               complete: function(res) {},
@@ -411,5 +412,8 @@ Page({
             });
           },
         })
-      }
+      },
+  movetoPosition: function () {
+    that.mapCtx.moveToLocation();
+  },
 })

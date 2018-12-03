@@ -13,7 +13,7 @@
       </block>
     </scroll-view> -->
   <!-- </view> -->
-  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' bindregionchange='regionchangeListener'>
+  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener'>
     <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
@@ -34,7 +34,7 @@
       <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
     </view>
     <view class="bottom_start">
-      <view class='circle_end'></view>
+      <image class='car_type_image' src='../../image/car_type.png'></image>
       <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer' data-statu="open" disabled='true' />
     </view>
     <view class='bottom_scan'>
@@ -42,6 +42,7 @@
       <view class='bottom_scan_text'>扫描司机二维码,指定司机（可选）</view>
     </view>
     <view wx:if="{{isNow == 1}}" class='bottom_time'>
+    <image class='bottom_scan_img' src='../../image/schedule.png'></image>
       <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap="orderTimeListener" bindcolumnchange="bindColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
     </view>
     <view wx:if="{{showCost}}" class='cost_class'>

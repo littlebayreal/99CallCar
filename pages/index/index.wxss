@@ -121,13 +121,17 @@
 .bottom_time {
   height: 70rpx;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .order_time {
   height: 70rpx;
   line-height: 70rpx;
   text-align: left;
-  margin-left: 40rpx;
+  margin-left: 10rpx;
+  font-size: 30rpx;
 }
 
 .bottom_start {
@@ -173,7 +177,7 @@
 .bottom_scan {
   color: #ccc;
   width: 100%;
-  height: 80rpx;
+  height: 70rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -190,6 +194,8 @@
   line-height: 80rpx;
   text-align: left center;
   margin-left: 10rpx;
+  font-size: 30rpx;
+  color: #333;
 }
 
 .bottom_button {
@@ -335,16 +341,21 @@ radio{
   width: 30rpx;
 }
 .map_location{
-  width: 80rpx;
-  height: 80rpx;
+  width: 60rpx;
+  height: 60rpx;
   position: absolute;
-  bottom: 30rpx;
+  bottom: 50rpx;
   right: 30rpx;
 }
 .start_location{
   width: 80rpx;
   height: 80rpx;
   position: absolute;
-  top: 49%;
-  left: 49%;
+  top: 44%;
+  left: 45%;
+}
+.car_type_image{
+  height: 30rpx;
+  width: 30rpx;
+  margin-left: 40rpx;
 }
