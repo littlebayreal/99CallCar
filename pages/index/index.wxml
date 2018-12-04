@@ -13,7 +13,7 @@
       </block>
     </scroll-view> -->
   <!-- </view> -->
-  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener'>
+  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location>
     <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
@@ -27,11 +27,11 @@
   <view class="{{bottom_clazz}}">
     <view class="bottom_start">
       <view class='circle_str'></view>
-      <input id="input_origin" type="text" class="botom_input_class" value="{{origin}}" placeholder="您的出发位置" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
+      <input id="input_origin" type="text" class="botom_input_class" value="{{origin.addressName}}" placeholder="您的出发位置" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
     </view>
     <view class="bottom_start">
       <view class='circle_end'></view>
-      <input id="input_destination" type="text" class="botom_input_class" value="{{destination}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
+      <input id="input_destination" type="text" class="botom_input_class" value="{{destination.addressName}}" placeholder="您要去哪儿" placeholder-color="#ccccccc" focus="{{false}}" disabled='true' bindtap='bottomInputListener' />
     </view>
     <view class="bottom_start">
       <image class='car_type_image' src='../../image/car_type.png'></image>
@@ -56,7 +56,7 @@
         <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
         <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
       </view>
-      <button class='bottom_button'>呼叫{{titleData[currentTab]}}</button>
+      <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
     </view>
   </view>
 

@@ -403,10 +403,16 @@ Page({
                 longitude: res.longitude,
               },
               success: function(res) {
+                var o = {
+                  addressName: res.result.formatted_addresses.recommend,
+                  addressInfo: res.result.address,
+                  addressLocation:res.result.location
+                }
                 console.log(res);
+                console.log("o打印："+ o.addressLocation.lng);
                 that.setData({
                   // origin: res.result.address, //得到的经纬度逆地址解析得到我们的位置信息
-                  origin: res.result.formatted_addresses.recommend
+                  origin: o
                 })
               },
             });
@@ -416,4 +422,40 @@ Page({
   movetoPosition: function () {
     that.mapCtx.moveToLocation();
   },
+  callCarClickListener:function(){
+    wx.request({
+      url: 'https://99car.sanyadcyc.com',
+      method: 'POST',
+      data:{
+        "data": [
+          {
+            "token": "979347F6010C4F8C42BDD0C3535A5735",
+            "cartype": 3,
+            "depProvince": "江苏省",
+            "depCity": "苏州市",
+            "depCounty": "吴中区",
+            "depDetails": that.data.origin.addressInfo,
+            "depLong": that.data.origin.addressLocation.lng,
+            "depLat": that.data.origin.addressLocation.lat,
+            "desProvince": "江苏省",
+            "desCity": "苏州市",
+            "desCounty": "吴中区",
+            "desDetails": that.data.destination.addressInfo,
+            "desLong": that.data.destination.addressLocation.lng,
+            "desLat": that.data.destination.addressLocation.lat,
+            "isBook": 1,
+            "estimateTralvelDistance": 15.6
+          }
+        ],
+        "datatype": "priceEstimate",
+        "op": "getdata"
+      },
+      success:function(e){
+        console.log(e);
+      },
+      fail:function(e){
+        console.log(e);
+      }
+    })
+  }
 })

@@ -72,6 +72,7 @@ Page({
     ]
   },
   itemOnclickListener: function(e) {
+    console.log(e);
     var pages = getCurrentPages() //获取加载的页面( 页面栈 )
     var currentPage = pages[pages.length - 1] // 获取当前页面
     var prevPage = pages[pages.length - 2] //获取上一个页面
@@ -79,12 +80,12 @@ Page({
     switch (that.data.type) {
       case 0:
         prevPage.setData({
-          origin: e.currentTarget.dataset.item.addressName
+          origin: e.currentTarget.dataset.item
         })
         break;
       case 1:
         prevPage.setData({
-          destination: e.currentTarget.dataset.item.addressName
+          destination: e.currentTarget.dataset.item
         })
         break;
     }
@@ -92,9 +93,9 @@ Page({
     var ads = that.data.storageList;
     var newLength = ads.unshift(e.currentTarget.dataset.item);
     console.log(newLength);
-    for (var i = 0; i < ads.length; i++) {
-      console.log(ads[i].addressName);
-    }
+    // for (var i = 0; i < ads.length; i++) {
+    //   console.log(ads[i].addressName);
+    // }
     ads = ads.slice(0, 10);
     that.setData({
       addressList: ads,
@@ -117,7 +118,7 @@ Page({
           var data = {
             addressName: datas[i].title,
             addressInfo: datas[i].address,
-            update: false
+            addressLocation:datas[i].location
           }
           al.push(data);
         }

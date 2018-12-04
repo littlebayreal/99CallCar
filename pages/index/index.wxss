@@ -344,7 +344,7 @@ radio{
   width: 60rpx;
   height: 60rpx;
   position: absolute;
-  bottom: 50rpx;
+  bottom: 45rpx;
   right: 30rpx;
 }
 .start_location{
