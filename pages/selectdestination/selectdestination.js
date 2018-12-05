@@ -112,13 +112,20 @@ Page({
       keyword: e.detail.value,
       key: "JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF",
       success: function(res) {
+        console.log(res);
         var al = [];
         var datas = res.data;
         for (var i = 0; i < 10; i++) {
+          var pcd={
+            province: datas[i].province,
+            city: datas[i].city,
+            district: datas[i].district
+          }
           var data = {
             addressName: datas[i].title,
             addressInfo: datas[i].address,
-            addressLocation:datas[i].location
+            addressLocation:datas[i].location,
+            provinceCityDistrict: pcd
           }
           al.push(data);
         }

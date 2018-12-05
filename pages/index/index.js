@@ -1,10 +1,10 @@
 //index.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
-var Parser = require('../../libs/dom-parser.js');
 var qqmapsdk;
 var that;
+const QUERY_BANNER = 'query_banner';
 Page({
   data: {
     titleData: ['出租车', '网约车', '电话招车'],
@@ -39,9 +39,7 @@ Page({
     multiIndex: [],
     //动态改变底部的样式
     bottom_clazz: 'bottom',
-    //显示预计的花费价格
-    showCost: true,
-    isLoading: true,
+    isLoading: false,
     showModalStatus: false,
     carType: "",
     scale: 16,
@@ -296,29 +294,84 @@ Page({
       minute.push(i);
     }
   },
+  //选择车型
   radioChange: function(e) {
-    // console.log(e);
     var list = that.data.carTypeList;
     for (var i = 0; i < list.length; i++) {
       if (i == e.currentTarget.dataset.pos) {
-        console.log("设置为选中");
         list[i].checked = true;
       } else {
         list[i].checked = false;
       }
     }
-    for (var i = 0; i < list.length; i++) {
-      console.log(list[i].checked)
-    }
     that.setData({
       carTypeList: list,
       carType: e.currentTarget.dataset.value
     })
+    
+  },
+  calcuteCost:function(){
+    var body = {
+      "data": [{
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "cartype": 3,
+        "depProvince": that.data.origin.provinceCityDistrict.province,
+        "depCity": that.data.origin.provinceCityDistrict.city,
+        "depCounty": that.data.origin.provinceCityDistrict.district,
+        "depDetails": that.data.origin.addressInfo,
+        "depLong": that.data.origin.addressLocation.lng,
+        "depLat": that.data.origin.addressLocation.lat,
+        "desProvince": that.data.destination.provinceCityDistrict.province,
+        "desCity": that.data.destination.provinceCityDistrict.city,
+        "desCounty": that.data.destination.provinceCityDistrict.district,
+        "desDetails": that.data.destination.addressInfo,
+        "desLong": that.data.destination.addressLocation.lng,
+        "desLat": that.data.destination.addressLocation.lat,
+        "isBook": 1,
+        "estimateTralvelDistance": 15.6
+      }],
+      "datatype": "priceEstimate",
+      "op": "getdata"
+    }
+    that.setData({
+      showCost: true,
+      isLoading: true
+    });
+    app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
+  onSuccess: function (res, requestCode) {
+    that.setData({
+      cost: res.data[0].price
+    })
+  },
+  onErrorBefore: function (statusCode, errorMessage, requestCode) {
+    console.log("错误处理")
+  },
+  onComplete: function (res) {
+    that.setData({
+      isLoading: false
+    })
   },
   powerDrawer: function(e) {
-    console.log("车辆类型:" + that.data.carType);
+    console.log("类型状态:" + e.currentTarget.dataset.statu);
     var currentStatu = e.currentTarget.dataset.statu;
-    this.util(currentStatu)
+    that.util(currentStatu);
+
+    if (currentStatu == 'open')return;
+    //每次选中车型都计算一次预计行程花费
+    if (that.data.origin == null) {
+      wx.showToast({
+        title: '请输入出发点',
+      })
+      return;
+    }
+    if (that.data.destination == null) {
+      wx.showToast({
+        title: '请输入目的地',
+      })
+      return;
+    }
+    that.calcuteCost();
   },
   util: function(currentStatu) {
     /* 动画部分 */
@@ -407,7 +460,8 @@ Page({
             var o = {
               addressName: res.result.formatted_addresses.recommend,
               addressInfo: res.result.address,
-              addressLocation: res.result.location
+              addressLocation: res.result.location,
+              provinceCityDistrict: res.result.address_component
             }
             console.log(res);
             console.log("o打印：" + o.addressLocation.lng);
@@ -424,64 +478,8 @@ Page({
     that.mapCtx.moveToLocation();
   },
   callCarClickListener: function() {
-    var body = {
-      "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
-        "cartype": 3,
-        "depProvince": "江苏省",
-        "depCity": "苏州市",
-        "depCounty": "吴中区",
-        "depDetails": "江苏省苏州市姑苏区十梓街338号",
-        "depLong": 120.63132,
-        "depLat": 31.30227,
-        "desProvince": "江苏省",
-        "desCity": "苏州市",
-        "desCounty": "吴中区",
-        "desDetails": "江苏省苏州市姑苏区车站路27号",
-        "desLong": 120.610814921,
-        "desLat": 31.329628709,
-        "isBook": 1,
-        "estimateTralvelDistance": 15.6
-      }],
-      "datatype": "priceEstimate",
-      "op": "getdata"
-    }
-   
-    //组装请求体 
-    var httpBody = "";
-    httpBody += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">';
-    httpBody += '<soapenv:Header/>';
-    httpBody += '<soapenv:Body>';
-    httpBody += '<tem:Webservice>';
-    httpBody += '<tem:input>';
-    httpBody += JSON.stringify(body);
-    httpBody += '</tem:input>';
-    httpBody += '</tem:Webservice>';
-    httpBody += '</soapenv:Body>';
-    httpBody += '</soapenv:Envelope>';
-    wx.request({
-      url: 'https://99car.sanyadcyc.com/communicate.asmx?op=Webservice',
-      method: 'POST',
-      header: {
-        // 设置请求的 header 
-        'content-type': 'text/xml; charset=utf-8',
-      },
-      data: httpBody,
-      success: function(e) {
-        //新建DOM解析对象
-         var parser = new Parser.DOMParser(); 
-         //基于请求到的 XML数据 来构建DOM对象 
-         var xmlDoc = parser.parseFromString(e.data, "text/xml");
-        var res = xmlDoc.getElementsByTagName('WebserviceResult'); 
-        //得到节点数据，文本也是节点所以使用firstChild.nodeValue,只有文本节点，所以firstChild就是文本节点 
-        console.log(res[0].firstChild.data); 
-        //nodeValue问节点值 //转化为json对象 
-        var jsond = JSON.parse(res[0].firstChild.data); 
-        console.log(jsond);
-      },
-      fail: function(e) {
-        console.log(e);
-      }
+    wx.navigateTo({
+      url: '../wait/wait',
     })
   }
 })

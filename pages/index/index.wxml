@@ -42,65 +42,35 @@
       <view class='bottom_scan_text'>扫描司机二维码,指定司机（可选）</view>
     </view>
     <view wx:if="{{isNow == 1}}" class='bottom_time'>
-    <image class='bottom_scan_img' src='../../image/schedule.png'></image>
+      <image class='bottom_scan_img' src='../../image/schedule.png'></image>
       <picker class='order_time' mode="multiSelector" bindchange="bindStartMultiPickerChange" bindtap="orderTimeListener" bindcolumnchange="bindColumnChange" value="{{multiIndex}}" range="{{multiArray}}">{{order_times}}</picker>
     </view>
     <view wx:if="{{showCost}}" class='cost_class'>
       <import src="../../templates/sprinner.wxml" />
       <template is="sprinner" data='{{isLoading}}'>
       </template>
-      <!-- <view class='cost_class'>约30元</view> -->
-    </view>
-    <view class='bottom_class'>
-      <view class='bottom_toggle'>
-        <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
-        <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
-      </view>
-      <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
+      <view wx:if='{{!isLoading}}' class='cost_class'>预计行程花费约{{cost}}元</view>
     </view>
   </view>
-
+  <view class='bottom_class'>
+    <view class='bottom_toggle'>
+      <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
+      <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
+    </view>
+    <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
+  </view>
   <!--mask-->
   <cover-view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if="{{showModalStatus}}"></cover-view>
-  <cover-view animation="{{animationData}}" class="drawer_box" wx:if="{{showModalStatus}}">
-
-    <!--drawer content-->
+  <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
     <cover-view class="drawer_title">请选择车辆类型</cover-view>
-    <!-- <radio-group class="car_type_radio_group" bindchange="radioChange">
-  <label class="car_type_radio" wx:for="{{carTypeList}}">
-    <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
-  </label>
-  </radio-group> -->
     <cover-view class='car_type_radio_group'>
       <block wx:for="{{carTypeList}}">
         <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
-        <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
-        <cover-view>{{item.value}}</cover-view>
+          <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
+          <cover-view>{{item.value}}</cover-view>
         </cover-view>
       </block>
     </cover-view>
-    <!-- <view class="drawer_content">
-    <view class="top grid">
-      <label class="title col-0">标题</label>
-      <input class="input_base input_h30 col-1" name="rName" value="可自行定义内容"></input>
-    </view>
-    <view class="top grid">
-      <label class="title col-0">标题</label>
-      <input class="input_base input_h30 col-1" name="mobile" value="110"></input>
-    </view>
-    <view class="top grid">
-      <label class="title col-0">标题</label>
-      <input class="input_base input_h30 col-1" name="phone" value="拒绝伸手党"></input>
-    </view>
-    <view class="top grid">
-      <label class="title col-0">标题</label>
-      <input class="input_base input_h30 col-1" name="Email" value="仅供学习使用"></input>
-    </view>
-    <view class="top bottom grid">
-      <label class="title col-0">备注</label>
-      <input class="input_base input_h30 col-1" name="bz"></input>
-    </view>
-  </view> -->
     <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
   </cover-view>
 </view>

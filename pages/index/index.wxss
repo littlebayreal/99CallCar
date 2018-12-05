@@ -112,6 +112,8 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  position: fixed;
+  bottom: 0rpx;
 }
 
 .bottom_dis::after {

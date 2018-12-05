@@ -1,0 +1,31 @@
+/* pages/wait/wait.wxss */
+.title_class{
+  background: #fff;
+  border: 1rpx solid #d5d5d5;
+  width: 90%;
+  height: 80rpx;
+  margin: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.bell_image_class{
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 20rpx
+}
+.title_view_class{
+  margin-left: 20rpx;
+}
+.content_top{
+  font-size: 48rpx;
+  text-align: center;
+  width: 100%;
+  margin-top: 30rpx;
+}
+.content_middle{
+  font-size: 24rpx;
+  text-align: center;
+  width: 100%;
+  margin-top: 30rpx;
+}

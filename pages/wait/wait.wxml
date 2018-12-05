@@ -1,0 +1,14 @@
+<!--pages/wait/wait.wxml-->
+<view class='body'>
+<view class='title_class'>
+<image class='bell_image_class' src='../../image/bell.png'></image>
+<view class='title_view_class'>您上车的地点为<text>「{{address}}」</text></view>
+</view>
+<view class='content'>
+<view class='content_top'>正在为您寻找车辆</view>
+<view class='content_middle'>每人一小步，更快更顺路</view>
+<view class='content_bottom'>
+ 
+</view>
+</view>
+</view>
