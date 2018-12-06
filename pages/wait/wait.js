@@ -26,6 +26,10 @@ Page({
    */
   onLoad: function(options) {
     that = this;
+    var origin = JSON.parse(options.originJson);
+    that.setData({
+      address: origin.addressName
+    })
   },
 
   /**

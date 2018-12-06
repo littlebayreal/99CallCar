@@ -7,7 +7,8 @@
     "pages/customer/customer",
     "pages/myschedule/myschedule",
     "pages/selectdestination/selectdestination",
-    "pages/wait/wait"
+    "pages/wait/wait",
+    "pages/waitDriver/waitDriver"
   ],
   "window": {
     "backgroundTextStyle": "light",

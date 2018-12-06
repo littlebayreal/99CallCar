@@ -1,0 +1,33 @@
+<!--pages/waitDriver/waitDriver.wxml-->
+<view class='container_wait_driver'>
+  <view class='title_class'>
+    <view>
+      <image class='title_image_class' src='../../image/demo_header.png'></image>
+    </view>
+    <view class='title_content_class'>
+      <view class='title_content_name_class'>
+        <text>李师傅</text>
+        <image class='title_name_image_class' src='../../image/star.png'></image>
+        <text>5 3454单</text>
+      </view>
+      <view class='title_content_carnum_class'>苏E999MD</view>
+      <view class='title_content_cartype_class'>黑色·日产轩逸</view>
+    </view>
+    <view>
+     <image class='title_right_class' src='../../image/call_phone.png'></image></view>
+  </view>
+  <view class='toast_class'>司机正在赶往您的上车地点，到达后最多等待3分钟</view>
+  <map id="99CallCarMap" class="map_class" longitude='{{origin_lng}}' latitude='{{origin_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location>
+    <!-- <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image> -->
+    <!-- <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image> -->
+    <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
+     
+    <!-- <cover-image id='start_location' src='../../image/start.png' class="start_location"></cover-image> -->
+  </map>
+  <view class='bottom_class'>
+   <view class='bottom_button_class'>一键报警</view>
+   <view class='bottom_button_class'>行程分享</view>
+   <view class='bottom_button_class'>取消订单</view>
+   <view class='bottom_button_class'>需要帮助</view>
+  </view>
+</view>

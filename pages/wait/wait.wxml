@@ -3,7 +3,7 @@
   <view class='title_class'>
     <image class='bell_image_class' src='../../image/bell.png'></image>
     <view class='title_view_class'>您上车的地点为
-      <text>「{{address}}」</text>
+      <text style='color:red'>「{{address}}」</text>
     </view>
   </view>
   <view class='content'>

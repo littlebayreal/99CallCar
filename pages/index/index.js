@@ -478,8 +478,10 @@ Page({
     that.mapCtx.moveToLocation();
   },
   callCarClickListener: function() {
+    var originJson = JSON.stringify(that.data.origin)
     wx.navigateTo({
-      url: '../wait/wait',
+      // url: '../wait/wait?originJson=' + originJson,
+      url:'../waitDriver/waitDriver'
     })
   }
 })

@@ -16,6 +16,7 @@
 }
 .title_view_class{
   margin-left: 20rpx;
+  font-size: 24rpx;
 }
 .content_top{
   font-size: 48rpx;
