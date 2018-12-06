@@ -29,3 +29,41 @@
   width: 100%;
   margin-top: 30rpx;
 }
+.progress_box{
+    position: relative;
+    width:220px;
+    height: 220px; 
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+   .progress_bg{
+    position: absolute;
+    width:220px;
+    height: 220px;
+  }
+  .progress_canvas{
+    width:220px;
+    height: 220px;
+  }
+  .progress_text{
+    position: absolute;
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    justify-content: center
+  }
+  .progress_info{  
+    font-size: 26rpx;
+    color: #666666;
+    letter-spacing: 2rpx;
+    padding-bottom: 26rpx;
+   
+  }
+  .progress_time{
+    font-size: 55rpx;
+    border-radius:50px;
+    text-align: center;
+    color: #fc9153;
+  }

@@ -94,7 +94,7 @@ App({
     var that = this;
     //防止重复提交，相同请求间隔时间不能小于500毫秒 
     var nowTime = new Date().getTime();
-    if (this.globalData.requestCount[urlPath] && (nowTime - this.globalData.requestCount[urlPath]) < 500) {
+    if (this.globalData.requestCount[requestCode] && (nowTime - this.globalData.requestCount[requestCode]) < 500) {
       return;
     }
     //设置数组的子参数
