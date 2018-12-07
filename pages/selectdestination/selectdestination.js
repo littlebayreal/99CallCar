@@ -110,7 +110,7 @@ Page({
     qqmapsdk.getSuggestion({
       region: "苏州",
       keyword: e.detail.value,
-      key: "JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF",
+      key: getApp().globalData.key,
       success: function(res) {
         console.log(res);
         var al = [];

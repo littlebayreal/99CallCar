@@ -1,18 +1,61 @@
 // pages/waitDriver/waitDriver.js
+var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var qqmapsdk;
+var that;
 Page({
   
   /**
    * 页面的初始数据
    */
   data: {
-
+    scale: 16,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    that = this;
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: getApp().globalData.key
+    });
+    wx.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        console.log(res)
+        that.setData({
+          origin_lng: res.longitude,
+          origin_lat: res.latitude
+        })
+      },
+    });
+    // var origin = JSON.parse(options.originJson);
+    // var destinction = JSON.parse(options.destinctionJson);
+    wx.getStorage({
+      key: 'order_info',
+      success: function(res) {
+        console.log(res);
+        that.setData({
+          orderInfo:res.data,
+          markers: [{
+            iconPath: "../../image/str.png",
+            id: 0,
+            latitude: res.data.depLat,
+            longitude: res.data.depLong,
+            width: 30,
+            height: 30
+          }, {
+            iconPath: "../../image/end.png",
+            id: 1,
+              latitude: res.data.desLat,
+              longitude: res.data.desLong,
+            width: 30,
+            height: 30
+          }],
+        })
+      },
+    })
   },
 
   /**

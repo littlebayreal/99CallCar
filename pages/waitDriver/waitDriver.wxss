@@ -87,3 +87,6 @@
   font-size: 30rpx;
   text-align: center
 }
+.title_content_number_class{
+  font-size: 24rpx;
+}

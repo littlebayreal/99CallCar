@@ -173,6 +173,7 @@ App({
   onComplete: function(res) {},
   onError: function(statusCode, errorMessage, requestCode) {},
   globalData: {
+    key: 'JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF',
     userInfo: null,
     requestCount: [],
     verifyCount: []

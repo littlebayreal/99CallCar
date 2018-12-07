@@ -11,7 +11,7 @@ Page({
     waitTimer: null,
     time: '00:00',
     //单位秒 3分钟
-    limitTime: 180,
+    limitTime: 10,
     wait_time: null
   },
 
@@ -26,9 +26,12 @@ Page({
    */
   onLoad: function(options) {
     that = this;
-    var origin = JSON.parse(options.originJson);
+    var originbean = JSON.parse(options.originJson);
+    var destinctionbean = JSON.parse(options.destinctionJson);
     that.setData({
-      address: origin.addressName
+      origin:originbean,
+      destinction:destinctionbean,
+      address: originbean.addressName
     })
   },
 
@@ -37,7 +40,7 @@ Page({
    */
   onReady: function() {
     this.drawProgressbg();
-    this.countInterval();
+    // this.countInterval();
     //初始的计时线条
     this.drawProgress(0);
   },
@@ -58,7 +61,41 @@ Page({
       }
       setTimeout(that.countInterval, 1000);
     } else {
-       
+       //暂时模拟等到车辆接单
+       //保存订单号以及订单信息到本地
+       var d = {
+         "orderNumber":"123456789",
+         "token": that.data.requestParam.token,
+         "depProvince": that.data.requestParam.depProvince,
+         "depCity": that.data.requestParam.depCity,
+         "depCounty": that.data.requestParam.depCounty,
+         "depDetails": that.data.requestParam.depDetails,
+         "depLong": that.data.requestParam.depLong,
+         "depLat": that.data.requestParam.depLat,
+         "desProvince": that.data.requestParam.desProvince,
+         "desCity": that.data.requestParam.desCity,
+         "desCounty": that.data.requestParam.desCounty,
+         "desDetails": that.data.requestParam.desDetails,
+         "desLong": that.data.requestParam.desLong,
+         "desLat": that.data.requestParam.desLat,
+         "passengerNumber": that.data.requestParam.passengerNumber,
+         "addtime": that.data.requestParam.addtime,
+         "pricie": that.data.requestParam.pricie,
+         "callVehicleLevel": that.data.requestParam.callVehicleLevel,
+         "callVehicleOpType": that.data.requestParam.callVehicleOpType,
+         "bookTime": that.data.requestParam.bookTime,
+         // "driverCode": null,
+         // "codetime": null,
+         "orderSource": that.data.requestParam.orderSource,
+         "orderMethod": that.data.requestParam.orderMethod
+       }
+       wx.setStorage({
+         key: 'order_info',
+         data: d,
+       })
+       wx.navigateTo({
+         url: '../waitDriver/waitDriver',
+       })
     }
   },
   introduceOrder:function(){
@@ -66,18 +103,18 @@ Page({
       "data": [
         {
           "token": "979347F6010C4F8C42BDD0C3535A5735",
-          "depProvince": "320000",
-          "depCity": "320500",
-          "depCounty": "320509",
-          "depDetails": "创意产业园公交站",
-          "depLong": 120.736099,
-          "depLat": 31.268243,
-          "desProvince": "320000",
-          "desCity": "320500",
-          "desCounty": "320509",
-          "desDetails": "南大研究生院",
-          "desLong": 120.74438,
-          "desLat": 31.282779,
+          "depProvince": that.data.origin.provinceCityDistrict.province,
+          "depCity": that.data.origin.provinceCityDistrict.city,
+          "depCounty": that.data.origin.provinceCityDistrict.county,
+          "depDetails": that.data.origin.addressInfo,
+          "depLong": that.data.origin.addressLocation.lng,
+          "depLat": that.data.origin.addressLocation.lat,
+          "desProvince": that.data.destinction.provinceCityDistrict.province,
+          "desCity": that.data.destinction.provinceCityDistrict.city,
+          "desCounty": that.data.destinction.provinceCityDistrict.county,
+          "desDetails": that.data.destinction.addressInfo,
+          "desLong": that.data.destinction.addressLocation.lng,
+          "desLat": that.data.destinction.addressLocation.lat,
           "passengerNumber": 2,
           "addtime": "2018-12-06 18:00:00",
           "pricie": "0.0",
@@ -93,10 +130,13 @@ Page({
       "datatype": "placeOrder",
       "op": "setdata"
     };
+    that.setData({
+      requestParam:body.data[0]
+    })
     getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   onSuccess: function (res, requestCode) {
-    
+    //真正接到订单的时候
   },
   onErrorBefore: function (statusCode, errorMessage, requestCode) {
     console.log("错误处理");

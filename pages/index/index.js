@@ -48,7 +48,7 @@ Page({
     that = this;
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
-      key: 'JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF'
+      key: getApp().globalData.key
     });
     wx.getLocation({
       type: "gcj02",
@@ -308,9 +308,9 @@ Page({
       carTypeList: list,
       carType: e.currentTarget.dataset.value
     })
-    
+
   },
-  calcuteCost:function(){
+  calcuteCost: function() {
     var body = {
       "data": [{
         "token": "979347F6010C4F8C42BDD0C3535A5735",
@@ -339,15 +339,15 @@ Page({
     });
     app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
-  onSuccess: function (res, requestCode) {
+  onSuccess: function(res, requestCode) {
     that.setData({
       cost: res.data[0].price
     })
   },
-  onErrorBefore: function (statusCode, errorMessage, requestCode) {
+  onErrorBefore: function(statusCode, errorMessage, requestCode) {
     console.log("错误处理")
   },
-  onComplete: function (res) {
+  onComplete: function(res) {
     that.setData({
       isLoading: false
     })
@@ -357,7 +357,7 @@ Page({
     var currentStatu = e.currentTarget.dataset.statu;
     that.util(currentStatu);
 
-    if (currentStatu == 'open')return;
+    if (currentStatu == 'open') return;
     //每次选中车型都计算一次预计行程花费
     if (that.data.origin == null) {
       wx.showToast({
@@ -478,10 +478,11 @@ Page({
     that.mapCtx.moveToLocation();
   },
   callCarClickListener: function() {
-    var originJson = JSON.stringify(that.data.origin)
+    var originJson = JSON.stringify(that.data.origin);
+    var destinctionJson = JSON.stringify(that.data.destination);
     wx.navigateTo({
-      // url: '../wait/wait?originJson=' + originJson,
-      url:'../waitDriver/waitDriver'
+      url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
+      // url: '../waitDriver/waitDriver?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
     })
   }
 })
