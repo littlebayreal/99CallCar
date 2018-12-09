@@ -17,7 +17,7 @@
      <image class='title_right_class' src='../../image/call_phone.png'></image></view>
   </view>
   <view class='toast_class'>司机正在赶往您的上车地点，到达后最多等待3分钟</view>
-  <map id="99CallCarMap" class="map_class" longitude='{{origin_lng}}' latitude='{{origin_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location markers='{{markers}}'>
+  <map id="99CallCarMap" class="map_class" longitude='{{origin_lng}}' latitude='{{origin_lat}}' scale='{{scale}}' show-location markers='{{markers}}'>
     <!-- <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image> -->
     <!-- <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image> -->
     <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
