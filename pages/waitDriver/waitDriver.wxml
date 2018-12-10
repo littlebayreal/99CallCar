@@ -27,7 +27,7 @@
   <view class='bottom_class'>
    <view class='bottom_button_class'>一键报警</view>
    <view class='bottom_button_class'>行程分享</view>
-   <view class='bottom_button_class'>取消订单</view>
+   <view class='bottom_button_class' bindtap='cancel'>取消订单</view>
    <view class='bottom_button_class'>需要帮助</view>
   </view>
 </view>

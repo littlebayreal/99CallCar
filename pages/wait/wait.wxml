@@ -20,4 +20,28 @@
       </view>
     </view>
   </view>
+  <view class='bottom_class'>
+   <view class='bottom_button_class'>一键报警</view>
+   <view class='bottom_button_class'>行程分享</view>
+   <view class='bottom_button_class' bindtap='powerDrawer' data-statu="open">取消订单</view>
+   <view class='bottom_button_class'>需要帮助</view>
+  </view>
+
+  <!--mask-->
+  <cover-view class="drawer_screen" animation="{{animationData}}" wx:if="{{showModalStatus}}"></cover-view>
+  <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
+    <cover-view class="drawer_title">选择撤销订单的原因</cover-view>
+    <cover-view class='car_type_radio_group'>
+      <block wx:for="{{carTypeList}}">
+        <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
+          <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image> 
+          <cover-view>{{item.value}}</cover-view>
+        </cover-view>
+      </block>
+    </cover-view>
+    <cover-view class='btn_class'>
+    <cover-view id='btn_cancel' class="btn_ok" bindtap="powerDrawer" data-statu="close">取消</cover-view>
+    <cover-view id='btn_ok' class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
+    </cover-view>
+  </cover-view>
 </view>

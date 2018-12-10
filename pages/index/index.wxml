@@ -60,7 +60,7 @@
     <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
   </view>
   <!--mask-->
-  <cover-view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if="{{showModalStatus}}"></cover-view>
+  <cover-view class="drawer_screen" wx:if="{{showModalStatus}}"></cover-view>
   <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
     <cover-view class="drawer_title">请选择车辆类型</cover-view>
     <cover-view class='car_type_radio_group'>

@@ -1,5 +1,6 @@
 /* pages/wait/wait.wxss */
-.title_class{
+
+.title_class {
   background: #fff;
   border: 1rpx solid #d5d5d5;
   width: 90%;
@@ -9,62 +10,184 @@
   flex-direction: row;
   align-items: center;
 }
-.bell_image_class{
+
+.bell_image_class {
   width: 40rpx;
   height: 40rpx;
-  margin-left: 20rpx
+  margin-left: 20rpx;
 }
-.title_view_class{
+
+.title_view_class {
   margin-left: 20rpx;
   font-size: 24rpx;
 }
-.content_top{
+.content{
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+.content_top {
   font-size: 48rpx;
   text-align: center;
   width: 100%;
   margin-top: 30rpx;
 }
-.content_middle{
+
+.content_middle {
   font-size: 24rpx;
   text-align: center;
   width: 100%;
   margin-top: 30rpx;
 }
-.progress_box{
-    position: relative;
-    width:220px;
-    height: 220px; 
-    display: flex; 
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-  }
-   .progress_bg{
-    position: absolute;
-    width:220px;
-    height: 220px;
-  }
-  .progress_canvas{
-    width:220px;
-    height: 220px;
-  }
-  .progress_text{
-    position: absolute;
-    display: flex; 
-    align-items: center;
-    flex-direction: column;
-    justify-content: center
-  }
-  .progress_info{  
-    font-size: 26rpx;
-    color: #666666;
-    letter-spacing: 2rpx;
-    padding-bottom: 26rpx;
-   
-  }
-  .progress_time{
-    font-size: 55rpx;
-    border-radius:50px;
-    text-align: center;
-    color: #fc9153;
-  }
+
+.progress_box {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.progress_bg {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+}
+
+.progress_canvas {
+  width: 220px;
+  height: 220px;
+}
+
+.progress_text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.progress_info {
+  font-size: 26rpx;
+  color: #666;
+  letter-spacing: 2rpx;
+  padding-bottom: 26rpx;
+}
+
+.progress_time {
+  font-size: 55rpx;
+  border-radius: 50px;
+  text-align: center;
+  color: #fc9153;
+}
+
+.bottom_class {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom_button_class {
+  line-height: 80rpx;
+  font-size: 28rpx;
+  padding: 10rpx;
+}
+
+/*mask*/
+
+.drawer_screen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+/*content*/
+
+.drawer_box {
+  width: 650rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 1001;
+  background: #fafafa;
+  margin: -150px 50rpx 0 50rpx;
+  border-radius: 3px;
+}
+
+.drawer_title {
+  padding: 15px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+}
+
+.drawer_content {
+  height: 210px;
+  /* overflow-y: scroll; 超出父盒子高度可滚动 */
+}
+.btn_class{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+}
+.btn_ok {
+  width: 50%;
+  padding: 10px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+  border-top: 1rpx solid #e8e8ea;
+  border-right: 1rpx solid #e8e8ea;
+  color: #3cc51f;
+}
+.car_type_radio_group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10rpx;
+}
+
+.car_type_radio {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center
+}
+
+.car_type_select{
+  height: 30rpx;
+  width: 30rpx;
+}
+.map_location{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  bottom: 45rpx;
+  right: 30rpx;
+}
+.start_location{
+  width: 80rpx;
+  height: 90rpx;
+  position: absolute;
+  top: 44%;
+  left: 45%;
+}
+.car_type_image{
+  height: 30rpx;
+  width: 30rpx;
+  margin-left: 40rpx;
+}
