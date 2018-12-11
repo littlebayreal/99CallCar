@@ -1,5 +1,11 @@
 <!--pages/myschedule/myschedule.wxml-->
-<view class='body'>
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    我的订单
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
   <view class='toggle_button_class'>
     <text class='toggle_button_text'>已完成订单</text>
     <!--<view class="segmentedControl">-->

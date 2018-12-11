@@ -106,6 +106,12 @@ Page({
       delta: 1
     })
   },
+  navBack:function(){
+    // 返回上一个页面（这个API不允许跟参数）
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   inputChangeListener: function(e) {
     qqmapsdk.getSuggestion({
       region: "苏州",
@@ -147,8 +153,12 @@ Page({
    */
   onLoad: function(options) {
     that = this;
+    console.log("屏幕高度:" + getApp().globalData.windowHeight);
+    console.log("标题高度:" + getApp().globalData.navHeight);
     //默认读取原始数据
     that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       addressList: that.data.storageList
     })
     wx.getStorage({

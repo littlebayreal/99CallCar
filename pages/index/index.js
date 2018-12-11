@@ -46,6 +46,11 @@ Page({
   },
   onLoad: function() {
     that = this;
+    that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight - 45,
+      mapHeight: (getApp().globalData.windowHeight - getApp().globalData.navHeight - 45) * 0.6
+    })
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
       key: getApp().globalData.key

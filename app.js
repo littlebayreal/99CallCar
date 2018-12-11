@@ -7,6 +7,16 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    // 获取手机系统信息
+    wx.getSystemInfo({
+      success: res => {
+        //导航高度
+        this.globalData.navHeight = res.statusBarHeight + 46;
+        this.globalData.windowHeight = res.windowHeight;
+      }, fail(err) {
+        console.log(err);
+      }
+    }),
     // 登录
     wx.login({
       success: res => {

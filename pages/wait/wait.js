@@ -2,7 +2,6 @@
 var that;
 const PLACE_ORDER = 'place_order';
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -42,6 +41,8 @@ Page({
     var originbean = JSON.parse(options.originJson);
     var destinctionbean = JSON.parse(options.destinctionJson);
     that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       origin: originbean,
       destinction: destinctionbean,
       address: originbean.addressName

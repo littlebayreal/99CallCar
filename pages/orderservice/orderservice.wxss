@@ -1,4 +1,4 @@
-/* pages/waitDriver/waitDriver.wxss */
+/* pages/orderservice/orderservice.wxss */
 .container_wait_driver{
   height: 100vh;
   display: flex;
@@ -57,7 +57,7 @@
 }
 .map_class {
   position: relative;
-  height: 60vh;
+  height: 80vh;
   width: 100%;
 }
 .map_location{

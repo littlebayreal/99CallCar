@@ -14,13 +14,19 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    console.log(getApp().globalData.userInfo)
     that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       headerImg: getApp().globalData.userInfo.avatarUrl,
       userName:getApp().globalData.userInfo.nickName
     })
   },
-
+  navBack: function () {
+    // 返回上一个页面（这个API不允许跟参数）
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -12,7 +12,8 @@ Page({
   data: {
     scale: 16,
     demo_index: 0,
-    isDriverLocRecycle:true
+    isDriverLocRecycle: true,
+    isRecycle: true
   },
 
   /**
@@ -20,6 +21,10 @@ Page({
    */
   onLoad: function(options) {
     that = this;
+    that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight
+    })
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
       key: getApp().globalData.key
@@ -38,7 +43,7 @@ Page({
     // var destinction = JSON.parse(options.destinctionJson);
     wx.getStorage({
       key: 'order_info',
-      success: function (res) {
+      success: function(res) {
         that.setData({
           orderInfo: res.data,
           markers: [{
@@ -57,13 +62,22 @@ Page({
             height: 30
           }],
         });
-        setTimeout(that.requestDriverLocation,5000);
+        setTimeout(that.requestDriverLocation, 5000);
+        setTimeout(that.request, 5000);
       },
     })
   },
   //请求订单的状态以及司机的位置并显示
   request: function() {
     if (that.data.isRecycle) {
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderInfo.orderNumber
+        }],
+        "datatype": "wxUserOrderStatus",
+        "op": "getdata"
+      }
       getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
       //两秒更新一次订单信息
       setTimeout(that.request, 2000);
@@ -89,6 +103,10 @@ Page({
     switch (requestCode) {
       case REQUEST_ORDER:
         //订单状态到接单成功了
+        console.log("查询订单状态:" + res);
+        wx.redirectTo({
+          url: '../orderservice/orderservice',
+        })
         break;
       case REQUEST_DRIVER_LOCATION:
         var demo_location = [{
@@ -166,7 +184,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    
+
   },
 
   /**
@@ -180,7 +198,10 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    that.setData({
+      isDriverLocRecycle: false,
+      isRecycle: false
+    })
   },
 
   /**

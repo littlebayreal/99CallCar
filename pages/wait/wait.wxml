@@ -1,5 +1,11 @@
 <!--pages/wait/wait.wxml-->
-<view class='body'>
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    等待应答
+    <!-- <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image> -->
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
   <view class='title_class'>
     <image class='bell_image_class' src='../../image/bell.png'></image>
     <view class='title_view_class'>您上车的地点为

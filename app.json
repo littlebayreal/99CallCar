@@ -8,12 +8,10 @@
     "pages/myschedule/myschedule",
     "pages/selectdestination/selectdestination",
     "pages/wait/wait",
-    "pages/waitDriver/waitDriver"
+    "pages/waitDriver/waitDriver",
+    "pages/orderservice/orderservice"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "99约车",
-    "navigationBarTextStyle": "black"
+    "navigationStyle": "custom"
   }
 }

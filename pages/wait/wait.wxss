@@ -92,6 +92,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  bottom: 0rpx;
+  background: #fff
 }
 
 .bottom_button_class {

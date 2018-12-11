@@ -89,11 +89,18 @@ Page({
       item.state = getApp().getOrderStatusString(item.state);
     };
     this.setData({
-      myscheduleData:items
+      myscheduleData:items,
+      navH: getApp().globalData.navHeight,      
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     })
     this.clazzStatus();
   },
-
+  navBack: function () {
+    // 返回上一个页面（这个API不允许跟参数）
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

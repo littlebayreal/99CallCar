@@ -1,5 +1,11 @@
 <!--index.wxml-->
-<view class="index_container">
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    99约车
+    <!-- <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image> -->
+  </view>
+</view>
+<view class="index_container" style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
   <!-- <view class='title_class'>
     <view class='title_me'>
       <navigator url="../personcenter/personcenter">
@@ -13,7 +19,8 @@
       </block>
     </scroll-view> -->
   <!-- </view> -->
-  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location>
+
+  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location  style='height:{{mapHeight}}px'>
     <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
@@ -52,25 +59,25 @@
       <view wx:if='{{!isLoading}}' class='cost_class'>预计行程花费约{{cost}}元</view>
     </view>
   </view>
-  <view class='bottom_class'>
-    <view class='bottom_toggle'>
-      <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
-      <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
-    </view>
-    <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
-  </view>
-  <!--mask-->
-  <cover-view class="drawer_screen" wx:if="{{showModalStatus}}"></cover-view>
-  <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
-    <cover-view class="drawer_title">请选择车辆类型</cover-view>
-    <cover-view class='car_type_radio_group'>
-      <block wx:for="{{carTypeList}}">
-        <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
-          <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
-          <cover-view>{{item.value}}</cover-view>
-        </cover-view>
-      </block>
-    </cover-view>
-    <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
-  </cover-view>
 </view>
+<view class='bottom_class'>
+  <view class='bottom_toggle'>
+    <view id="nowBtn" class="{{isNow == 0?'bottom_active':'bottom_dis'}}" bindtap="toggleListener">现在</view>
+    <view id="orderBtn" class="{{isNow == 1?'bottom_active':'bottom_dis'}}" bindtap='toggleListener'>预约</view>
+  </view>
+  <button class='bottom_button' bindtap='callCarClickListener'>呼叫{{titleData[currentTab]}}</button>
+</view>
+<!--mask-->
+<cover-view class="drawer_screen" wx:if="{{showModalStatus}}"></cover-view>
+<cover-view class="drawer_box" wx:if="{{showModalStatus}}">
+  <cover-view class="drawer_title">请选择车辆类型</cover-view>
+  <cover-view class='car_type_radio_group'>
+    <block wx:for="{{carTypeList}}">
+      <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
+        <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
+        <cover-view>{{item.value}}</cover-view>
+      </cover-view>
+    </block>
+  </cover-view>
+  <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
+</cover-view>

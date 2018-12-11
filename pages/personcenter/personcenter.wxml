@@ -1,5 +1,11 @@
 <!--pages/personcenter/personcenter.wxml-->
-<view class='body'>
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    个人中心
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
   <view class='header'>
     <image src="{{headerImg}}" class='header_img_class'></image>
     <text class='header_nickName'>{{userName}}</text>
