@@ -2,6 +2,8 @@
 var that;
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var qqmapsdk;
+const REQUEST_ORDER = 'request_order';
+const REQUEST_DRIVER_LOCATION = 'request_driver_location'
 Page({
 
   /**
@@ -19,6 +21,7 @@ Page({
     that = this;
     that.setData({
       navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     });
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
@@ -60,14 +63,29 @@ Page({
           ],
         });
         setTimeout(that.updateLocation, 0);
-        // setTimeout(that.request, 5000);
+        setTimeout(that.request, 0);
       },
     })
   },
-  //更新位置
+  //请求订单的状态以及司机的位置并显示
+  request: function () {
+    if (that.data.isRecycle) {
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderInfo.orderNumber
+        }],
+        "datatype": "wxUserOrderStatus",
+        "op": "getdata"
+      }
+      getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+      //两秒更新一次订单信息
+      setTimeout(that.request, 2000);
+    }
+  },
+  //更新位置 根据手机定位非常不精准  看项目需要是否后面改成查询司机的位置？
   updateLocation: function () {
     if (that.data.isRecycle) {
-      console.log("走一波");
       wx.getLocation({
         type: "gcj02",
         success: function (res) {
@@ -107,6 +125,28 @@ Page({
       //三秒更新一次司机的位置信息
       setTimeout(that.updateLocation, 3000);
     }
+  },
+  onSuccess: function (res, requestCode) {
+    switch (requestCode) {
+      case REQUEST_ORDER:
+        //到达目的地 跳转支付界面
+        console.log("查询订单状态:" + res);
+        wx.redirectTo({
+          url: '../pay/pay',
+        })
+        that.setData({
+          isRecycle:false
+        })
+        break;
+      case REQUEST_DRIVER_LOCATION:
+        break;
+    }
+  },
+  onErrorBefore: function (statusCode, errorMessage, requestCode) {
+    console.log("错误处理");
+  },
+  onComplete: function (res) {
+
   },
   movetoPosition: function() {
     this.mapCtx.moveToLocation();

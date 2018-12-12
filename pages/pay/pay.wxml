@@ -1,0 +1,34 @@
+<!--pages/pay/pay.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    支付
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+  <view class='title_class'>
+    <text class='title_show_class'>请您确认并支付车费</text>
+    <text></text>
+  </view>
+  <view class='content_bill_output'></view>
+  <view class='content_bill'>
+    <view class='content_bill_title'>车费详情</view>
+    <view class='content_bill_item'>
+      <text>起步价</text>
+      <text>0.0元</text>
+    </view>
+    <view class='content_bill_item'>
+      <text>里程(7.2公里)</text>
+      <text>0.0元</text>
+    </view>
+    <view class='content_bill_item'>
+      <text>时长费(15分钟)</text>
+      <text>0.0元</text>
+    </view>
+    <view class='content_bill_total'>
+      <text>车费合计</text>
+      <text><text class='content_total_text'>14.7</text>元</text>
+    </view>
+  </view>
+  <view class='bottom_pay_button'>确认支付{{}}元</view>
+</view>

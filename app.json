@@ -9,7 +9,8 @@
     "pages/selectdestination/selectdestination",
     "pages/wait/wait",
     "pages/waitDriver/waitDriver",
-    "pages/orderservice/orderservice"
+    "pages/orderservice/orderservice",
+    "pages/pay/pay"
   ],
   "window": {
     "navigationStyle": "custom"

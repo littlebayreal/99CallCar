@@ -85,7 +85,6 @@ Page({
   },
   requestDriverLocation: function() {
     if (that.data.isDriverLocRecycle) {
-      console.log("走一波");
       var body = {
         "data": [{
           "token": "979347F6010C4F8C42BDD0C3535A5735",
