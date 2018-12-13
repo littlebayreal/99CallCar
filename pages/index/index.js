@@ -426,15 +426,12 @@ Page({
     console.log(e);
     switch (e.currentTarget.id) {
       case "personal_center":
-        // wx.navigateTo({
-        //   url: '../personcenter/personcenter',
-        //   success: function(res) {},
-        //   fail: function(res) {},
-        //   complete: function(res) {},
-        // })
         wx.navigateTo({
-          url: '../pay/pay',
+          url: '../personcenter/personcenter',
         })
+        // wx.navigateTo({
+        //   url: '../pay/pay',
+        // })
         break;
       case "phone_call":
         wx.makePhoneCall({

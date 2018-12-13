@@ -1,4 +1,4 @@
-// pages/pay/pay.js
+// pages/evaluation/evaluation.js
 var that;
 Page({
 
@@ -6,9 +6,32 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    star: 0,
+    starMap: ['非常差',
+      '差',
+      '一般',
+      '好',
+      '非常好'],
   },
-
+  myStarChoose(e) {
+    console.log(e);
+    if(e.target.dataset.star == null)return;
+    let star = parseInt(e.target.dataset.star) || 0;
+    this.setData({
+      star: star,
+    });
+  },
+  toIndex:function(){
+    // 返回上一个页面（这个API不允许跟参数）
+    var pages = getCurrentPages();
+    wx.navigateBack({
+      delta: pages.length - 1
+    })
+  },
+  navBack: function () {
+    // 返回上一个页面（这个API不允许跟参数）
+    that.toIndex();
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -17,20 +40,10 @@ Page({
     that.setData({
       navH: getApp().globalData.navHeight,
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
-    });
-  },
-  navBack: function () {
-    // 返回上一个页面（这个API不允许跟参数）
-    var pages = getCurrentPages();
-    wx.navigateBack({
-      delta: pages.length - 1
+      
     })
   },
-  payClickListener(){
-    wx.navigateTo({
-      url: '../evaluation/evaluation',
-    })
-  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

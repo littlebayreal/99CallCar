@@ -10,7 +10,8 @@
     "pages/wait/wait",
     "pages/waitDriver/waitDriver",
     "pages/orderservice/orderservice",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/evaluation/evaluation"
   ],
   "window": {
     "navigationStyle": "custom"

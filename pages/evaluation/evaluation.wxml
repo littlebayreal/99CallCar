@@ -1,0 +1,49 @@
+<!--pages/evaluation/evaluation.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    评价
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+  <view class='card_container'>
+    <view class='title_class'>
+      <view>
+        <image class='title_image_class' src='../../image/demo_header.png'></image>
+      </view>
+      <view class='title_content_class'>
+        <view class='title_content_name_class'>
+          <text>李师傅</text>
+          <image class='title_name_image_class' src='../../image/star.png'></image>
+          <text class='title_content_number_class'>5 3454单</text>
+        </view>
+        <view class='title_content_carnum_class'>苏E999MD</view>
+        <view class='title_content_cartype_class'>黑色·日产轩逸</view>
+      </view>
+      <view>
+        <image class='title_right_class' src='../../image/call_phone.png'></image>
+      </view>
+    </view>
+    <view class='content_class'>
+      <text class='content_cost_class'>18.7元</text>
+      <view class='content_cost_detail'>
+        <text>查看明细 ></text>
+        <text>开具发票 ></text>
+      </view>
+    </view>
+    <view class='content_evaluation'>
+      <text>匿名评价司机</text>
+      <view class="evaluation_stars" bindtap="myStarChoose">
+        <block wx:for="{{starMap}}" wx:key="{{index}}">
+          <text wx:if="{{star>=index+1}}" class="stars_solid" data-star="{{index+1}}">★</text>
+          <text wx:if="{{star<index+1}}" class="stars_empty" data-star="{{index+1}}">☆</text>
+        </block>
+      </view>
+      <text class="evaluation_show">{{starMap[star-1]}}</text>
+    </view>
+  </view>
+</view>
+<view class='bottom_class'>
+  <view class="need_help">需要帮助</view>
+  <view class="end_trip" bindtap="toIndex">结束行程</view>
+</view>
