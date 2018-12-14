@@ -1,0 +1,33 @@
+<!--pages/orderDetail.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    订单行程轨迹
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+<map id="99CallCarMap" class="map_class" longitude='{{origin_lng}}' latitude='{{origin_lat}}' scale='{{scale}}' show-location markers='{{markers}}'>
+  <cover-view class='order_info_box'>
+    <cover-view>
+      <cover-image class='title_image_class' src='../../image/demo_header.png'></cover-image>
+    </cover-view>
+    <cover-view class='title_content_class'>
+      <cover-view class='title_content_name_class'>
+        <cover-view>李师傅</cover-view>
+        <cover-image class='title_name_image_class' src='../../image/star.png'></cover-image>
+        <cover-view class='title_content_number_class'>5 3454单</cover-view>
+      </cover-view>
+      <cover-view class='title_content_carnum_class'>苏E999MD</cover-view>
+      <cover-view class='title_content_cartype_class'>黑色·日产轩逸</cover-view>
+    </cover-view>
+    <cover-view>
+      <cover-image class='title_right_class' src='../../image/call_phone.png'></cover-image>
+    </cover-view>
+  </cover-view>
+  <!-- <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image> -->
+  <!-- <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image> -->
+  <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
+
+  <!-- <cover-image id='start_location' src='../../image/start.png' class="start_location"></cover-image> -->
+</map>
+</view>

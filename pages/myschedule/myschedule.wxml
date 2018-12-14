@@ -5,37 +5,29 @@
     <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
   </view>
 </view>
-<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
-  <view class='toggle_button_class'>
-    <text class='toggle_button_text'>已完成订单</text>
-    <!--<view class="segmentedControl">-->
-    <!-- 循环遍历 -->
-    <!-- <block wx:for="{{radioValues}}"> -->
-    <!-- <text data-index="{{index}}" bindtap="indexChanged" class="{{clazz[index]}}">{{item.value}}</text> -->
-    <!-- </block> -->
-    <!-- </view> -->
-  </view>
+<refresh-view id='refreshView' backgroundColor="#000" bind:onRefresh="onPullDownRefresh" bind:onPullState="_pullState" />
+<view class='body' style='height:{{bodyHeight}}px;padding-top:10px'bindtouchstart='handletouchstart' bindtouchmove='handletouchmove' bindtouchend='handletouchend' bindtouchcancel='handletouchcancel'>
   <!-- <block wx:if="{{!isNoData}}"> -->
   <view class='myschedule_class'>
-    <scroll-view scroll-y="true" class="scroll_class" style="height: 100%;">
+    <scroll-view scroll-y="true" class="scroll_class" style="height: 100%;" bindscrolltolower="listBottom" lower-threshold="10" bindscroll="scrollHandle">
       <block wx:for="{{myscheduleData}}">
         <view class='myschedule_item_class'>
           <view class='myschedule_item_title'>
-            <text>{{item.orderNumber}}</text>
+            <text style='font-size:32rpx;color:#d5d5d5'>订单号:{{item.orderNumber}}</text>
             <text class='myschedule_item_state_text'>{{item.state}}</text>
             <image class='myschedule_item_state_image' src='../../image/right_arrow.png'></image>
           </view>
           <view class='myschedule_item_content'>
             <image class='circle_time' src='../../image/time.png'></image>
-            <text style="margin-left:10rpx">{{item.orderTime}}</text>
+            <text style="margin-left:10rpx;font-size:30rpx">{{item.orderTime}}</text>
           </view>
           <view class='myschedule_item_content'>
             <view class='circle_str'></view>
-            <text style="margin-left:10rpx">{{item.dep}}</text>
+            <text style="margin-left:10rpx;font-size:30rpx">{{item.dep}}</text>
           </view>
           <view class='myschedule_item_content'>
             <view class='circle_end'></view>
-            <text style="margin-left:10rpx">{{item.des}}</text>
+            <text style="margin-left:10rpx;font-size:30rpx">{{item.des}}</text>
           </view>
         </view>
       </block>

@@ -1,4 +1,6 @@
 // pages/myschedule/myschedule.js
+var that;
+const QUERY_SCHEDULE = 'query_schedule';
 Page({
 
   /**
@@ -15,87 +17,25 @@ Page({
         'selected': false
       }
     ],
-    myscheduleData: [{
-        "orderNumber": "XXXXXX",
-        "orderTime": "2016-10-3 8:00",
-        "depTime": "2016-10-3 8:10",
-        "desTime": "2017-10-3 8:52",
-        "orderSource": "3",
-        "dep": "苏州站",
-        "des": "南大研究生院-公交站",
-        "receivableMoney": "11.5",
-        "actualMoney": "11.5",
-        "state": 9,
-      },
-      {
-        "orderNumber": "XXXXXX",
-        "orderTime": "2016-10-3 8:00",
-        "depTime": "2016-10-3 8:10",
-        "desTime": "2017-10-3 8:52",
-        "orderSource": "3",
-        "dep": "苏州站",
-        "des": "南大研究生院-公交站",
-        "receivableMoney": "11.5",
-        "actualMoney": "11.5",
-        "state": 9
-      },
-      {
-        "orderNumber": "XXXXXX",
-        "orderTime": "2016-10-3 8:00",
-        "depTime": "2016-10-3 8:10",
-        "desTime": "2017-10-3 8:52",
-        "orderSource": "3",
-        "dep": "苏州站",
-        "des": "南大研究生院-公交站",
-        "receivableMoney": "11.5",
-        "actualMoney": "11.5",
-        "state": 9
-      },
-      {
-        "orderNumber": "XXXXXX",
-        "orderTime": "2016-10-3 8:00",
-        "depTime": "2016-10-3 8:10",
-        "desTime": "2017-10-3 8:52",
-        "orderSource": "3",
-        "dep": "苏州站",
-        "des": "南大研究生院-公交站",
-        "receivableMoney": "11.5",
-        "actualMoney": "11.5",
-        "state": 9
-      },
-      {
-        "orderNumber": "XXXXXX",
-        "orderTime": "2016-10-3 8:00",
-        "depTime": "2016-10-3 8:10",
-        "desTime": "2017-10-3 8:52",
-        "orderSource": "3",
-        "dep": "苏州站",
-        "des": "南大研究生院-公交站",
-        "receivableMoney": "11.5",
-        "actualMoney": "11.5",
-        "state": 9
-      },
-      
-    ]
+    myscheduleData:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var items = this.data.myscheduleData;
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      item.state = getApp().getOrderStatusString(item.state);
-    };
+    that = this;
+    // 刷新组件
+    this.refreshView = this.selectComponent("#refreshView");
+    
     this.setData({
-      myscheduleData:items,
-      navH: getApp().globalData.navHeight,      
+      navH: getApp().globalData.navHeight,
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     })
-    this.clazzStatus();
+    // this.clazzStatus();
+    that.request();
   },
-  navBack: function () {
+  navBack: function() {
     // 返回上一个页面（这个API不允许跟参数）
     wx.navigateBack({
       delta: 1
@@ -112,7 +52,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    this.refreshView.setData({
+      topDistance: getApp().globalData.navHeight
+    })
   },
 
   /**
@@ -149,47 +91,124 @@ Page({
   onShareAppMessage: function() {
 
   },
-  indexChanged: function(e) {
-    // 点中的是组中第个元素 
-    var index = e.target.dataset.index;
-    // 读取原始的数组 
-    var radioValues = this.data.radioValues;
-    for (var i = 0; i < radioValues.length; i++) {
-      // 全部改为非选中 
-      radioValues[i].selected = false;
-      // 当前那个改为选中 
-      radioValues[index].selected = true;
+  // indexChanged: function(e) {
+  //   // 点中的是组中第个元素 
+  //   var index = e.target.dataset.index;
+  //   // 读取原始的数组 
+  //   var radioValues = this.data.radioValues;
+  //   for (var i = 0; i < radioValues.length; i++) {
+  //     // 全部改为非选中 
+  //     radioValues[i].selected = false;
+  //     // 当前那个改为选中 
+  //     radioValues[index].selected = true;
+  //   }
+  //   // 写回数据 
+  //   this.setData({
+  //     radioValues: radioValues
+  //   });
+  //   // clazz状态 
+  //   this.clazzStatus();
+  // },
+  // clazzStatus: function() {
+  //   /* 此方法分别被加载时调用，点击某段时调用 */ // class样式表如"selected last","selected" 
+  //   var clazz = [];
+  //   // 参照数据源
+  //   var radioValues = this.data.radioValues;
+  //   for (var i = 0; i < radioValues.length; i++) {
+  //     // 默认为空串，即普通按钮 
+  //     var cls = '';
+  //     // 高亮，追回selected 
+  //     if (radioValues[i].selected) {
+  //       cls += 'selected ';
+  //     }
+  //     // 最后个元素, 追加last 去掉右侧的竖线
+  //     if (i == radioValues.length - 1) {
+  //       cls += 'last ';
+  //     }
+  //     //去掉尾部空格 
+  //     cls = cls.replace(/(\s*$)/g, '');
+  //     clazz[i] = cls;
+  //   }
+  //   // 写回数据 
+  //   this.setData({
+  //     clazz: clazz
+  //   });
+  // },
+  request: function() {
+    var body = {
+      "data": [{
+        "token": "50A675725D2006141DC7C3BB4C673A64",
+        "userType": 0,
+        "page": 0,
+        "pageSize": 10
+      }],
+      "datatype": "travelQuery",
+      "op": "transformdata"
     }
-    // 写回数据 
-    this.setData({
-      radioValues: radioValues
-    });
-    // clazz状态 
-    this.clazzStatus();
+    getApp().webCall(null, body, QUERY_SCHEDULE, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
-  clazzStatus: function() {
-    /* 此方法分别被加载时调用，点击某段时调用 */ // class样式表如"selected last","selected" 
-    var clazz = [];
-    // 参照数据源
-    var radioValues = this.data.radioValues;
-    for (var i = 0; i < radioValues.length; i++) {
-      // 默认为空串，即普通按钮 
-      var cls = '';
-      // 高亮，追回selected 
-      if (radioValues[i].selected) {
-        cls += 'selected ';
-      }
-      // 最后个元素, 追加last 去掉右侧的竖线
-      if (i == radioValues.length - 1) {
-        cls += 'last ';
-      }
-      //去掉尾部空格 
-      cls = cls.replace(/(\s*$)/g, '');
-      clazz[i] = cls;
+  onSuccess:function(res){
+    var items = res.data;
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      item.state = getApp().getOrderStatusString(item.state);
+    };
+    that.setData({
+      myscheduleData:res.data
+    })
+    wx.showToast({
+      title: '刷新成功',
+    })
+  },
+  onErrorBefore:function(e){
+
+  },
+  onComplete:function(){
+    that.refreshView.stopPullRefresh();
+  },
+  listBottom: function(event) {
+    if (this.data.isUpScroll) {
+      wx.showToast({
+        title: '加载更多',
+      })
     }
-    // 写回数据 
-    this.setData({
-      clazz: clazz
-    });
+  },
+  //解决往上回滚也会出发触底事件的bug
+  scrollHandle: function(event) {
+    if (event.detail.deltaY > 0) {
+      this.setData({
+        isUpScroll: false
+      })
+    } else {
+      this.setData({
+        isUpScroll: true
+      })
+    }
+  },
+  //触摸开始
+  handletouchstart: function(event) {
+    this.refreshView.handletouchstart(event)
+  },
+  //触摸移动
+  handletouchmove: function(event) {
+    this.refreshView.handletouchmove(event)
+  },
+  //触摸结束
+  handletouchend: function(event) {
+    this.refreshView.handletouchend(event)
+  },
+  //触摸取消
+  handletouchcancel: function(event) {
+    this.refreshView.handletouchcancel(event)
+  },
+  //页面滚动
+  onPageScroll: function(event) {
+    this.refreshView.onPageScroll(event)
+  },
+  onPullDownRefresh: function() {
+    // setTimeout(() => {
+    //   this.refreshView.stopPullRefresh()
+    // }, 2000)
+    that.request();
   }
 })
