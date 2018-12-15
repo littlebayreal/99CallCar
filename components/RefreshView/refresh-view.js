@@ -21,7 +21,11 @@ Component({
     textColor: {
       type: String,
       value: "white"
+<<<<<<< HEAD
     }
+=======
+    },
+>>>>>>> ab6a55e5be4a6719f942a0b92bbec9c330c59962
   },
 
   /**

@@ -5,6 +5,7 @@ var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var qqmapsdk;
 var that;
 const QUERY_BANNER = 'query_banner';
+const QUERY_LOGIN = 'query_login';
 Page({
   data: {
     titleData: ['出租车', '网约车', '电话招车'],
@@ -67,6 +68,7 @@ Page({
     })
     //手动载入一遍 否则第一次点击出来是空白
     that.orderTimeListener();
+    // that.requestLogin();
   },
   onReady: function() {
     this.mapCtx = wx.createMapContext("99CallCarMap"); // 地图组件的id
@@ -426,12 +428,12 @@ Page({
     console.log(e);
     switch (e.currentTarget.id) {
       case "personal_center":
-        wx.navigateTo({
-          url: '../personcenter/personcenter',
-        })
         // wx.navigateTo({
-        //   url: '../pay/pay',
+        //   url: '../personcenter/personcenter',
         // })
+        wx.navigateTo({
+          url: '../orderDetail/orderDetail',
+        })
         break;
       case "phone_call":
         wx.makePhoneCall({
@@ -489,5 +491,24 @@ Page({
       url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
       // url: '../waitDriver/waitDriver?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
     })
-  }
+  },
+  // requestLogin:function(){
+  //   var body = {
+  //     "data": [
+  //       {
+  //         "phone": "18389808063",
+  //         "password": "12345678",
+  //         "clientVersion": "1.0.0",
+  //         "clientOS": "mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko) version/9.0 mobile/13b143 safari/601.1"
+  //       }
+  //     ],
+  //     "datatype": "passengerLogin",
+  //     "op": "getdata"
+  //   }
+  //   that.setData({
+  //     showCost: true,
+  //     isLoading: true
+  //   });
+  //   app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  // }
 })

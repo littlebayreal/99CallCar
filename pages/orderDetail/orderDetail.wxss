@@ -1,0 +1,71 @@
+/* pages/orderDetail.wxss */
+.map_class {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+.map_location{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  bottom: 45rpx;
+  right: 30rpx;
+}
+.order_info_box{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  padding: 30rpx 10rpx;
+  border: 1rpx solid #d5d5d5;
+  position: absolute;
+  top: 0rpx;
+  left: 5%;
+  background: #fff;
+}
+.title_image_class {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.title_content_class {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title_content_name_class {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.title_name_image_class {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 20rpx;
+}
+
+.title_content_carnum_class {
+  font-size: 28rpx;
+  background: #707070;
+  width: 200rpx;
+  margin: 10rpx 0rpx;
+}
+.title_content_cartype_class{
+  text-align: left;
+  font-size: 28rpx;
+  color: #d5d5d5;
+   margin: 10rpx 0rpx;
+}
+.title_right_class{
+  width: 80rpx;
+  height: 80rpx;
+}
+.title_content_number_class{
+  font-size: 24rpx;
+}
