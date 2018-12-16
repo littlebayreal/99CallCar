@@ -13,12 +13,12 @@
       </view>
       <view class='title_content_class'>
         <view class='title_content_name_class'>
-          <text>李师傅</text>
+          <text>{{name}}</text>
           <image class='title_name_image_class' src='../../image/star.png'></image>
-          <text class='title_content_number_class'>5 3454单</text>
+          <text class='title_content_number_class'>{{star}} {{orderNum}}单</text>
         </view>
-        <view class='title_content_carnum_class'>苏E999MD</view>
-        <view class='title_content_cartype_class'>黑色·日产轩逸</view>
+        <view class='title_content_carnum_class'>{{carNum}}</view>
+        <view class='title_content_cartype_class'>{{carType}}</view>
       </view>
       <view>
         <image class='title_right_class' src='../../image/call_phone.png'></image>
@@ -42,8 +42,10 @@
       <text class="evaluation_show">{{starMap[star-1]}}</text>
     </view>
   </view>
+  <button wx:if='{{!isAlreadyEval}}' class='evaluation_button_class'>提交评价</button>
 </view>
+
 <view class='bottom_class'>
   <view class="need_help">需要帮助</view>
-  <view class="end_trip" bindtap="toIndex">结束行程</view>
+  <view class="end_trip" bindtap="toIndex">{{bottomRightButton}}</view>
 </view>

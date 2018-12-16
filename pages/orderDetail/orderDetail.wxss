@@ -21,7 +21,7 @@
   border: 1rpx solid #d5d5d5;
   position: absolute;
   top: 0rpx;
-  left: 5%;
+  left: 4%;
   background: #fff;
 }
 .title_image_class {

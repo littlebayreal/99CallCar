@@ -28,7 +28,7 @@ Page({
   },
   payClickListener(){
     wx.navigateTo({
-      url: '../evaluation/evaluation',
+      url: '../evaluation/evaluation?type=0',
     })
   },
   /**

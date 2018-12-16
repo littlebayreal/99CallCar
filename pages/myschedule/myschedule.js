@@ -19,7 +19,6 @@ Page({
     ],
     myscheduleData:null
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -184,6 +183,12 @@ Page({
         isUpScroll: true
       })
     }
+  },
+  onItemClick:function(e){
+    var scheduleJson = JSON.stringify(e.currentTarget.dataset.item);
+    wx.navigateTo({
+      url: '../evaluation/evaluation?scheduleJson='+ scheduleJson +'&type=1',
+    })
   },
   //触摸开始
   handletouchstart: function(event) {

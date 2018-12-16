@@ -2,13 +2,14 @@
 var that;
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var qqmapsdk;
+const REQUEST_TRAIL='request_trail'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    scale: 16,
   },
 
   /**
@@ -24,8 +25,45 @@ Page({
     qqmapsdk = new QQMapWX({
       key: getApp().globalData.key
     });
+    wx.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        console.log(res)
+        that.setData({
+          origin_lng: res.longitude,
+          origin_lat: res.latitude
+        })
+      },
+    });
   },
+  navBack: function () {
+    // 返回上一个页面（这个API不允许跟参数）
+      wx.navigateBack({
+        delta: 1
+      })
+  },
+  request: function () {
+    var body = {
+      "data": [
+        {
+          "token": "50A675725D2006141DC7C3BB4C673A64",
+          "orderNumber": "XXXXXXXXXX"
+        }
+      ],
+      "datatype": "queryTrack",
+      "op": "getdata"
+    }
+    getApp().webCall(null, body, REQUEST_TRAIL, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
+  onSuccess: function (res) {
+    
+  },
+  onErrorBefore: function (e) {
 
+  },
+  onComplete: function () {
+    that.refreshView.stopPullRefresh();
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

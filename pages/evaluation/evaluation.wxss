@@ -55,7 +55,9 @@
   width: 200rpx;
   margin: 10rpx 0;
 }
-
+.title_content_number_class{
+  font-size: 24rpx;
+}
 .title_content_cartype_class {
   text-align: left;
   font-size: 28rpx;
@@ -155,4 +157,9 @@
   text-align: center;
   height: 80rpx;
   line-height: 80rpx;
+}
+.evaluation_button_class{
+  width: 90%;
+  background: #fc975c;
+  margin-top: 30rpx;
 }

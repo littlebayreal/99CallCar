@@ -1,9 +1,5 @@
 <!--components/RefreshLayout/refresh-layout.wxml-->
-<<<<<<< HEAD
-<view style='height:{{dynamicHeight}}rpx;background-color:{{backgroundColor}}' class="refresh-container">
-=======
 <view style='height:{{dynamicHeight}}rpx;background-color:{{backgroundColor}};margin-top:{{topDistance}}px' class="refresh-container">
->>>>>>> ab6a55e5be4a6719f942a0b92bbec9c330c59962
   <view class='refresh-layout' style='line-height:{{refreshHeight}}rpx;height:{{refreshHeight}}rpx;'>
     <view class="refresh-loading" hidden="{{0!=pullState}}"></view>
     <text class="refresh-tips">{{pullState==1?'下拉刷新...':pullState==0?'正在刷新...':'松开刷新...'}}</text>
