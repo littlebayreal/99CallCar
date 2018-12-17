@@ -17,8 +17,17 @@ Page({
    */
   onLoad: function (options) {
     that = this;
+    that.setData({
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight - 45,
+      mapHeight: (getApp().globalData.windowHeight - getApp().globalData.navHeight - 45) * 0.6
+    })
   },
-
+  navBack:res =>{
+    wx.navigateBack({
+      delta:1
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -91,8 +91,14 @@ Page({
     }
     //更新原始数据  记录搜索记录
     var ads = that.data.storageList;
+    var isUpdate = true;
+    for (var i in ads) {
+      if (e.currentTarget.dataset.item.addressName == ads[i].addressName) {
+        isUpdate = false;
+      }
+    }
+    if(isUpdate)
     var newLength = ads.unshift(e.currentTarget.dataset.item);
-    console.log(newLength);
     // for (var i = 0; i < ads.length; i++) {
     //   console.log(ads[i].addressName);
     // }
@@ -106,7 +112,7 @@ Page({
       delta: 1
     })
   },
-  navBack:function(){
+  navBack: function() {
     // 返回上一个页面（这个API不允许跟参数）
     wx.navigateBack({
       delta: 1
@@ -122,7 +128,7 @@ Page({
         var al = [];
         var datas = res.data;
         for (var i = 0; i < 10; i++) {
-          var pcd={
+          var pcd = {
             province: datas[i].province,
             city: datas[i].city,
             district: datas[i].district
@@ -130,7 +136,7 @@ Page({
           var data = {
             addressName: datas[i].title,
             addressInfo: datas[i].address,
-            addressLocation:datas[i].location,
+            addressLocation: datas[i].location,
             provinceCityDistrict: pcd
           }
           al.push(data);

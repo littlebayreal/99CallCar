@@ -17,7 +17,8 @@ Page({
         'selected': false
       }
     ],
-    myscheduleData:null
+    myscheduleData: [],
+    currentPage: 0
   },
   /**
    * 生命周期函数--监听页面加载
@@ -26,13 +27,13 @@ Page({
     that = this;
     // 刷新组件
     this.refreshView = this.selectComponent("#refreshView");
-    
+
     this.setData({
       navH: getApp().globalData.navHeight,
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     })
     // this.clazzStatus();
-    that.request();
+    that.request(0, 10);
   },
   navBack: function() {
     // 返回上一个页面（这个API不允许跟参数）
@@ -133,40 +134,50 @@ Page({
   //     clazz: clazz
   //   });
   // },
-  request: function() {
+  request: function(page, pageSize) {
     var body = {
       "data": [{
-        "token": "50A675725D2006141DC7C3BB4C673A64",
+        "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
         "userType": 0,
-        "page": 0,
-        "pageSize": 10
+        "page": page,
+        "pageSize": pageSize
       }],
       "datatype": "travelQuery",
       "op": "transformdata"
     }
     getApp().webCall(null, body, QUERY_SCHEDULE, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
-  onSuccess:function(res){
+  onSuccess: function(res) {
     var items = res.data;
+    for (var i in items) {
+      that.data.myscheduleData.push(items[i]);
+    }
+    console.log("数组长度：" + that.data.myscheduleData)
+    items = that.data.myscheduleData;
+    console.log(items.length)
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
       item.state = getApp().getOrderStatusString(item.state);
     };
     that.setData({
-      myscheduleData:res.data
+      myscheduleData: items
     })
     wx.showToast({
       title: '刷新成功',
     })
   },
-  onErrorBefore:function(e){
+  onErrorBefore: function(e) {
 
   },
-  onComplete:function(){
+  onComplete: function() {
     that.refreshView.stopPullRefresh();
   },
   listBottom: function(event) {
     if (this.data.isUpScroll) {
+      that.setData({
+        currentPage: that.data.currentPage++
+      })
+      that.request(that.data.currentPage, 10);
       wx.showToast({
         title: '加载更多',
       })
@@ -184,10 +195,10 @@ Page({
       })
     }
   },
-  onItemClick:function(e){
+  onItemClick: function(e) {
     var scheduleJson = JSON.stringify(e.currentTarget.dataset.item);
     wx.navigateTo({
-      url: '../evaluation/evaluation?scheduleJson='+ scheduleJson +'&type=1',
+      url: '../evaluation/evaluation?scheduleJson=' + scheduleJson + '&type=1',
     })
   },
   //触摸开始
@@ -214,6 +225,9 @@ Page({
     // setTimeout(() => {
     //   this.refreshView.stopPullRefresh()
     // }, 2000)
-    that.request();
+    that.setData({
+      myscheduleData: []
+    })
+    that.request(0, 10);
   }
 })

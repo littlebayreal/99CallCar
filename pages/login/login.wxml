@@ -1,5 +1,11 @@
 <!--pages/login/login.wxml-->
-<view class='body'>
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    99约车
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
  <view class='login_title_class'>
  <text>绑定手机号</text>
  </view>

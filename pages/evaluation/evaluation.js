@@ -19,9 +19,14 @@ Page({
     //是否可以给司机评分
     isCanEval:true
   },
+  phoneCall:function(e){
+    wx.makePhoneCall({
+      phoneNumber: that.data.driverPhone,
+    })
+  },
   myStarChoose(e) {
     console.log(e);
-    if (e.target.dataset.star == null || that.data.isCanEval) return;
+    if (e.target.dataset.star == null || !that.data.isCanEval) return;
     let star = parseInt(e.target.dataset.star) || 0;
     this.setData({
       star: star,
@@ -67,11 +72,11 @@ Page({
       navH: getApp().globalData.navHeight,
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       schedulebean: schedulebean,
-      name:'周师傅',
-      star:5,
-      orderNum:'2w+',
-      carNum:'浙C1234',
-      carType:'farrari·438',
+      // name:'周师傅',
+      // star:5,
+      // orderNum:'2w+',
+      // carNum:'浙C1234',
+      // carType:'farrari·438',
       isAlreadyEval:false,
       bottomRightButton: options.type == FROM_PAY?'结束行程':'查看轨迹'
     });
@@ -80,7 +85,7 @@ Page({
   request: function() {
     var body = {
       "data": [{
-        "token": "50A675725D2006141DC7C3BB4C673A64",
+        "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
         "orderNumber": that.data.schedulebean.orderNumber
       }],
       "datatype": "pTraveldetailQuery",
@@ -89,7 +94,14 @@ Page({
     getApp().webCall(null, body, QUERY_ORDERINFO, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   onSuccess: function(res) {
-
+    that.setData({
+      name:res.data[0].driverName,
+      star:Math.round(res.data[0].driverGrade),
+      orderNum: res.data[0].orderCount,
+      carNum: res.data[0].licensePlate,
+      carType: res.data[0].vehicleBrand + '·' + res.data[0].vehicleModel,
+      driverPhone: res.data[0].driverPhone
+    })
   },
   onErrorBefore: function(e) {
 

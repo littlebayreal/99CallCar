@@ -21,7 +21,7 @@
         <view class='title_content_cartype_class'>{{carType}}</view>
       </view>
       <view>
-        <image class='title_right_class' src='../../image/call_phone.png'></image>
+        <image class='title_right_class' src='../../image/call_phone.png' bindtap='phoneCall'></image>
       </view>
     </view>
     <view class='content_class'>
