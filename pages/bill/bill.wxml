@@ -1,0 +1,22 @@
+<!--pages/bill/bill.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    账单详情
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+  <view class='car_type_class'>普通型</view>
+  <view class='date_class'>2018-12-15</view>
+  <view class='split_line'></view>
+  <block wx:for='{{list}}'>
+    <view class='content_container'>
+      <view>{{item.desc}}</view>
+      <view>{{item.count}}元</view>
+    </view>
+  </block>
+  <view class='split_line'></view>
+  <view class='cost_total_class'>支付金额
+    <text class='cost_total_text_class'>8.90</text>元</view>
+    <view class='check_bill_rule'>查看计价规则</view>
+</view>

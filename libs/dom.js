@@ -79,7 +79,7 @@ function DOMException(code, message) {
 	error.code = code;
 	if(message) this.message = this.message + ": " + message;
 	return error;
-};
+}
 DOMException.prototype = Error.prototype;
 copy(ExceptionCode,DOMException)
 /**

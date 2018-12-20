@@ -151,7 +151,13 @@
   height: 80rpx;
   line-height: 80rpx;
 }
-
+.input_evaluation_class{
+  width: 90%;
+  border: 1rpx solid #d5d5d5;
+  height: 200rpx;
+  font-size: 30rpx;
+  padding: 10rpx;
+}
 .end_trip {
   width: 49%;
   text-align: center;

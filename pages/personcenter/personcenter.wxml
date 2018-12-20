@@ -38,11 +38,13 @@
         <image class="right_arrow" src='../../image/right_arrow.png'></image>
       </view>
     </navigator>
+    <navigator url="../billingMethod/billingMethod">
     <view class="content_item">
       <image class="left_image" src='../../image/rule.png'></image>
       <text class='content_text'>计价规则</text>
       <image class="right_arrow" src='../../image/right_arrow.png'></image>
     </view>
+    </navigator>
   </view>
   <button class='bottom_button'>退出</button>
 </view>

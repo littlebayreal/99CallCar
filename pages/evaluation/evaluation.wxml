@@ -15,7 +15,7 @@
         <view class='title_content_name_class'>
           <text>{{name}}</text>
           <image class='title_name_image_class' src='../../image/star.png'></image>
-          <text class='title_content_number_class'>{{star}} {{orderNum}}单</text>
+          <text class='title_content_number_class'>{{driverStar}} {{orderNum}}单</text>
         </view>
         <view class='title_content_carnum_class'>{{carNum}}</view>
         <view class='title_content_cartype_class'>{{carType}}</view>
@@ -40,9 +40,10 @@
         </block>
       </view>
       <text class="evaluation_show">{{starMap[star-1]}}</text>
+      <textarea wx:if='{{isCanEval}}' id="input_evaluation" type="text" class="input_evaluation_class" value="{{evalContent}}" placeholder="请输入评价内容" placeholder-color="#ccccccc" focus="{{false}}" bindinput='inputListener'/>
     </view>
   </view>
-  <button wx:if='{{!isAlreadyEval}}' class='evaluation_button_class'>提交评价</button>
+  <button wx:if='{{isCanEval}}' class='evaluation_button_class' bindtap='submitClick'>提交评价</button>
 </view>
 
 <view class='bottom_class'>

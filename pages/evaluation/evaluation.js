@@ -1,6 +1,7 @@
 // pages/evaluation/evaluation.js
 var that;
 const QUERY_ORDERINFO = 'query_order_info';
+const SUBMIT_EVALUATION = 'submit_evaluation';
 const FROM_PAY = 0;
 const FROM_ORDER_DETAIL = 1;
 Page({
@@ -40,8 +41,9 @@ Page({
       delta: pages.length - 1
     })
     }else{
+      var scheduleJson = JSON.stringify(that.data.schedulebean);
       wx.navigateTo({
-        url: '../orderDetail/orderDetail',
+        url: '../orderDetail/orderDetail?scheduleJson=' + scheduleJson
       })
     }
   },
@@ -93,10 +95,36 @@ Page({
     }
     getApp().webCall(null, body, QUERY_ORDERINFO, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
+  submitEval: function () {
+    var body = {
+      "data": [
+        {
+          "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
+          "orderNumber": that.data.schedulebean.orderNumber,
+          "userType": 0,
+          "grade": that.data.star,
+          "content": that.data.evalContent
+        }
+      ],
+      "datatype": "evaluation",
+      "op": "setdata"
+    }
+    getApp().webCall(null, body, SUBMIT_EVALUATION, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
+  inputListener: function (e) {
+    that.setData({
+      evalContent: e.detail.value
+    });
+  },
+  submitClick:function(){
+    that.submitEval();
+  },
   onSuccess: function(res) {
     that.setData({
+      isCanEval: Math.round(res.data[0].orderGrade) == 0?true:false,
+      star: Math.round(res.data[0].orderGrade),
       name:res.data[0].driverName,
-      star:Math.round(res.data[0].driverGrade),
+      driverStar:Math.round(res.data[0].driverGrade),
       orderNum: res.data[0].orderCount,
       carNum: res.data[0].licensePlate,
       carType: res.data[0].vehicleBrand + '·' + res.data[0].vehicleModel,
@@ -155,5 +183,6 @@ Page({
    */
   onShareAppMessage: function() {
 
-  }
+  },
+  
 })

@@ -12,7 +12,9 @@
     "pages/orderservice/orderservice",
     "pages/pay/pay",
     "pages/evaluation/evaluation",
-    "pages/orderDetail/orderDetail"
+    "pages/orderDetail/orderDetail",
+    "pages/billingMethod/billingMethod",
+    "pages/bill/bill"
   ],
   "window": {
     "navigationStyle": "custom"

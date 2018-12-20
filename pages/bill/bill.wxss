@@ -1,0 +1,53 @@
+/* pages/bill/bill.wxss */
+
+.split_line {
+  height: 3rpx;
+  background: #d5d5d5;
+  width: 70%;
+}
+
+.content_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  height: 40rpx;
+  font-size: 32rpx;
+  color: #909090;
+  padding: 10rpx;
+}
+
+.car_type_class {
+  font-size: 42rpx;
+  color: #000;
+  padding: 10rpx;
+}
+
+.date_class {
+  font-size: 24rpx;
+  color: #d5d5d5;
+  padding: 10rpx;
+}
+
+.cost_total_class {
+  font-size: 36rpx;
+  color: #000;
+  padding: 20rpx 0 20rpx 20rpx;
+  align-self: flex-end;
+  margin-right: 15%;
+}
+
+.cost_total_text_class {
+  font-size: 56rpx;
+  color: #000;
+}
+.check_bill_rule{
+  border: 1rpx solid #d5d5d5;
+  border-radius: 20rpx;
+  width: 50%;
+  height: 80rpx;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 80rpx;
+  margin-top: 20rpx
+}

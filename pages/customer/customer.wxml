@@ -1,5 +1,11 @@
 <!--pages/customer/customer.wxml-->
-<view class='body'>
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    我的客服
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
   <view class='content'>
     <view class='content_item'>
       <text class='content_text'>客服电话</text>

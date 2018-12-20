@@ -1,0 +1,10 @@
+<!--pages/billingMethod/billingMethod.wxml-->
+<!-- <view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    计费方式
+    <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image>
+  </view>
+</view> -->
+<!-- <view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'> -->
+  <web-view src="https://99car.sanyadcyc.com/zifei.html"></web-view>
+<!-- </view> -->
