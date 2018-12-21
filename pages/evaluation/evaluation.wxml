@@ -27,7 +27,7 @@
     <view class='content_class'>
       <text class='content_cost_class'>18.7元</text>
       <view class='content_cost_detail'>
-        <text>查看明细 ></text>
+        <text bindtap='checkDetail'>查看明细 ></text>
         <text>开具发票 ></text>
       </view>
     </view>

@@ -47,6 +47,11 @@ Page({
       })
     }
   },
+  checkDetail:function(){
+     wx.navigateTo({
+       url: '../bill/bill',
+     })
+  },
   navBack: function() {
     // 返回上一个页面（这个API不允许跟参数）
     if(that.data.type == FROM_PAY)

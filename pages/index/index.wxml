@@ -42,7 +42,11 @@
     </view>
     <view class="bottom_start">
       <image class='car_type_image' src='../../image/car_type.png'></image>
-      <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer' data-statu="open" disabled='true' />
+      <input id="input_car_type" type="text" class="botom_input_class" value="{{carType}}" placeholder="请选择车辆类型" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer' data-statu="open" data-type='0' disabled='true' />
+    </view>
+    <view class="bottom_start">
+      <image class='car_type_image' src='../../image/passager.png'></image>
+      <input id="input_car_type" type="text" class="botom_input_class" value="{{passagerNum}}" placeholder="请选择乘坐人数" placeholder-color="#ccccccc" focus="{{false}}" bindtap='powerDrawer' data-statu="open" data-type='1' disabled='true' />
     </view>
     <view class='bottom_scan'>
       <image class='bottom_scan_img' src='../../image/scan.png'></image>
@@ -70,14 +74,14 @@
 <!--mask-->
 <cover-view class="drawer_screen" wx:if="{{showModalStatus}}"></cover-view>
 <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
-  <cover-view class="drawer_title">请选择车辆类型</cover-view>
+  <cover-view class="drawer_title">请选择{{sType==0?'车辆类型':'乘坐人数'}}</cover-view>
   <cover-view class='car_type_radio_group'>
-    <block wx:for="{{carTypeList}}">
+    <block wx:for="{{showList}}">
       <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
         <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image>
         <cover-view>{{item.value}}</cover-view>
       </cover-view>
     </block>
   </cover-view>
-  <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
+  <cover-view class="btn_ok" bindtap="powerDrawer" data-statu="close" data-type='{{sType}}'>确定</cover-view>
 </cover-view>

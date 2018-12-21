@@ -8,7 +8,23 @@ const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
 Page({
   data: {
-    titleData: ['出租车', '网约车', '电话招车'],
+    passagerList: [{
+        name: '1人',
+        value: '1人'
+      },
+      {
+        name: '2人',
+        value: '2人'
+      },
+      {
+        name: '3人',
+        value: '3人'
+      },
+      {
+        name: '4人',
+        value: '4人'
+      },
+    ],
     carTypeList: [{
         name: '出租车',
         value: '出租车'
@@ -303,7 +319,7 @@ Page({
   },
   //选择车型
   radioChange: function(e) {
-    var list = that.data.carTypeList;
+    var list = that.data.showList;
     for (var i = 0; i < list.length; i++) {
       if (i == e.currentTarget.dataset.pos) {
         list[i].checked = true;
@@ -312,8 +328,8 @@ Page({
       }
     }
     that.setData({
-      carTypeList: list,
-      carType: e.currentTarget.dataset.value
+      showList: list,
+      radioValue: e.currentTarget.dataset.value
     })
 
   },
@@ -361,8 +377,10 @@ Page({
   },
   powerDrawer: function(e) {
     console.log("类型状态:" + e.currentTarget.dataset.statu);
+    console.log("点选类型:"+e.currentTarget.dataset.type);
     var currentStatu = e.currentTarget.dataset.statu;
-    that.util(currentStatu);
+    var sType = e.currentTarget.dataset.type;
+    that.util(sType, currentStatu);
 
     if (currentStatu == 'open') return;
     //每次选中车型都计算一次预计行程花费
@@ -380,42 +398,62 @@ Page({
     }
     that.calcuteCost();
   },
-  util: function(currentStatu) {
-    /* 动画部分 */
-    // 第1步：创建动画实例 
-    var animation = wx.createAnimation({
-      duration: 200, //动画时长
-      timingFunction: "linear", //线性
-      delay: 0 //0则不延迟
-    });
-
-    // 第2步：这个动画实例赋给当前的动画实例
-    this.animation = animation;
-
-    // 第3步：执行第一组动画
-    animation.opacity(0).rotateX(-100).step();
-
-    // 第4步：导出动画对象赋给数据对象储存
-    this.setData({
-      animationData: animation.export()
-    })
-
-    // 第5步：设置定时器到指定时候后，执行第二组动画
-    setTimeout(function() {
-      // 执行第二组动画
-      animation.opacity(1).rotateX(0).step();
-      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
-      this.setData({
-        animationData: animation
+  util: function(sType, currentStatu) {
+    if (sType == 0) {
+      that.setData({
+        sType: 0,
+        showList: that.data.carTypeList
       })
+    } else {
+      that.setData({
+        sType: 1,
+        showList: that.data.passagerList
+      })
+    }
+    // /* 动画部分 */
+    // // 第1步：创建动画实例 
+    // var animation = wx.createAnimation({
+    //   duration: 200, //动画时长
+    //   timingFunction: "linear", //线性
+    //   delay: 0 //0则不延迟
+    // });
 
-      //关闭
-      if (currentStatu == "close") {
+    // // 第2步：这个动画实例赋给当前的动画实例
+    // this.animation = animation;
+
+    // // 第3步：执行第一组动画
+    // animation.opacity(0).rotateX(-100).step();
+
+    // // 第4步：导出动画对象赋给数据对象储存
+    // this.setData({
+    //   animationData: animation.export()
+    // })
+
+    // // 第5步：设置定时器到指定时候后，执行第二组动画
+    // setTimeout(function() {
+    //   // 执行第二组动画
+    //   animation.opacity(1).rotateX(0).step();
+    //   // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
+    //   this.setData({
+    //     animationData: animation
+    //   })
+
+    //关闭
+    if (currentStatu == "close") {
+      console.log("好奇怪:"+ that.data.sType);
+      if (that.data.sType == 0) {
         this.setData({
-          showModalStatus: false
+          showModalStatus: false,
+          carType: that.data.radioValue
+        });
+      }else{
+        this.setData({
+          showModalStatus: false,
+          passagerNum: that.data.radioValue
         });
       }
-    }.bind(this), 200)
+    }
+    // }.bind(this), 200)
 
     // 显示
     if (currentStatu == "open") {
@@ -428,12 +466,12 @@ Page({
     console.log(e);
     switch (e.currentTarget.id) {
       case "personal_center":
-        // wx.navigateTo({
-        //   url: '../personcenter/personcenter',
-        // })
         wx.navigateTo({
-          url: '../bill/bill',
+          url: '../personcenter/personcenter',
         })
+        // wx.navigateTo({
+        //   url: '../bill/bill',
+        // })
         break;
       case "phone_call":
         wx.makePhoneCall({
@@ -484,12 +522,22 @@ Page({
   movetoPosition: function() {
     that.mapCtx.moveToLocation();
   },
+  //叫车的方法
   callCarClickListener: function() {
     var originJson = JSON.stringify(that.data.origin);
     var destinctionJson = JSON.stringify(that.data.destination);
+    var params = {
+      passagerNumber: that.data.passagerNum,
+      price:that.data.cost,
+      callVehicleOpType:that.data.carType =='出租车'?1:0,
+      bookTime: that.data.isNow == 1 ? that.data.order_times:'',
+      driverCode:that.data.driverCode,
+      codetime:that.data.codetime,
+      ordermethod:that.data.isScan ? 1:0
+    };
+    var paramsJson = JSON.stringify(params);
     wx.navigateTo({
-      url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
-      // url: '../waitDriver/waitDriver?originJson=' + originJson + '&destinctionJson=' + destinctionJson,
+      url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson +'&paramsJson='+ paramsJson,
     })
   },
   // requestLogin:function(){

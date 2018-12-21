@@ -69,6 +69,11 @@ Page({
     }
     getApp().webCall(null, body, QUERY_BILL, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
+  navBack:function(){
+     wx.navigateBack({
+       delta:1
+     })
+  },
   onSuccess: function (res, requestCode) {
     //真正接到订单的时候
     console.log(res.data);
@@ -126,5 +131,10 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  checkBill:function(){
+    wx.navigateTo({
+      url: '../billingMethod/billingMethod',
+    })
   }
 })

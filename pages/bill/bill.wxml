@@ -11,12 +11,12 @@
   <view class='split_line'></view>
   <block wx:for='{{list}}'>
     <view class='content_container'>
-      <view>{{item.desc}}</view>
+      <view>{{item.desc}} ({{item.num}} {{item.unit}})</view>
       <view>{{item.count}}元</view>
     </view>
   </block>
   <view class='split_line'></view>
   <view class='cost_total_class'>支付金额
     <text class='cost_total_text_class'>8.90</text>元</view>
-    <view class='check_bill_rule'>查看计价规则</view>
+    <view class='check_bill_rule' bindtap='checkBill'>查看计价规则</view>
 </view>
