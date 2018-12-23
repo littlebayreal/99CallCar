@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp();
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var util = require('../../utils/util.js')
 var qqmapsdk;
 var that;
 const QUERY_BANNER = 'query_banner';
@@ -350,8 +351,8 @@ Page({
         "desDetails": that.data.destination.addressInfo,
         "desLong": that.data.destination.addressLocation.lng,
         "desLat": that.data.destination.addressLocation.lat,
-        "isBook": 1,
-        "estimateTralvelDistance": 15.6
+        "isBook": that.data.isNow,
+        "estimateTralvelDistance": util.getDistance(that.data.origin.addressLocation.lat, that.data.origin.addressLocation.lng, that.data.destination.addressLocation.lat, that.data.destination.addressLocation.lng)
       }],
       "datatype": "priceEstimate",
       "op": "getdata"
@@ -377,7 +378,7 @@ Page({
   },
   powerDrawer: function(e) {
     console.log("类型状态:" + e.currentTarget.dataset.statu);
-    console.log("点选类型:"+e.currentTarget.dataset.type);
+    console.log("点选类型:" + e.currentTarget.dataset.type);
     var currentStatu = e.currentTarget.dataset.statu;
     var sType = e.currentTarget.dataset.type;
     that.util(sType, currentStatu);
@@ -440,13 +441,13 @@ Page({
 
     //关闭
     if (currentStatu == "close") {
-      console.log("好奇怪:"+ that.data.sType);
+      console.log("好奇怪:" + that.data.sType);
       if (that.data.sType == 0) {
         this.setData({
           showModalStatus: false,
           carType: that.data.radioValue
         });
-      }else{
+      } else {
         this.setData({
           showModalStatus: false,
           passagerNum: that.data.radioValue
@@ -524,20 +525,63 @@ Page({
   },
   //叫车的方法
   callCarClickListener: function() {
+    var callVehicleLevel = null;
+    switch (that.data.carType) {
+      case '豪华车':
+        callVehicleLevel = 1;
+        break;
+      case '七座商务车':
+        callVehicleLevel = 2;
+        break;
+      default:
+        callVehicleLevel = 3;
+        break;
+    }
+    if (that.data.isNow == 1) {
+      var orderTime = null;
+      var sday = that.data.order_times.substring(0, 2);
+      var stime = that.data.order_times.substring(3, 8);
+      var year, month, day;
+      var date = new Date();
+      switch (sday) {
+        case '今天':
+          year = date.getFullYear();
+          month = date.getMonth() + 1;
+          day = date.getDate();
+          sday = [year, month, day].map(util.formatNumber).join('-');
+          break;
+        case '明天':
+          year = date.getFullYear()
+          month = date.getMonth() + 1
+          day = date.getDate() + 1
+          sday = [year, month, day].map(util.formatNumber).join('-')
+          break;
+        case '后天':
+          year = date.getFullYear()
+          month = date.getMonth() + 1
+          day = date.getDate() + 2
+          sday = [year, month, day].map(util.formatNumber).join('-')
+          break;
+      }
+      stime = stime + ':00';
+      orderTime = sday + ' ' + stime;
+      console.log("orderTime:" + orderTime);
+    }
     var originJson = JSON.stringify(that.data.origin);
     var destinctionJson = JSON.stringify(that.data.destination);
     var params = {
-      passagerNumber: that.data.passagerNum,
-      price:that.data.cost,
-      callVehicleOpType:that.data.carType =='出租车'?1:0,
-      bookTime: that.data.isNow == 1 ? that.data.order_times:'',
-      driverCode:that.data.driverCode,
-      codetime:that.data.codetime,
-      ordermethod:that.data.isScan ? 1:0
+      passagerNumber: parseInt(that.data.passagerNum.substring(0,1)),
+      price: that.data.cost,
+      callVehicleLevel: callVehicleLevel,
+      callVehicleOpType: that.data.carType == '出租车' ? 1 : 0,
+      bookTime: that.data.isNow == 1 ? orderTime : '',
+      driverCode: that.data.driverCode,
+      codetime: that.data.codetime,
+      ordermethod: that.data.isScan ? 1 : 0,
     };
     var paramsJson = JSON.stringify(params);
     wx.navigateTo({
-      url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson +'&paramsJson='+ paramsJson,
+      url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson + '&paramsJson=' + paramsJson,
     })
   },
   // requestLogin:function(){

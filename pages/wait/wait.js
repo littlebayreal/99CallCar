@@ -1,6 +1,7 @@
 // pages/wait/wait.js
 var that;
 const PLACE_ORDER = 'place_order';
+var util = require('../../utils/util.js')
 Page({
   /**
    * 页面的初始数据
@@ -40,11 +41,13 @@ Page({
     that = this;
     var originbean = JSON.parse(options.originJson);
     var destinctionbean = JSON.parse(options.destinctionJson);
+    var params = JSON.parse(options.paramsJson);
     that.setData({
       navH: getApp().globalData.navHeight,
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       origin: originbean,
       destinction: destinctionbean,
+      params:params,
       address: originbean.addressName
     })
   },
@@ -128,16 +131,16 @@ Page({
         "desDetails": that.data.destinction.addressInfo,
         "desLong": that.data.destinction.addressLocation.lng,
         "desLat": that.data.destinction.addressLocation.lat,
-        "passengerNumber": 2,
-        "addtime": "2018-12-06 18:00:00",
-        "pricie": "0.0",
-        "callVehicleLevel": 3,
-        "callVehicleOpType": 0,
-        "bookTime": "2018-12-06 18:30:00",
+        "passengerNumber": that.data.params.passagerNumber,
+        "addtime": util.formatTime(new Date()),
+        "pricie": that.data.params.price,
+        "callVehicleLevel": that.data.params.callVehicleLevel,
+        "callVehicleOpType": that.data.params.callVehicleOpType,
+        "bookTime": that.data.params.bookTime,
         // "driverCode": null,
         // "codetime": null,
         "orderSource": 6,
-        "orderMethod": 0
+        "orderMethod": that.data.params.ordermethod
       }],
       "datatype": "placeOrder",
       "op": "setdata"
