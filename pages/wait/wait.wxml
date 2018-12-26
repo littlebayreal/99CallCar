@@ -34,7 +34,7 @@
   </view>
 
   <!--mask-->
-  <cover-view class="drawer_screen" animation="{{animationData}}" wx:if="{{showModalStatus}}"></cover-view>
+  <cover-view class="drawer_screen" wx:if="{{showModalStatus}}"></cover-view>
   <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
     <cover-view class="drawer_title">选择撤销订单的原因</cover-view>
     <cover-view class='car_type_radio_group'>

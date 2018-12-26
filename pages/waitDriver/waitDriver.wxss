@@ -90,3 +90,75 @@
 .title_content_number_class{
   font-size: 24rpx;
 }
+/*mask*/
+
+.drawer_screen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+/*content*/
+
+.drawer_box {
+  width: 650rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 1001;
+  background: #fafafa;
+  margin: -150px 50rpx 0 50rpx;
+  border-radius: 3px;
+}
+
+.drawer_title {
+  padding: 15px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+}
+
+.drawer_content {
+  height: 210px;
+  /* overflow-y: scroll; 超出父盒子高度可滚动 */
+}
+.btn_class{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+}
+.btn_ok {
+  width: 50%;
+  padding: 10px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+  border-top: 1rpx solid #e8e8ea;
+  border-right: 1rpx solid #e8e8ea;
+  color: #3cc51f;
+}
+.car_type_radio_group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10rpx;
+}
+
+.car_type_radio {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center
+}
+
+.car_type_select{
+  height: 30rpx;
+  width: 30rpx;
+}

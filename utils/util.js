@@ -25,7 +25,22 @@ function GetDistance(lat1, lng1, lat2, lng2) {
   //s=s.toFixed(4);
   return s;
 }
+//根据中心点经纬度 以及半径距离 计算矩形的四个点坐标
+const EARTH_RADIUS = 6371;
 
+function returnLLSquarePoint(clng, clat, distance) {
+  var dLongitude = 2 * (Math.asin(Math.sin(distance /
+    (2 * EARTH_RADIUS)) / Math.cos(Math.toRadians(clat))));
+  dLongitude = Math.toDegrees(dLongitude);
+  // 计算纬度角度
+  var dLatitude = distance / EARTH_RADIUS;
+  dLatitude = Math.toDegrees(dLatitude);
+  var leftTopPoint = [clat + dLatitude, clng - dLongitude];
+  var rightTopPoint = [clat + dLatitude, clng + dLongitude];
+  var leftBottomPoint = [clat - dLatitude, clng - dLongitude];
+  var rightBottomPoint = [clat - dLatitude, clng + dLongitude];
+  return [leftTopPoint,rightTopPoint,leftBottomPoint,rightBottomPoint]
+}
 const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -33,6 +48,6 @@ const formatNumber = n => {
 
 module.exports = {
   formatTime: formatTime,
-  formatNumber:formatNumber,
-  getDistance:GetDistance
+  formatNumber: formatNumber,
+  getDistance: GetDistance
 }

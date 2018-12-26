@@ -81,14 +81,15 @@ Page({
       case 0:
         prevPage.setData({
           origin: e.currentTarget.dataset.item
-        })
+        });
         break;
       case 1:
         prevPage.setData({
           destination: e.currentTarget.dataset.item
-        })
+        });
         break;
     }
+    prevPage.onResume();
     //更新原始数据  记录搜索记录
     var ads = that.data.storageList;
     var isUpdate = true;

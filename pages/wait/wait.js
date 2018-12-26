@@ -47,7 +47,7 @@ Page({
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
       origin: originbean,
       destinction: destinctionbean,
-      params:params,
+      params: params,
       address: originbean.addressName
     })
   },
@@ -228,56 +228,30 @@ Page({
     context.stroke();
     context.draw()
   },
-  powerDrawer: function (e) {
+  powerDrawer: function(e) {
     var currentStatu = e.currentTarget.dataset.statu;
     that.util(currentStatu);
-    
-    console.log("什么情况"+e.currentTarget.id)
-    if (e.currentTarget.id == 'btn_ok'){
-      
+
+    if (e.currentTarget.id == 'btn_ok') {
+      // that.cancelOrder();
       //取消订单  返回主页
       wx.navigateBack({
-        delta:1
+        delta: 1
       })
     }
   },
-  util: function (currentStatu) {
-    /* 动画部分 */
-    // 第1步：创建动画实例 
-    var animation = wx.createAnimation({
-      duration: 200, //动画时长
-      timingFunction: "linear", //线性
-      delay: 0 //0则不延迟
-    });
+  // cancelOrder: function() {
+  //   var body = {
 
-    // 第2步：这个动画实例赋给当前的动画实例
-    this.animation = animation;
-
-    // 第3步：执行第一组动画
-    animation.opacity(0).rotateX(-100).step();
-
-    // 第4步：导出动画对象赋给数据对象储存
-    this.setData({
-      animationData: animation.export()
-    })
-
-    // 第5步：设置定时器到指定时候后，执行第二组动画
-    setTimeout(function () {
-      // 执行第二组动画
-      animation.opacity(0.7).rotateX(0).step();
-      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
+  //   }
+  //   getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  // },
+  util: function(currentStatu) {
+    if (currentStatu == 'close') {
       this.setData({
-        animationData: animation
-      })
-
-      //关闭
-      if (currentStatu == "close") {
-        this.setData({
-          showModalStatus: false
-        });
-      }
-    }.bind(this), 200)
-
+        showModalStatus: false
+      });
+    }
     // 显示
     if (currentStatu == "open") {
       this.setData({
@@ -286,7 +260,7 @@ Page({
     }
   },
   //选择车型
-  radioChange: function (e) {
+  radioChange: function(e) {
     var list = that.data.carTypeList;
     for (var i = 0; i < list.length; i++) {
       if (i == e.currentTarget.dataset.pos) {

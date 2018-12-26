@@ -4,6 +4,7 @@ var qqmapsdk;
 var that;
 const REQUEST_ORDER = 'request_order';
 const REQUEST_DRIVER_LOCATION = 'request_driver_location'
+const REQUEST_CANCEL = 'request_cancel'
 Page({
 
   /**
@@ -13,7 +14,20 @@ Page({
     scale: 16,
     demo_index: 0,
     isDriverLocRecycle: true,
-    isRecycle: true
+    isRecycle: true,
+    carTypeList: [{
+        name: '临时有事',
+        value: '临时有事'
+      },
+      {
+        name: '等待时间过长',
+        value: '等待时间过长'
+      },
+      {
+        name: '其它原因',
+        value: '其它原因'
+      }
+    ],
   },
 
   /**
@@ -164,6 +178,19 @@ Page({
           demo_index: that.data.demo_index < 7 ? that.data.demo_index + 1 : 0
         })
         break;
+      case REQUEST_CANCEL:
+        //取消订单  返回主页
+        if (res.code == 0) {
+          var pages = getCurrentPages();
+          wx.navigateBack({
+            delta: pages.length - 1
+          })
+          break;
+        }else{
+          wx.showToast({
+            title: res.desc,
+          })
+        }
     }
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {
@@ -254,5 +281,54 @@ Page({
         })
         break;
     }
+  },
+  powerDrawer: function(e) {
+    console.log(e);
+    var currentStatu = e.currentTarget.dataset.statu;
+    that.util(currentStatu);
+    if (e.currentTarget.id == 'btn_ok') {
+      that.cancelOrder();
+    }
+  },
+  cancelOrder: function() {
+    var body = {
+      "data": [{
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "orderNumber": that.data.orderInfo.orderNumber,
+        "userType": 0,
+        "reason": that.data.carType
+      }],
+      "datatype": "cancelOrder",
+      "op": "setdata"
+    }
+    getApp().webCall(null, body, REQUEST_CANCEL, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
+  util: function(currentStatu) {
+    if (currentStatu == 'close') {
+      this.setData({
+        showModalStatus: false
+      });
+    }
+    // 显示
+    if (currentStatu == "open") {
+      this.setData({
+        showModalStatus: true
+      });
+    }
+  },
+  //选择车型
+  radioChange: function(e) {
+    var list = that.data.carTypeList;
+    for (var i = 0; i < list.length; i++) {
+      if (i == e.currentTarget.dataset.pos) {
+        list[i].checked = true;
+      } else {
+        list[i].checked = false;
+      }
+    }
+    that.setData({
+      carTypeList: list,
+      carType: e.currentTarget.dataset.value
+    })
   },
 })

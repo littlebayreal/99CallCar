@@ -7,6 +7,7 @@ var qqmapsdk;
 var that;
 const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
+const QUERY_NEAR_CAR = 'query_near_car';
 Page({
   data: {
     passagerList: [{
@@ -59,7 +60,7 @@ Page({
     bottom_clazz: 'bottom',
     isLoading: false,
     showModalStatus: false,
-    carType: "",
+    carType: "舒适车",
     scale: 16,
   },
   onLoad: function() {
@@ -81,11 +82,33 @@ Page({
           cur_lng: res.longitude,
           cur_lat: res.latitude
         })
+        that.showNearCar(res.longitude, res.latitude)
       },
     })
     //手动载入一遍 否则第一次点击出来是空白
     that.orderTimeListener();
     // that.requestLogin();
+  },
+  onResume: function() {
+    var title = null;
+    if (that.data.origin == null) {
+      title = '请选择起点'
+    } else if (that.data.destination == null) {
+      title = '请选择目的地'
+    } else if (that.data.carType == null || that.data.carType == '') {
+      title = '请输入车辆类型'
+    } else if (that.data.passagerNum == null || that.data.passagerNum == '') {
+      title = '请输入乘坐人数'
+    } else {
+      that.calcuteCost()
+      return;
+    }
+    setTimeout(n => {
+      wx.showToast({
+        title: title,
+      })
+    }, 200)
+
   },
   onReady: function() {
     this.mapCtx = wx.createMapContext("99CallCarMap"); // 地图组件的id
@@ -385,19 +408,20 @@ Page({
 
     if (currentStatu == 'open') return;
     //每次选中车型都计算一次预计行程花费
-    if (that.data.origin == null) {
-      wx.showToast({
-        title: '请输入出发点',
-      })
-      return;
-    }
-    if (that.data.destination == null) {
-      wx.showToast({
-        title: '请输入目的地',
-      })
-      return;
-    }
-    that.calcuteCost();
+    that.onResume();
+    // if (that.data.origin == null) {
+    //   wx.showToast({
+    //     title: '请输入出发点',
+    //   })
+    //   return;
+    // }
+    // if (that.data.destination == null) {
+    //   wx.showToast({
+    //     title: '请输入目的地',
+    //   })
+    //   return;
+    // }
+    // that.calcuteCost();
   },
   util: function(sType, currentStatu) {
     if (sType == 0) {
@@ -489,14 +513,15 @@ Page({
             })
           },
         })
-        break
+        break;
     }
   },
   regionchangeListener: function(e) {
+    console.log(e)
     that.mapCtx.getCenterLocation({ //getCenterLocation可以获取地图中点的经纬度
       success: function(res) {
-        app.globalData.strLatitude = res.latitude //存放到全局去，供后面计算价格使用
-        app.globalData.strLongitude = res.longitude
+        // app.globalData.strLatitude = res.latitude //存放到全局去，供后面计算价格使用
+        // app.globalData.strLongitude = res.longitude
         qqmapsdk.reverseGeocoder({
           location: {
             latitude: res.latitude, //通过移动地图可以得到相应中心点的经纬度
@@ -570,7 +595,7 @@ Page({
     var originJson = JSON.stringify(that.data.origin);
     var destinctionJson = JSON.stringify(that.data.destination);
     var params = {
-      passagerNumber: parseInt(that.data.passagerNum.substring(0,1)),
+      passagerNumber: parseInt(that.data.passagerNum.substring(0, 1)),
       price: that.data.cost,
       callVehicleLevel: callVehicleLevel,
       callVehicleOpType: that.data.carType == '出租车' ? 1 : 0,
@@ -603,4 +628,35 @@ Page({
   //   });
   //   app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
   // }
+  showNearCar: function(longitude, latitude) {
+    var callVehicleLevel = null;
+    switch (that.data.carType) {
+      case '豪华车':
+        callVehicleLevel = 1;
+        break;
+      case '七座商务车':
+        callVehicleLevel = 2;
+        break;
+      default:
+        callVehicleLevel = 3;
+        break;
+    }
+    var body = 
+    {
+      "data": [{
+        "token": "9B58BBB28337BA5FB30D245F53448F04",
+        "currLong": longitude.toString(),
+        "currLat": latitude.toString(),
+        "leftTopLong": 120.62250, 
+        "letfTopLat": 31.30590,
+        "rightDownLong": 120.65048,
+        "rightDownLat": 31.29204,
+        "vehicleType": that.data.carType == '出租车' ? 1 : 0,
+        "vehicleLevel": callVehicleLevel
+      }],
+      "datatype": "queryNearVehicle",
+      "op": "getdata"
+    }
+    app.webCall(null, body, QUERY_NEAR_CAR, that.onSuccess, that.onErrorBefore, that.onComplete);
+  }
 })
