@@ -1,9 +1,10 @@
 //index.js
 //获取应用实例
 const app = getApp();
-var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var bmap = require('../../libs/bmap-wx.js');
 var util = require('../../utils/util.js')
-var qqmapsdk;
+var lt = require('../../utils/locationTrans.js')
+var Bmapsdk;
 var that;
 const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
@@ -71,8 +72,8 @@ Page({
       mapHeight: (getApp().globalData.windowHeight - getApp().globalData.navHeight - 45) * 0.6
     })
     // 实例化API核心类
-    qqmapsdk = new QQMapWX({
-      key: getApp().globalData.key
+    Bmapsdk = new bmap.BMapWX({
+      ak: app.globalData.key
     });
     wx.getLocation({
       type: "gcj02",
@@ -80,14 +81,21 @@ Page({
         console.log(res)
         that.setData({
           cur_lng: res.longitude,
-          cur_lat: res.latitude
+          cur_lat: res.latitude,
+          isRefresh: true
         })
-        that.showNearCar(res.longitude, res.latitude)
+        // that.showNearCar(res.longitude, res.latitude)
+        that.refreshCar();
       },
     })
     //手动载入一遍 否则第一次点击出来是空白
     that.orderTimeListener();
     // that.requestLogin();
+  },
+  onUnload:function(){
+    that.setData({
+      isRefresh:false
+    })
   },
   onResume: function() {
     var title = null;
@@ -156,7 +164,7 @@ Page({
           isNow: 1,
           bottom_clazz: 'bottom_large'
         })
-        break
+        break;
     }
   },
   bindColumnChange: function(e) {
@@ -176,7 +184,7 @@ Page({
     data.multiIndex[e.detail.column] = e.detail.value;
     // 然后再判断当前改变的是哪一列,如果是第1列改变 
     if (e.detail.column === 0) {
-      // 如果第一列滚动到第一行 
+      // 如果第一列滚动到第一行
       if (e.detail.value === 0) {
         that.loadData(hours, minute);
       } else {
@@ -358,6 +366,9 @@ Page({
 
   },
   calcuteCost: function() {
+    var depBD = lt.gcj02tobd09(that.data.origin.addressLocation.lng, that.data.origin.addressLocation.lat);
+    var desBD = lt.gcj02tobd09(that.data.destination.addressLocation.lng,
+      that.data.destination.addressLocation.lat)
     var body = {
       "data": [{
         "token": "979347F6010C4F8C42BDD0C3535A5735",
@@ -366,14 +377,14 @@ Page({
         "depCity": that.data.origin.provinceCityDistrict.city,
         "depCounty": that.data.origin.provinceCityDistrict.district,
         "depDetails": that.data.origin.addressInfo,
-        "depLong": that.data.origin.addressLocation.lng,
-        "depLat": that.data.origin.addressLocation.lat,
+        "depLong": depBD[0],
+        "depLat": depBD[1],
         "desProvince": that.data.destination.provinceCityDistrict.province,
         "desCity": that.data.destination.provinceCityDistrict.city,
         "desCounty": that.data.destination.provinceCityDistrict.district,
         "desDetails": that.data.destination.addressInfo,
-        "desLong": that.data.destination.addressLocation.lng,
-        "desLat": that.data.destination.addressLocation.lat,
+        "desLong": desBD[0],
+        "desLat": desBD[1],
         "isBook": that.data.isNow,
         "estimateTralvelDistance": util.getDistance(that.data.origin.addressLocation.lat, that.data.origin.addressLocation.lng, that.data.destination.addressLocation.lat, that.data.destination.addressLocation.lng)
       }],
@@ -387,9 +398,33 @@ Page({
     app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   onSuccess: function(res, requestCode) {
-    that.setData({
-      cost: res.data[0].price
-    })
+    switch (requestCode) {
+      case QUERY_BANNER:
+        that.setData({
+          cost: res.data[0].price
+        })
+        break;
+      case QUERY_NEAR_CAR:
+        var datas = res.data;
+        var points = [];
+        for (var i in datas) {
+          var loc_gcj02 = lt.wgs84togcj02(datas[i].long, datas[i].lat);
+          points.push({ latitude: loc_gcj02[1], longitude: loc_gcj02[0] });
+          that.setData({
+            markers: [{
+              iconPath: "../../image/map_car.png",
+              id: i,
+              latitude: points[0].latitude,
+              longitude: points[0].longitude,
+              width: 15,
+              height: 30
+            }]
+          })
+        }
+        
+        break;
+    }
+
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {
     console.log("错误处理")
@@ -495,7 +530,7 @@ Page({
           url: '../personcenter/personcenter',
         })
         // wx.navigateTo({
-        //   url: '../bill/bill',
+        //   url: '../authorize/authorize',
         // })
         break;
       case "phone_call":
@@ -517,33 +552,41 @@ Page({
     }
   },
   regionchangeListener: function(e) {
-    console.log(e)
-    that.mapCtx.getCenterLocation({ //getCenterLocation可以获取地图中点的经纬度
-      success: function(res) {
-        // app.globalData.strLatitude = res.latitude //存放到全局去，供后面计算价格使用
-        // app.globalData.strLongitude = res.longitude
-        qqmapsdk.reverseGeocoder({
-          location: {
-            latitude: res.latitude, //通过移动地图可以得到相应中心点的经纬度
-            longitude: res.longitude,
-          },
-          success: function(res) {
-            var o = {
-              addressName: res.result.formatted_addresses.recommend,
-              addressInfo: res.result.address,
-              addressLocation: res.result.location,
-              provinceCityDistrict: res.result.address_component
-            }
-            console.log(res);
-            console.log("o打印：" + o.addressLocation.lng);
-            that.setData({
-              // origin: res.result.address, //得到的经纬度逆地址解析得到我们的位置信息
-              origin: o
-            })
-          },
-        });
-      },
-    })
+    console.log(e);
+    if (e.type == "begin") {
+      that.setData({
+        isRefresh: false
+      })
+    }
+    if (e.type = "end") {
+      that.setData({
+        isRefresh: true
+      });
+      that.mapCtx.getCenterLocation({ //getCenterLocation可以获取地图中点的经纬度
+        type: "gcj02",
+        success: function(res) {
+          Bmapsdk.regeocoding({
+            location: res.latitude + ',' + res.longitude,
+            success: function(res) {
+              console.log(res);
+              var o = {
+                addressName: res.originalData.result.formatted_address,
+                addressInfo: res.originalData.result.sematic_description,
+                addressLocation: res.originalData.result.location,
+                provinceCityDistrict: res.originalData.result.addressComponent
+              }
+              console.log(res);
+              console.log("o打印：" + o.addressLocation.lng);
+              that.setData({
+                // origin: res.result.address, //得到的经纬度逆地址解析得到我们的位置信息
+                origin: o
+              })
+            },
+            fail: function() {},
+          });
+        },
+      })
+    }
   },
   movetoPosition: function() {
     that.mapCtx.moveToLocation();
@@ -609,26 +652,24 @@ Page({
       url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson + '&paramsJson=' + paramsJson,
     })
   },
-  // requestLogin:function(){
-  //   var body = {
-  //     "data": [
-  //       {
-  //         "phone": "18389808063",
-  //         "password": "12345678",
-  //         "clientVersion": "1.0.0",
-  //         "clientOS": "mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko) version/9.0 mobile/13b143 safari/601.1"
-  //       }
-  //     ],
-  //     "datatype": "passengerLogin",
-  //     "op": "getdata"
-  //   }
-  //   that.setData({
-  //     showCost: true,
-  //     isLoading: true
-  //   });
-  //   app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
-  // }
-  showNearCar: function(longitude, latitude) {
+  refreshCar: function() {
+    if (!that.data.isRefresh) return;
+    // var seconds = Math.round(+new Date() / 1000) - this.data.wait_time;
+    // if (seconds <= this.data.limitTime) {
+    //   that.setData({
+    //     time: that.parseTime(seconds),
+    //   })
+    that.showNearCar();
+    //10秒刷新一下附近的车
+    setTimeout(that.refreshCar, 10000);
+  },
+  showNearCar: function() {
+    var square = util.returnLLSquarePoint(that.data.cur_lng, that.data.cur_lat, 5000);
+    console.log("当前坐标:" + that.data.cur_lng + "--" + that.data.cur_lat + "左上角坐标：" + square[0][0] + "--" + square[0][1] +
+      "右下角坐标:" + square[3][0] + "--" + square[3][1]);
+    var curWGS = lt.gcj02towgs84(that.data.cur_lng, that.data.cur_lat);
+    var leftTopWGS = lt.gcj02towgs84(square[0][1], square[0][0]);
+    var rightBottomWGS = lt.gcj02towgs84(square[3][1], square[3][0]);
     var callVehicleLevel = null;
     switch (that.data.carType) {
       case '豪华车':
@@ -641,16 +682,15 @@ Page({
         callVehicleLevel = 3;
         break;
     }
-    var body = 
-    {
+    var body = {
       "data": [{
         "token": "9B58BBB28337BA5FB30D245F53448F04",
-        "currLong": longitude.toString(),
-        "currLat": latitude.toString(),
-        "leftTopLong": 120.62250, 
-        "letfTopLat": 31.30590,
-        "rightDownLong": 120.65048,
-        "rightDownLat": 31.29204,
+        "currLong": curWGS[0].toString(),
+        "currLat": curWGS[1].toString(),
+        "leftTopLong": leftTopWGS[0].toFixed(6),
+        "letfTopLat": leftTopWGS[1].toFixed(6),
+        "rightDownLong": rightBottomWGS[0].toFixed(6),
+        "rightDownLat": rightBottomWGS[1].toFixed(6),
         "vehicleType": that.data.carType == '出租车' ? 1 : 0,
         "vehicleLevel": callVehicleLevel
       }],

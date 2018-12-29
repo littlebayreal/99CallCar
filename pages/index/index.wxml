@@ -20,7 +20,7 @@
     </scroll-view> -->
   <!-- </view> -->
 
-  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location  style='height:{{mapHeight}}px'>
+  <map id="99CallCarMap" class="map_class {{isNow == 1?'map_class_small':''}}" longitude='{{cur_lng}}' latitude='{{cur_lat}}' scale='{{scale}}' bindregionchange='regionchangeListener' show-location  style='height:{{mapHeight}}px' markers='{{markers}}'>
     <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image>
     <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>

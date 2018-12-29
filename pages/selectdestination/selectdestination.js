@@ -1,7 +1,7 @@
 // pages/selectdestination/selectdestination.js
 var that;
-var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
-var qqmapsdk;
+var bmap = require('../../libs/bmap-wx.js');
+var Bmapsdk;
 Page({
   /**
    * 页面的初始数据
@@ -120,14 +120,14 @@ Page({
     })
   },
   inputChangeListener: function(e) {
-    qqmapsdk.getSuggestion({
-      region: "苏州",
-      keyword: e.detail.value,
-      key: getApp().globalData.key,
+    Bmapsdk.suggestion({
+      query: e.detail.value,
+      region: '苏州',
+      city_limit: true,
       success: function(res) {
         console.log(res);
         var al = [];
-        var datas = res.data;
+        var datas = res.result;
         for (var i = 0; i < 10; i++) {
           var pcd = {
             province: datas[i].province,
@@ -135,8 +135,8 @@ Page({
             district: datas[i].district
           }
           var data = {
-            addressName: datas[i].title,
-            addressInfo: datas[i].address,
+            addressName: datas[i].name,
+            addressInfo: datas[i].province + datas[i].city + datas[i].district,
             addressLocation: datas[i].location,
             provinceCityDistrict: pcd
           }
@@ -179,8 +179,9 @@ Page({
       },
     })
 
-    qqmapsdk = new QQMapWX({
-      key: 'JVCBZ-5UK6J-TQGFH-FWJO6-WECYF-GJFIF'
+    // 实例化API核心类
+    Bmapsdk = new bmap.BMapWX({
+      ak: getApp().globalData.key
     });
 
     switch (options.type) {

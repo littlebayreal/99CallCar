@@ -1,12 +1,13 @@
 // pages/waitDriver/waitDriver.js
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var lt = require('../../utils/locationTrans.js');
 var qqmapsdk;
 var that;
 const REQUEST_ORDER = 'request_order';
+const REQUEST_ORDER_NUMBER = 'request_order_number'
 const REQUEST_DRIVER_LOCATION = 'request_driver_location'
 const REQUEST_CANCEL = 'request_cancel'
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -58,28 +59,46 @@ Page({
     wx.getStorage({
       key: 'order_info',
       success: function(res) {
+        // console.log("订单数据:" + JSON.stringify(res.data));
+        // var dep_wgs84 = lt.gcj02towgs84(res.data.depLong, res.data.depLat);
+        // var des_wgs84 = lt.gcj02towgs84(res.data.desLong, res.data.desLat);
         that.setData({
           orderInfo: res.data,
-          markers: [{
-            iconPath: "../../image/str.png",
-            id: 0,
-            latitude: res.data.depLat,
-            longitude: res.data.depLong,
-            width: 30,
-            height: 30
-          }, {
-            iconPath: "../../image/end.png",
-            id: 1,
-            latitude: res.data.desLat,
-            longitude: res.data.desLong,
-            width: 30,
-            height: 30
-          }],
+          // markers: [{
+          //   iconPath: "../../image/str.png",
+          //   id: 0,
+          //   latitude: dep_wgs84[1],
+          //   longitude: dep_wgs84[0],
+          //   width: 30,
+          //   height: 30
+          // }, {
+          //   iconPath: "../../image/end.png",
+          //   id: 1,
+          //   latitude: des_wgs84[1],
+          //   longitude: des_wgs84[0],
+          //   width: 30,
+          //   height: 30
+          // }],
         });
         setTimeout(that.requestDriverLocation, 5000);
         setTimeout(that.request, 5000);
+
+        that.requestOrderDetail();
       },
     })
+  },
+  requestOrderDetail:function(){
+    var body = {
+      "data": [
+        {
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderInfo.orderNumber
+        }
+      ],
+        "datatype": "pTraveldetailQuery",
+          "op": "getdata"
+    }
+    getApp().webCall(null, body, REQUEST_ORDER_NUMBER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   //请求订单的状态以及司机的位置并显示
   request: function() {
@@ -117,65 +136,37 @@ Page({
       case REQUEST_ORDER:
         //订单状态到接单成功了
         console.log("查询订单状态:" + res);
-        wx.redirectTo({
-          url: '../orderservice/orderservice',
-        })
+        // wx.redirectTo({
+        //   url: '../orderservice/orderservice',
+        // })
         break;
       case REQUEST_DRIVER_LOCATION:
-        var demo_location = [{
-            'lng': 120.67367744476319,
-            'lat': 31.249085662200144
-          },
-          {
-            'lng': 120.68457794219971,
-            'lat': 31.248498633295462
-          },
-          {
-            'lng': 120.69788169891358,
-            'lat': 31.248058359222476
-          },
-          {
-            'lng': 120.70449066192627,
-            'lat': 31.248058359222554
-          },
-          {
-            'lng': 120.72285842926026,
-            'lat': 31.25312138712596
-          },
-          {
-            'lng': 120.72697830230713,
-            'lat': 31.26001840853483
-          },
-          {
-            'lng': 120.73993873626709,
-            'lat': 31.263760198629505
-          }
-        ]
-        //更新司机位置
+        var dep_gcj02 = lt.wgs84togcj02(that.data.orderInfo.depLong, that.data.orderInfo.depLat);
+        var des_gcj02 = lt.wgs84togcj02(that.data.orderInfo.desLong, that.data.orderInfo.desLat);
+        var loc_gcj02 = lt.wgs84togcj02(res.data[0].long, res.data[0].lat);
         that.setData({
           markers: [{
+            iconPath: "../../image/map_car.png",
+            id: 3,
+            latitude: loc_gcj02[1],
+            longitude: loc_gcj02[0],
+            width: 15,
+            height: 30
+          },{
             iconPath: "../../image/str.png",
             id: 0,
-            latitude: that.data.orderInfo.depLat,
-            longitude: that.data.orderInfo.depLong,
+            latitude:dep_gcj02[1],
+            longitude:dep_gcj02[0],
             width: 30,
             height: 30
           }, {
             iconPath: "../../image/end.png",
             id: 1,
-            latitude: that.data.orderInfo.desLat,
-            longitude: that.data.orderInfo.desLong,
+              latitude:des_gcj02[1],
+              longitude:des_gcj02[0],
             width: 30,
             height: 30
-          }, {
-            iconPath: "../../image/map_car.png",
-            id: 2,
-            latitude: demo_location[that.data.demo_index].lat,
-            longitude: demo_location[that.data.demo_index].lng,
-            width: 30,
-            height: 60
-          }],
-          demo_index: that.data.demo_index < 7 ? that.data.demo_index + 1 : 0
+          }]
         })
         break;
       case REQUEST_CANCEL:
@@ -185,12 +176,24 @@ Page({
           wx.navigateBack({
             delta: pages.length - 1
           })
-          break;
-        }else{
+        } else {
           wx.showToast({
             title: res.desc,
           })
         }
+        break;
+        case REQUEST_ORDER_NUMBER:
+        if(res.code == 0){
+          that.setData({
+            driverName:res.data[0].driverName,
+            stars: res.data[0].driverGrade,
+            orderNum: res.data[0].orderCount,
+            licensePlate: res.data[0].licensePlate,
+            carcolor: res.data[0].vehicleColor,
+            vehicleModel: res.data[0].vehicleModel
+          })
+        }
+        break;
     }
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {

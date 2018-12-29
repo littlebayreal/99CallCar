@@ -79,8 +79,8 @@ function gcj02towgs84(lng, lat) {
     var sqrtmagic = Math.sqrt(magic);
     dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
     dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
-    mglat = lat + dlat;
-    mglng = lng + dlng;
+    var mglat = lat + dlat;
+    var mglng = lng + dlng;
     return [lng * 2 - mglng, lat * 2 - mglat]
   }
 }
@@ -112,5 +112,6 @@ function out_of_china(lng, lat) {
 }
 module.exports = {
   wgs84togcj02: wgs84togcj02,
-  gcj02towgs84: gcj02towgs84
+  gcj02towgs84: gcj02towgs84,
+  gcj02tobd09: gcj02tobd09
 }

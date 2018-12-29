@@ -1,7 +1,9 @@
 // pages/wait/wait.js
 var that;
 const PLACE_ORDER = 'place_order';
+const REQUEST_ORDER = 'request_order';
 var util = require('../../utils/util.js')
+var lt = require('../../utils/locationTrans.js')
 Page({
   /**
    * 页面的初始数据
@@ -11,8 +13,9 @@ Page({
     waitTimer: null,
     time: '00:00',
     //单位秒 3分钟
-    limitTime: 10,
+    limitTime: 180,
     wait_time: null,
+    isGenerate: true,
     carTypeList: [{
         name: '临时有事',
         value: '临时有事'
@@ -72,68 +75,37 @@ Page({
         time: that.parseTime(seconds),
       })
       //每五秒发送一次请求
-      if (seconds % 5 == 0) {
-        console.log("五秒发一次");
+      if (seconds % 5 == 0 && that.data.isGenerate) {
         that.introduceOrder();
       }
-      setTimeout(that.countInterval, 1000);
-    } else {
-      //暂时模拟等到车辆接单
-      //保存订单号以及订单信息到本地
-      var d = {
-        "orderNumber": "123456789",
-        "token": that.data.requestParam.token,
-        "depProvince": that.data.requestParam.depProvince,
-        "depCity": that.data.requestParam.depCity,
-        "depCounty": that.data.requestParam.depCounty,
-        "depDetails": that.data.requestParam.depDetails,
-        "depLong": that.data.requestParam.depLong,
-        "depLat": that.data.requestParam.depLat,
-        "desProvince": that.data.requestParam.desProvince,
-        "desCity": that.data.requestParam.desCity,
-        "desCounty": that.data.requestParam.desCounty,
-        "desDetails": that.data.requestParam.desDetails,
-        "desLong": that.data.requestParam.desLong,
-        "desLat": that.data.requestParam.desLat,
-        "passengerNumber": that.data.requestParam.passengerNumber,
-        "addtime": that.data.requestParam.addtime,
-        "pricie": that.data.requestParam.pricie,
-        "callVehicleLevel": that.data.requestParam.callVehicleLevel,
-        "callVehicleOpType": that.data.requestParam.callVehicleOpType,
-        "bookTime": that.data.requestParam.bookTime,
-        // "driverCode": null,
-        // "codetime": null,
-        "orderSource": that.data.requestParam.orderSource,
-        "orderMethod": that.data.requestParam.orderMethod
+      if (seconds % 2 == 0 && !that.data.isGenerate) {
+        that.requestOrder();
       }
-      wx.setStorage({
-        key: 'order_info',
-        data: d,
-      })
-      wx.navigateTo({
-        url: '../waitDriver/waitDriver',
-      })
+      setTimeout(that.countInterval, 1000);
     }
   },
   introduceOrder: function() {
+    var orgigin_wgs84 = lt.gcj02towgs84(that.data.origin.addressLocation.lng, that.data.origin.addressLocation.lat);
+    var destinction_wgs84 = lt.gcj02towgs84(that.data.destinction.addressLocation.lng,
+      that.data.destinction.addressLocation.lat)
     var body = {
       "data": [{
         "token": "979347F6010C4F8C42BDD0C3535A5735",
         "depProvince": that.data.origin.provinceCityDistrict.province,
         "depCity": that.data.origin.provinceCityDistrict.city,
-        "depCounty": that.data.origin.provinceCityDistrict.county,
+        "depCounty": that.data.origin.provinceCityDistrict.district,
         "depDetails": that.data.origin.addressInfo,
-        "depLong": that.data.origin.addressLocation.lng,
-        "depLat": that.data.origin.addressLocation.lat,
+        "depLong": orgigin_wgs84[0],
+        "depLat": orgigin_wgs84[1],
         "desProvince": that.data.destinction.provinceCityDistrict.province,
         "desCity": that.data.destinction.provinceCityDistrict.city,
-        "desCounty": that.data.destinction.provinceCityDistrict.county,
+        "desCounty": that.data.destinction.provinceCityDistrict.district,
         "desDetails": that.data.destinction.addressInfo,
-        "desLong": that.data.destinction.addressLocation.lng,
-        "desLat": that.data.destinction.addressLocation.lat,
+        "desLong": destinction_wgs84[0],
+        "desLat": destinction_wgs84[1],
         "passengerNumber": that.data.params.passagerNumber,
         "addtime": util.formatTime(new Date()),
-        "pricie": that.data.params.price,
+        "price": that.data.params.price,
         "callVehicleLevel": that.data.params.callVehicleLevel,
         "callVehicleOpType": that.data.params.callVehicleOpType,
         "bookTime": that.data.params.bookTime,
@@ -150,8 +122,68 @@ Page({
     })
     getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
+  //请求订单的状态以及司机的位置并显示
+  requestOrder: function() {
+    var body = {
+      "data": [{
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "orderNumber": that.data.orderNumber
+      }],
+      "datatype": "wxUserOrderStatus",
+      "op": "getdata"
+    }
+    getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
   onSuccess: function(res, requestCode) {
-    //真正接到订单的时候
+    switch (requestCode) {
+      case PLACE_ORDER:
+        if (res.code == 0) {
+          that.setData({
+            orderNumber: res.data[0].orderNumber,
+            isGenerate: false
+          })
+          console.log("等待订单:" + JSON.stringify(res));
+          //保存订单号以及订单信息到本地
+          var d = {
+            "orderNumber": res.data[0].orderNumber,
+            "token": that.data.requestParam.token,
+            "depProvince": that.data.requestParam.depProvince,
+            "depCity": that.data.requestParam.depCity,
+            "depCounty": that.data.requestParam.depCounty,
+            "depDetails": that.data.requestParam.depDetails,
+            "depLong": that.data.requestParam.depLong,
+            "depLat": that.data.requestParam.depLat,
+            "desProvince": that.data.requestParam.desProvince,
+            "desCity": that.data.requestParam.desCity,
+            "desCounty": that.data.requestParam.desCounty,
+            "desDetails": that.data.requestParam.desDetails,
+            "desLong": that.data.requestParam.desLong,
+            "desLat": that.data.requestParam.desLat,
+            "passengerNumber": that.data.requestParam.passengerNumber,
+            "addtime": that.data.requestParam.addtime,
+            "pricie": that.data.requestParam.pricie,
+            "callVehicleLevel": that.data.requestParam.callVehicleLevel,
+            "callVehicleOpType": that.data.requestParam.callVehicleOpType,
+            "bookTime": that.data.requestParam.bookTime,
+            // "driverCode": null,
+            // "codetime": null,
+            "orderSource": that.data.requestParam.orderSource,
+            "orderMethod": that.data.requestParam.orderMethod
+          }
+          wx.setStorage({
+            key: 'order_info',
+            data: d,
+          })
+        }
+        break;
+      case REQUEST_ORDER:
+        if (res.code == 0 && res.data.status == 1) {
+          wx.redirectTo({
+            url: '../waitDriver/waitDriver',
+          })
+        }
+        break;
+    }
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {
     console.log("错误处理");

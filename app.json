@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/authorize/authorize",
     "pages/index/index",
     "pages/logs/logs",
     "pages/login/login",
@@ -18,5 +19,13 @@
   ],
   "window": {
     "navigationStyle": "custom"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    },
+    "scope.userInfo": {
+      "desc": "你的基本信息将用于小程序接口的效果展示"
+    }
   }
 }

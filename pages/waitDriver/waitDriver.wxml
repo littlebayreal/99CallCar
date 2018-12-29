@@ -12,12 +12,12 @@
     </view>
     <view class='title_content_class'>
       <view class='title_content_name_class'>
-        <text>李师傅</text>
+        <text>{{driverName}}</text>
         <image class='title_name_image_class' src='../../image/star.png'></image>
-        <text class='title_content_number_class'>5 3454单</text>
+        <text class='title_content_number_class'>{{stars}} {{orderNum}}单</text>
       </view>
-      <view class='title_content_carnum_class'>苏E999MD</view>
-      <view class='title_content_cartype_class'>黑色·日产轩逸</view>
+      <view class='title_content_carnum_class'>{{licensePlate}}</view>
+      <view class='title_content_cartype_class'>{{carcolor}}·{{vehicleModel}}</view>
     </view>
     <view>
      <image class='title_right_class' src='../../image/call_phone.png'></image></view>

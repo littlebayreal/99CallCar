@@ -1,0 +1,16 @@
+<!--pages/authorize/authorize.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    99约车
+    <!-- <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image> -->
+  </view>
+</view>
+<view class='body' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+<view class='content'>
+  <image class='logo_class' src='../../image/map_car.png'></image>
+  <text class='text_class'>99约车</text>
+  <text class='text_class'>欢迎你</text>
+  <text class='text_tip_class'>请微信授权后放心使用99约车</text>
+  <button class='button_class' open-type="getUserInfo" bindgetuserinfo='authorize'><image class='button_img_class' src='../../image/wechat.png'></image>微信授权登录</button>
+  </view>
+</view>
