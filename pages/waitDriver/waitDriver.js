@@ -80,23 +80,21 @@ Page({
           //   height: 30
           // }],
         });
-        setTimeout(that.requestDriverLocation, 5000);
-        setTimeout(that.request, 5000);
+        setTimeout(that.requestDriverLocation, 0);
+        setTimeout(that.request, 0);
 
         that.requestOrderDetail();
       },
     })
   },
-  requestOrderDetail:function(){
+  requestOrderDetail: function() {
     var body = {
-      "data": [
-        {
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
-          "orderNumber": that.data.orderInfo.orderNumber
-        }
-      ],
-        "datatype": "pTraveldetailQuery",
-          "op": "getdata"
+      "data": [{
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "orderNumber": that.data.orderInfo.orderNumber
+      }],
+      "datatype": "pTraveldetailQuery",
+      "op": "getdata"
     }
     getApp().webCall(null, body, REQUEST_ORDER_NUMBER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
@@ -134,11 +132,13 @@ Page({
   onSuccess: function(res, requestCode) {
     switch (requestCode) {
       case REQUEST_ORDER:
-        //订单状态到接单成功了
-        console.log("查询订单状态:" + res);
-        // wx.redirectTo({
-        //   url: '../orderservice/orderservice',
-        // })
+        //订单状态到接单成功了并且行程
+        console.log("查询订单状态:" + JSON.stringify(res));
+        if (res.code == "0" && res.data.status == "4") {
+          wx.redirectTo({
+            url: '../orderservice/orderservice',
+          })
+        }
         break;
       case REQUEST_DRIVER_LOCATION:
         var dep_gcj02 = lt.wgs84togcj02(that.data.orderInfo.depLong, that.data.orderInfo.depLat);
@@ -152,18 +152,18 @@ Page({
             longitude: loc_gcj02[0],
             width: 15,
             height: 30
-          },{
+          }, {
             iconPath: "../../image/str.png",
             id: 0,
-            latitude:dep_gcj02[1],
-            longitude:dep_gcj02[0],
+            latitude: dep_gcj02[1],
+            longitude: dep_gcj02[0],
             width: 30,
             height: 30
           }, {
             iconPath: "../../image/end.png",
             id: 1,
-              latitude:des_gcj02[1],
-              longitude:des_gcj02[0],
+            latitude: des_gcj02[1],
+            longitude: des_gcj02[0],
             width: 30,
             height: 30
           }]
@@ -182,10 +182,10 @@ Page({
           })
         }
         break;
-        case REQUEST_ORDER_NUMBER:
-        if(res.code == 0){
+      case REQUEST_ORDER_NUMBER:
+        if (res.code == 0) {
           that.setData({
-            driverName:res.data[0].driverName,
+            driverName: res.data[0].driverName,
             stars: res.data[0].driverGrade,
             orderNum: res.data[0].orderCount,
             licensePlate: res.data[0].licensePlate,

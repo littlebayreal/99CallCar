@@ -3,6 +3,7 @@ var that;
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var qqmapsdk;
 const REQUEST_ORDER = 'request_order';
+const REQUEST_ORDER_NUMBER = 'request_order_number';
 const REQUEST_DRIVER_LOCATION = 'request_driver_location'
 Page({
 
@@ -11,7 +12,7 @@ Page({
    */
   data: {
     scale: 16,
-    isRecycle:true
+    isRecycle: true
   },
 
   /**
@@ -43,8 +44,7 @@ Page({
       success: function(res) {
         that.setData({
           orderInfo: res.data,
-          markers: [
-              {
+          markers: [{
               iconPath: "../../image/str.png",
               id: 0,
               latitude: res.data.depLat,
@@ -64,11 +64,13 @@ Page({
         });
         setTimeout(that.updateLocation, 0);
         setTimeout(that.request, 0);
+
+        that.requestOrderDetail();
       },
     })
   },
   //请求订单的状态以及司机的位置并显示
-  request: function () {
+  request: function() {
     if (that.data.isRecycle) {
       var body = {
         "data": [{
@@ -83,18 +85,28 @@ Page({
       setTimeout(that.request, 2000);
     }
   },
+  requestOrderDetail: function() {
+    var body = {
+      "data": [{
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "orderNumber": that.data.orderInfo.orderNumber
+      }],
+      "datatype": "pTraveldetailQuery",
+      "op": "getdata"
+    }
+    getApp().webCall(null, body, REQUEST_ORDER_NUMBER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
   //更新位置 根据手机定位非常不精准  看项目需要是否后面改成查询司机的位置？
-  updateLocation: function () {
+  updateLocation: function() {
     if (that.data.isRecycle) {
       wx.getLocation({
         type: "gcj02",
-        success: function (res) {
+        success: function(res) {
           console.log(res)
           that.setData({
             // origin_lng: res.longitude,
             // origin_lat: res.latitude,
-            markers: [
-                {
+            markers: [{
                 iconPath: "../../image/str.png",
                 id: 0,
                 latitude: that.data.orderInfo.depLat,
@@ -123,29 +135,40 @@ Page({
         },
       });
       //三秒更新一次司机的位置信息
-      setTimeout(that.updateLocation, 3000);
+      setTimeout(that.updateLocation, 5000);
     }
   },
-  onSuccess: function (res, requestCode) {
+  onSuccess: function(res, requestCode) {
     switch (requestCode) {
       case REQUEST_ORDER:
         //到达目的地 跳转支付界面
         console.log("查询订单状态:" + res);
-        wx.redirectTo({
-          url: '../pay/pay',
-        })
-        that.setData({
-          isRecycle:false
-        })
+        if (res.code == 0 && res.data.status == 5)
+          wx.redirectTo({
+            url: '../pay/pay',
+          })
+
         break;
       case REQUEST_DRIVER_LOCATION:
         break;
+      case REQUEST_ORDER_NUMBER:
+        if (res.code == 0) {
+          that.setData({
+            driverName: res.data[0].driverName,
+            stars: res.data[0].driverGrade,
+            orderNum: res.data[0].orderCount,
+            licensePlate: res.data[0].licensePlate,
+            carcolor: res.data[0].vehicleColor,
+            vehicleModel: res.data[0].vehicleModel
+          })
+        }
+        break;
     }
   },
-  onErrorBefore: function (statusCode, errorMessage, requestCode) {
+  onErrorBefore: function(statusCode, errorMessage, requestCode) {
     console.log("错误处理");
   },
-  onComplete: function (res) {
+  onComplete: function(res) {
 
   },
   movetoPosition: function() {
@@ -176,7 +199,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    that.setData({
+      isRecycle: false
+    })
   },
 
   /**
