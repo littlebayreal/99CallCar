@@ -42,8 +42,10 @@
 
 .title_content_carnum_class {
   font-size: 28rpx;
-  background: #707070;
+  background: #e0e0e0;
+  border: 1rpx solid #000;
   width: 200rpx;
+  margin: 10rpx 0;
 }
 .title_content_cartype_class{
   text-align: left;

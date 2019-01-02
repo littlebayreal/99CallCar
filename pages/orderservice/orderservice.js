@@ -1,6 +1,7 @@
 // pages/orderservice/orderservice.js
 var that;
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+var lt = require('../../utils/locationTrans.js');
 var qqmapsdk;
 const REQUEST_ORDER = 'request_order';
 const REQUEST_ORDER_NUMBER = 'request_order_number';
@@ -44,23 +45,24 @@ Page({
       success: function(res) {
         that.setData({
           orderInfo: res.data,
-          markers: [{
-              iconPath: "../../image/str.png",
-              id: 0,
-              latitude: res.data.depLat,
-              longitude: res.data.depLong,
-              width: 30,
-              height: 30
-            },
-            {
-              iconPath: "../../image/end.png",
-              id: 1,
-              latitude: res.data.desLat,
-              longitude: res.data.desLong,
-              width: 30,
-              height: 30
-            }
-          ],
+          // markers: [
+          //   {
+          //     iconPath: "../../image/str.png",
+          //     id: 0,
+          //     latitude: res.data.depLat,
+          //     longitude: res.data.depLong,
+          //     width: 30,
+          //     height: 30
+          //   },
+          //   {
+          //     iconPath: "../../image/end.png",
+          //     id: 1,
+          //     latitude: des_gcj02[1],
+          //     longitude: des_gcj02[0],
+          //     width: 30,
+          //     height: 30
+          //   }
+          // ],
         });
         setTimeout(that.updateLocation, 0);
         setTimeout(that.request, 0);
@@ -99,41 +101,15 @@ Page({
   //更新位置 根据手机定位非常不精准  看项目需要是否后面改成查询司机的位置？
   updateLocation: function() {
     if (that.data.isRecycle) {
-      wx.getLocation({
-        type: "gcj02",
-        success: function(res) {
-          console.log(res)
-          that.setData({
-            // origin_lng: res.longitude,
-            // origin_lat: res.latitude,
-            markers: [{
-                iconPath: "../../image/str.png",
-                id: 0,
-                latitude: that.data.orderInfo.depLat,
-                longitude: that.data.orderInfo.depLong,
-                width: 30,
-                height: 30
-              },
-              {
-                iconPath: "../../image/end.png",
-                id: 1,
-                latitude: that.data.orderInfo.desLat,
-                longitude: that.data.orderInfo.desLong,
-                width: 30,
-                height: 30
-              },
-              {
-                iconPath: "../../image/demo_running.png",
-                id: 2,
-                latitude: res.latitude,
-                longitude: res.longitude,
-                width: 40,
-                height: 40
-              },
-            ],
-          })
-        },
-      });
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderInfo.orderNumber
+        }],
+        "datatype": "queryDriverPosition",
+        "op": "getdata"
+      }
+      getApp().webCall(null, body, REQUEST_DRIVER_LOCATION, that.onSuccess, that.onErrorBefore, that.onComplete);
       //三秒更新一次司机的位置信息
       setTimeout(that.updateLocation, 5000);
     }
@@ -143,13 +119,36 @@ Page({
       case REQUEST_ORDER:
         //到达目的地 跳转支付界面
         console.log("查询订单状态:" + res);
-        if (res.code == 0 && res.data.status == 5)
+        if (res.code == 0 && res.data.status == 10)
           wx.redirectTo({
             url: '../pay/pay',
           })
-
         break;
       case REQUEST_DRIVER_LOCATION:
+        if (res.code == 0) {
+          var des_gcj02 = lt.wgs84togcj02(that.data.orderInfo.desLong, that.data.orderInfo.desLat);
+          var loc_gcj02 = lt.wgs84togcj02(res.data[0].long, res.data[0].lat);
+          that.setData({
+            markers: [{
+                iconPath: "../../image/end.png",
+                id: 1,
+                latitude: des_gcj02[1],
+                longitude: des_gcj02[0],
+                width: 30,
+                height: 30
+              },
+              {
+                iconPath: "../../image/map_car.png",
+                id: 2,
+                latitude: loc_gcj02[1],
+                longitude: loc_gcj02[0],
+                width: 15,
+                height: 30,
+                rotate:-res.data[0].direction
+              },
+            ],
+          })
+        }
         break;
       case REQUEST_ORDER_NUMBER:
         if (res.code == 0) {

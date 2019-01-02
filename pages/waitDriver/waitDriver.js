@@ -151,7 +151,8 @@ Page({
             latitude: loc_gcj02[1],
             longitude: loc_gcj02[0],
             width: 15,
-            height: 30
+            height: 30,
+            rotate: -res.data[0].direction
           }, {
             iconPath: "../../image/str.png",
             id: 0,

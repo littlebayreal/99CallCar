@@ -50,18 +50,24 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    that.setData({
-      navH: getApp().globalData.navHeight,
-      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
-    });
-    that.request();
+    wx.getStorage({
+      key: 'order_info',
+      success: function (res) {
+        that.setData({
+          orderInfo: res.data,
+          navH: getApp().globalData.navHeight,
+          bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
+        });
+        that.request();
+      },
+    })
   },
   request: function() {
     var body = {
       "data": [
         {
-          "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
-          "orderNumber": "20181002080938820283"
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderInfo.orderNumber
         }
       ],
       "datatype": "passengerBill",
@@ -76,7 +82,16 @@ Page({
   },
   onSuccess: function (res, requestCode) {
     //真正接到订单的时候
-    console.log(res.data);
+    if (res.code == 0) {
+      var list = [];
+      for (var i in res.data[0].tripFee.items) {
+        list.push(res.data[0].tripFee.items[i])
+      }
+      that.setData({
+        list: list,
+        totalFee: res.data[0].totalFee
+      })
+    }
   },
   onErrorBefore: function (statusCode, errorMessage, requestCode) {
 

@@ -409,7 +409,7 @@ Page({
         var points = [];
         for (var i in datas) {
           var loc_gcj02 = lt.wgs84togcj02(datas[i].long, datas[i].lat);
-          points.push({ latitude: loc_gcj02[1], longitude: loc_gcj02[0] });
+          points.push({ latitude: loc_gcj02[1], longitude: loc_gcj02[0]});
           that.setData({
             markers: [{
               iconPath: "../../image/map_car.png",
@@ -417,11 +417,10 @@ Page({
               latitude: points[0].latitude,
               longitude: points[0].longitude,
               width: 15,
-              height: 30
+              height: 30,
             }]
           })
         }
-        
         break;
     }
 
@@ -530,7 +529,7 @@ Page({
           url: '../personcenter/personcenter',
         })
         // wx.navigateTo({
-        //   url: '../authorize/authorize',
+        //   url: '../pay/pay',
         // })
         break;
       case "phone_call":

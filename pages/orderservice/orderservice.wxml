@@ -14,7 +14,7 @@
       <view class='title_content_name_class'>
         <text>{{driverName}}</text>
         <image class='title_name_image_class' src='../../image/star.png'></image>
-        <text class='title_content_number_class'>>{{stars}} {{orderNum}}单</text>
+        <text class='title_content_number_class'>{{stars}} {{orderNum}}单</text>
       </view>
       <view class='title_content_carnum_class'>{{licensePlate}}</view>
       <view class='title_content_cartype_class'>{{carcolor}}·{{vehicleModel}}</view>

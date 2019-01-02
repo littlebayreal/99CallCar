@@ -19,7 +19,7 @@ Page({
     //   navH: getApp().globalData.navHeight,
     //   bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     // });
-    that.request();
+    // that.request();
   },
   // request: function() {
   //   var body = {

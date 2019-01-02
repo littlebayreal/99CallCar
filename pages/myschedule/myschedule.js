@@ -18,7 +18,8 @@ Page({
       }
     ],
     myscheduleData: [],
-    currentPage: 0
+    currentPage: 0,
+    pageSize: 10
   },
   /**
    * 生命周期函数--监听页面加载
@@ -135,9 +136,10 @@ Page({
   //   });
   // },
   request: function(page, pageSize) {
+    console.log("页码:" + page);
     var body = {
       "data": [{
-        "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
+        "token": "979347F6010C4F8C42BDD0C3535A5735",
         "userType": 0,
         "page": page,
         "pageSize": pageSize
@@ -152,15 +154,15 @@ Page({
     for (var i in items) {
       that.data.myscheduleData.push(items[i]);
     }
-    console.log("数组长度：" + that.data.myscheduleData)
-    items = that.data.myscheduleData;
-    console.log(items.length)
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      item.state = getApp().getOrderStatusString(item.state);
+    for (var i = 0; i < that.data.myscheduleData.length; i++) {
+      if (that.checkRate(that.data.myscheduleData[i].state)) {
+        console.log("什么情况:" + that.data.myscheduleData.state)
+        var item = that.data.myscheduleData[i];
+        item.state = getApp().getOrderStatusString(item.state);
+      }
     };
     that.setData({
-      myscheduleData: items
+      myscheduleData: that.data.myscheduleData
     })
     wx.showToast({
       title: '刷新成功',
@@ -172,12 +174,20 @@ Page({
   onComplete: function() {
     that.refreshView.stopPullRefresh();
   },
+  checkRate: function(number) {　　
+    var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+    var num = number;
+    if (!re.test(num)) {　　　
+      return false;　　
+    } else
+      return true;
+  },
   listBottom: function(event) {
     if (this.data.isUpScroll) {
+      that.request(that.data.currentPage + 1, 10);
       that.setData({
-        currentPage: that.data.currentPage++
+        currentPage: that.data.currentPage + 1
       })
-      that.request(that.data.currentPage, 10);
       wx.showToast({
         title: '加载更多',
       })
@@ -226,7 +236,8 @@ Page({
     //   this.refreshView.stopPullRefresh()
     // }, 2000)
     that.setData({
-      myscheduleData: []
+      myscheduleData: [],
+      currentPage: 0
     })
     that.request(0, 10);
   }

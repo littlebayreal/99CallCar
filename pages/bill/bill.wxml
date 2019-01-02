@@ -17,6 +17,6 @@
   </block>
   <view class='split_line'></view>
   <view class='cost_total_class'>支付金额
-    <text class='cost_total_text_class'>8.90</text>元</view>
+    <text class='cost_total_text_class'>{{totalFee}}</text>元</view>
     <view class='check_bill_rule' bindtap='checkBill'>查看计价规则</view>
 </view>
