@@ -72,29 +72,36 @@ Page({
    */
   onLoad: function(options) {
     that = this;
+    
     var type;
     if (options.type == FROM_PAY) {
       type = FROM_PAY;
+
+      wx.getStorage({
+        key: 'order_info',
+        success: function (res) {
+          that.setData({
+            orderInfo: res.data,
+          });
+        },
+      })
     } else {
       type = FROM_ORDER_DETAIL;
-      // var schedulebean = JSON.parse(options.scheduleJson);
+      var schedulebean = JSON.parse(options.scheduleJson);
+      that.setData({
+        orderInfo: schedulebean,
+      })
       // console.log(schedulebean);
     }
-    wx.getStorage({
-      key: 'order_info',
-      success: function(res) {
-        that.setData({
-          orderInfo:res.data,
-          type: type,
-          navH: getApp().globalData.navHeight,
-          bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
-          isAlreadyEval: false,
-          bottomRightButton: options.type == FROM_PAY ? '结束行程' : '查看轨迹'
-        });
-        that.request();
-        that.requestBill();
-      },
-    })
+    that.setData({
+      type: type,
+      navH: getApp().globalData.navHeight,
+      bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
+      isAlreadyEval: false,
+      bottomRightButton: options.type == FROM_PAY ? '结束行程' : '查看轨迹'
+    });
+    that.request();
+    that.requestBill();
   },
   request: function() {
     var body = {

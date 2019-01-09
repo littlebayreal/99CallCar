@@ -1,7 +1,9 @@
 // pages/wait/wait.js
 var that;
 const PLACE_ORDER = 'place_order';
+const PLACE_ORDER_TEXI = 'place_order_texi';
 const REQUEST_ORDER = 'request_order';
+const REQUEST_ORDER_TEXI = 'request_order_texi'
 var util = require('../../utils/util.js')
 var lt = require('../../utils/locationTrans.js')
 Page({
@@ -87,52 +89,83 @@ Page({
   introduceOrder: function() {
     var orgigin_wgs84 = lt.gcj02towgs84(that.data.origin.addressLocation.lng, that.data.origin.addressLocation.lat);
     var destinction_wgs84 = lt.gcj02towgs84(that.data.destinction.addressLocation.lng,
-      that.data.destinction.addressLocation.lat)
-    var body = {
-      "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
-        "depProvince": that.data.origin.provinceCityDistrict.province,
-        "depCity": that.data.origin.provinceCityDistrict.city,
-        "depCounty": that.data.origin.provinceCityDistrict.district,
-        "depDetails": that.data.origin.addressInfo,
-        "depLong": orgigin_wgs84[0],
-        "depLat": orgigin_wgs84[1],
-        "desProvince": that.data.destinction.provinceCityDistrict.province,
-        "desCity": that.data.destinction.provinceCityDistrict.city,
-        "desCounty": that.data.destinction.provinceCityDistrict.district,
-        "desDetails": that.data.destinction.addressInfo,
-        "desLong": destinction_wgs84[0],
-        "desLat": destinction_wgs84[1],
-        "passengerNumber": that.data.params.passagerNumber,
-        "addtime": util.formatTime(new Date()),
-        "price": that.data.params.price,
-        "callVehicleLevel": that.data.params.callVehicleLevel,
-        "callVehicleOpType": that.data.params.callVehicleOpType,
-        "bookTime": that.data.params.bookTime,
-        // "driverCode": null,
-        // "codetime": null,
-        "orderSource": 6,
-        "orderMethod": that.data.params.ordermethod
-      }],
-      "datatype": "placeOrder",
-      "op": "setdata"
-    };
-    that.setData({
-      requestParam: body.data[0]
-    })
-    getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+      that.data.destinction.addressLocation.lat);
+    console.log("我要打的:" + that.data.params.callVehicleOpType);
+    if (that.data.params.callVehicleOpType == 1) {
+      //出租车招车
+      var body = {
+        mLongitude: orgigin_wgs84[0],
+        mLatitude: orgigin_wgs84[1],
+        addr: that.data.origin.addressInfo,
+        mobilenumber: '18262041404',
+        findRadius: 1000,
+        des: that.data.destinction.addressInfo,
+        destlng: destinction_wgs84[0],
+        destlat: destinction_wgs84[1],
+        callfee: 0,
+        ddtj: 6,
+        tip: 0,
+        carpool: 0,
+        veltype: 0
+      }
+      var timestamp = Date.parse(new Date());
+      getApp().webCallForTexi('callCarMyself', body, timestamp, PLACE_ORDER_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
+    } else {
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "depProvince": that.data.origin.provinceCityDistrict.province,
+          "depCity": that.data.origin.provinceCityDistrict.city,
+          "depCounty": that.data.origin.provinceCityDistrict.district,
+          "depDetails": that.data.origin.addressInfo,
+          "depLong": orgigin_wgs84[0],
+          "depLat": orgigin_wgs84[1],
+          "desProvince": that.data.destinction.provinceCityDistrict.province,
+          "desCity": that.data.destinction.provinceCityDistrict.city,
+          "desCounty": that.data.destinction.provinceCityDistrict.district,
+          "desDetails": that.data.destinction.addressInfo,
+          "desLong": destinction_wgs84[0],
+          "desLat": destinction_wgs84[1],
+          "passengerNumber": that.data.params.passagerNumber,
+          "addtime": util.formatTime(new Date()),
+          "price": that.data.params.price,
+          "callVehicleLevel": that.data.params.callVehicleLevel,
+          "callVehicleOpType": that.data.params.callVehicleOpType,
+          "bookTime": that.data.params.bookTime,
+          // "driverCode": null,
+          // "codetime": null,
+          "orderSource": 6,
+          "orderMethod": that.data.params.ordermethod
+        }],
+        "datatype": "placeOrder",
+        "op": "setdata"
+      };
+      that.setData({
+        requestParam: body.data[0]
+      })
+      getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+    }
   },
   //请求订单的状态以及司机的位置并显示
   requestOrder: function() {
-    var body = {
-      "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
-        "orderNumber": that.data.orderNumber
-      }],
-      "datatype": "wxUserOrderStatus",
-      "op": "getdata"
+    if (that.data.params.callVehicleOpType == 1) {
+      var body = {
+        orderId: that.data.orderNumber,
+        mobilenumber:'18262041404',
+      }
+      var timestamp = Date.parse(new Date());
+      getApp().webCallForTexi('queryCallCarResultByOrderId', body, timestamp, REQUEST_ORDER_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
+    } else {
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "orderNumber": that.data.orderNumber
+        }],
+        "datatype": "wxUserOrderStatus",
+        "op": "getdata"
+      }
+      getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
     }
-    getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   onSuccess: function(res, requestCode) {
     switch (requestCode) {
@@ -161,7 +194,7 @@ Page({
             "desLat": that.data.requestParam.desLat,
             "passengerNumber": that.data.requestParam.passengerNumber,
             "addtime": that.data.requestParam.addtime,
-            "pricie": that.data.requestParam.pricie,
+            "price": that.data.requestParam.pricie,
             "callVehicleLevel": that.data.requestParam.callVehicleLevel,
             "callVehicleOpType": that.data.requestParam.callVehicleOpType,
             "bookTime": that.data.requestParam.bookTime,
@@ -180,6 +213,53 @@ Page({
         if (res.code == 0 && res.data.status == 1) {
           wx.redirectTo({
             url: '../waitDriver/waitDriver',
+          })
+        }
+        break;
+      case REQUEST_ORDER_TEXI:
+        if (res.code == 0 && res.data.status == 1) {
+          wx.redirectTo({
+            url: '../waitDriver/waitDriver',
+          })
+        }
+        break;
+      case PLACE_ORDER_TEXI:
+        if (res.success) {
+          console.log("生成订单成功");
+          that.setData({
+            orderNumber: res.orderid,
+            isGenerate: false
+          });
+          //保存订单号以及订单信息到本地
+          var d = {
+            "orderNumber": res.orderid,
+            // "token": that.data.requestParam.token,
+            "depProvince": that.data.requestParam.depProvince,
+            "depCity": that.data.requestParam.depCity,
+            "depCounty": that.data.requestParam.depCounty,
+            "depDetails": that.data.requestParam.depDetails,
+            "depLong": that.data.requestParam.depLong,
+            "depLat": that.data.requestParam.depLat,
+            "desProvince": that.data.requestParam.desProvince,
+            "desCity": that.data.requestParam.desCity,
+            "desCounty": that.data.requestParam.desCounty,
+            "desDetails": that.data.requestParam.desDetails,
+            "desLong": that.data.requestParam.desLong,
+            "desLat": that.data.requestParam.desLat,
+            "passengerNumber": that.data.requestParam.passengerNumber,
+            "addtime": that.data.requestParam.addtime,
+            "price": that.data.requestParam.pricie,
+            "callVehicleLevel": that.data.requestParam.callVehicleLevel,
+            "callVehicleOpType": that.data.requestParam.callVehicleOpType,
+            "bookTime": that.data.requestParam.bookTime,
+            // "driverCode": null,
+            // "codetime": null,
+            "orderSource": that.data.requestParam.orderSource,
+            "orderMethod": that.data.requestParam.orderMethod
+          }
+          wx.setStorage({
+            key: 'order_info',
+            data: d,
           })
         }
         break;

@@ -1,5 +1,6 @@
 //app.js
 var Parser = require('/libs/dom-parser.js');
+var md5 = require('/libs/md5.js')
 App({
   onLaunch: function() {
     // 展示本地存储能力
@@ -9,21 +10,22 @@ App({
 
     // 获取手机系统信息
     wx.getSystemInfo({
-      success: res => {
-        //导航高度
-        this.globalData.navHeight = res.statusBarHeight + 46;
-        this.globalData.windowHeight = res.windowHeight;
-      }, fail(err) {
-        console.log(err);
-      }
-    }),
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-         console.log("登录结果:"+JSON.stringify(res))
-      }
-    })
+        success: res => {
+          //导航高度
+          this.globalData.navHeight = res.statusBarHeight + 46;
+          this.globalData.windowHeight = res.windowHeight;
+        },
+        fail(err) {
+          console.log(err);
+        }
+      }),
+      // 登录
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          console.log("登录结果:" + JSON.stringify(res))
+        }
+      })
   },
   getOrderStatusString: function(status) {
     switch (status) {
@@ -71,7 +73,7 @@ App({
    * @param {Object} requestType 请求类型（默认POST）
    * @param {Object} retry 访问失败重新请求次数（默认1次）
    */
-  webCall:function(urlPath, params, requestCode, onSuccess, onErrorBefore, onComplete, isVerify, requestType, retry) {
+  webCall: function(urlPath, params, requestCode, onSuccess, onErrorBefore, onComplete, isVerify, requestType, retry) {
     var params = arguments[1] ? arguments[1] : {};
     //var requestCode = arguments[2] ? arguments[2] : 1;
     var onSuccess = arguments[3] ? arguments[3] : function() {};
@@ -153,7 +155,7 @@ App({
         //请求完成后，2秒后重复验证的开关关闭 
         if (isVerify) {
           setTimeout(function() {
-            that.verifyCount[requestCode] = false;
+            that.globalData.verifyCount[requestCode] = false;
           }, 2000);
         }
       }
@@ -161,10 +163,78 @@ App({
   },
   onComplete: function(res) {},
   onError: function(statusCode, errorMessage, requestCode) {},
+  //出租车相关请求的接口
+  webCallForTexi: function(urlPath, params,timeStamp,requestCode, onSuccess, onErrorBefore, onComplete, isVerify, requestType, retry) {
+    var params = arguments[1] ? arguments[1] : {};
+    var onSuccess = arguments[4] ? arguments[4] : function() {};
+    var onErrorBefore = arguments[5] ? arguments[5] : this.onError;
+    var onComplete = arguments[6] ? arguments[6] : this.onComplete;
+    var isVerify = arguments[7] ? arguments[7] : false;
+    var requestType = arguments[8] ? arguments[8] : "POST";
+    var retry = arguments[9] ? arguments[9] : 1;
+    var that = this;
+    //防止重复提交，相同请求间隔时间不能小于500毫秒 
+    var nowTime = new Date().getTime();
+    if (this.globalData.requestCountForTexi[requestCode] && (nowTime - this.globalData.requestCountForTexi[requestCode]) < 500) {
+      return;
+    }
+    //设置数组的子参数
+    this.globalData.requestCountForTexi[requestCode] = nowTime;
+    console.log(this.globalData.requestCountForTexi);
+    //是否验证重复提交 
+    if (isVerify) {
+      if (this.globalData.verifyCountForTexi[requestCode]) {
+        return;
+      }
+      this.globalData.verifyCountForTexi[requestCode] = true; //重复验证开关开启 
+    }
+    //sn生成
+    var base_string = 'GET' + "ak=" + 'A01' + "av=" + '1.22' + "iv=" + '2.1' + "params=" + encodeURIComponent(JSON.stringify(params)) + "st=" + 'MD5' + "ts=" + timeStamp +'b024dwa5f10346f1a295e6v422ed0334';
+    console.log("base_string:" + base_string);
+    var base_string_code = encodeURIComponent(base_string);
+    console.log("base_string_code:" + base_string_code);
+    var base_string_md5 = (md5.hexMD5(base_string_code)).toString();
+    console.log("编译出来的MD5:"+base_string_md5);
+    base_string_md5 = base_string_md5.substring(8,24).toUpperCase();
+    var body = "sn=" + base_string_md5 + "&st=MD5&iv=2.1&ts=" + timeStamp + "&ak=A01&params=" + encodeURIComponent(JSON.stringify(params))+"&av=1.22";
+    console.log("请求的参数:" + body);
+    wx.request({
+      url: 'https://syznjt.cn:41001/OrderSrv/passengerApp/' + urlPath + "?" + body,
+      method: requestType, // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT      
+      header: {
+        // 'content-type': requestType == 'POST' ? 'application/x-www-form-urlencoded' : 'application/json'
+        'content-type': 'text/xml; charset=utf-8',
+      },
+      success: function(res) {
+        console.log("出租车请求:"+ JSON.stringify(res));
+        if(res.statusCode == '200'){
+          onSuccess(res.data,requestCode);
+        }else{
+          onErrorBefore(0, "请求失败 , 请重试", requestCode);
+        }
+      },
+      fail: function(res) {
+        retry--;
+        console.log("网络访问失败：" + JSON.stringify(res));
+        if (retry > 0) return that.webCall(urlPath, params, requestCode, onSuccess, onErrorBefore, onComplete, requestType, retry);
+      },
+      complete: function(res) {
+        onComplete(requestCode);
+        //请求完成后，2秒后重复验证的开关关闭 
+        if (isVerify) {
+          setTimeout(function() {
+            that.globalData.verifyCountForTexi[requestCode] = false;
+          }, 2000);
+        }
+      }
+    })
+  },
   globalData: {
     key: '7OBV901GBwqGiW6uAeRVonRhC6ERr2SO',
     userInfo: null,
     requestCount: [],
-    verifyCount: []
+    verifyCount: [],
+    requestCountForTexi: [],
+    verifyCountForTexi: [],
   }
 })

@@ -113,5 +113,6 @@ function out_of_china(lng, lat) {
 module.exports = {
   wgs84togcj02: wgs84togcj02,
   gcj02towgs84: gcj02towgs84,
-  gcj02tobd09: gcj02tobd09
+  gcj02tobd09: gcj02tobd09,
+  bd09togcj02: bd09togcj02
 }

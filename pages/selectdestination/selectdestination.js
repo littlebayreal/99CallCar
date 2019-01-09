@@ -1,6 +1,7 @@
 // pages/selectdestination/selectdestination.js
 var that;
 var bmap = require('../../libs/bmap-wx.js');
+var lt = require('../../utils/locationTrans.js')
 var Bmapsdk;
 Page({
   /**
@@ -72,16 +73,14 @@ Page({
     ]
   },
   itemOnclickListener: function(e) {
-    console.log(e);
+    console.log("buyinggai"+JSON.stringify(e));
     var pages = getCurrentPages() //获取加载的页面( 页面栈 )
     var currentPage = pages[pages.length - 1] // 获取当前页面
     var prevPage = pages[pages.length - 2] //获取上一个页面
     　　 // 设置上一个页面的数据（可以修改，也可以新增
     switch (that.data.type) {
       case 0:
-        prevPage.setData({
-          origin: e.currentTarget.dataset.item
-        });
+        prevPage.switchNav(e.currentTarget.dataset.item)
         break;
       case 1:
         prevPage.setData({
@@ -128,6 +127,7 @@ Page({
         console.log(res);
         var al = [];
         var datas = res.result;
+        console.log(JSON.stringify(res.result));
         for (var i = 0; i < 10; i++) {
           var pcd = {
             province: datas[i].province,
@@ -200,7 +200,6 @@ Page({
         break;
     }
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

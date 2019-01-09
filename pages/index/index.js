@@ -9,11 +9,15 @@ var that;
 const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
 const QUERY_NEAR_CAR = 'query_near_car';
+const QUERY_NEAR_TEXI = 'query_near_texi';
+const QUERY_PRICE_TEXI = 'query_price_texi'
+var timeout = null;
 Page({
   data: {
     passagerList: [{
         name: '1人',
-        value: '1人'
+        value: '1人',
+        checked: true
       },
       {
         name: '2人',
@@ -42,7 +46,8 @@ Page({
       },
       {
         name: '舒适车',
-        value: '舒适车'
+        value: '舒适车',
+        checked: true
       },
       {
         name: '快车',
@@ -62,6 +67,7 @@ Page({
     isLoading: false,
     showModalStatus: false,
     carType: "舒适车",
+    passagerNum: "1人",
     scale: 16,
   },
   onLoad: function() {
@@ -84,7 +90,6 @@ Page({
           cur_lat: res.latitude,
           isRefresh: true
         })
-        // that.showNearCar(res.longitude, res.latitude)
         that.refreshCar();
       },
     })
@@ -92,9 +97,11 @@ Page({
     that.orderTimeListener();
     // that.requestLogin();
   },
-  onUnload:function(){
+  stop: function() {
+    clearTimeout(timeout);
+    timeout = null;
     that.setData({
-      isRefresh:false
+      isRefresh: false
     })
   },
   onResume: function() {
@@ -120,12 +127,12 @@ Page({
   },
   onReady: function() {
     this.mapCtx = wx.createMapContext("99CallCarMap"); // 地图组件的id
-    that.movetoPosition()
   },
   switchNav: function(e) {
-    var ct = e.currentTarget.dataset.id;
+    console.log(e);
     that.setData({
-      currentTab: ct
+      cur_lng: e.addressLocation.lng,
+      cur_lat: e.addressLocation.lat,
     })
   },
   bottomInputListener: function(e) {
@@ -156,13 +163,13 @@ Page({
       case "nowBtn":
         that.setData({
           isNow: 0,
-          bottom_clazz: 'bottom'
+          mapHeight: (getApp().globalData.windowHeight - getApp().globalData.navHeight - 45) * 0.6
         })
         break;
       case "orderBtn":
         that.setData({
           isNow: 1,
-          bottom_clazz: 'bottom_large'
+          mapHeight: (getApp().globalData.windowHeight - getApp().globalData.navHeight - 45) * 0.5
         })
         break;
     }
@@ -366,42 +373,85 @@ Page({
 
   },
   calcuteCost: function() {
-    var depBD = lt.gcj02tobd09(that.data.origin.addressLocation.lng, that.data.origin.addressLocation.lat);
-    var desBD = lt.gcj02tobd09(that.data.destination.addressLocation.lng,
-      that.data.destination.addressLocation.lat)
-    var body = {
-      "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
-        "cartype": 3,
-        "depProvince": that.data.origin.provinceCityDistrict.province,
-        "depCity": that.data.origin.provinceCityDistrict.city,
-        "depCounty": that.data.origin.provinceCityDistrict.district,
-        "depDetails": that.data.origin.addressInfo,
-        "depLong": depBD[0],
-        "depLat": depBD[1],
-        "desProvince": that.data.destination.provinceCityDistrict.province,
-        "desCity": that.data.destination.provinceCityDistrict.city,
-        "desCounty": that.data.destination.provinceCityDistrict.district,
-        "desDetails": that.data.destination.addressInfo,
-        "desLong": desBD[0],
-        "desLat": desBD[1],
-        "isBook": that.data.isNow,
-        "estimateTralvelDistance": util.getDistance(that.data.origin.addressLocation.lat, that.data.origin.addressLocation.lng, that.data.destination.addressLocation.lat, that.data.destination.addressLocation.lng)
-      }],
-      "datatype": "priceEstimate",
-      "op": "getdata"
+    var callVehicleLevel = null;
+    switch (that.data.carType) {
+      case '豪华车':
+        callVehicleLevel = 1;
+        break;
+      case '七座商务车':
+        callVehicleLevel = 2;
+        break;
+      default:
+        callVehicleLevel = 3;
+        break;
     }
-    that.setData({
-      showCost: true,
-      isLoading: true
-    });
-    app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
+    var dep_wgs84 = lt.gcj02towgs84(that.data.origin.addressLocation.lng, that.data.origin.addressLocation.lat);
+    var des_wgs84 = lt.gcj02towgs84(that.data.destination.addressLocation.lng,
+      that.data.destination.addressLocation.lat);
+    if (that.data.carType == '出租车') {
+      var timestamp = Date.parse(new Date());
+      var date = new Date(timestamp);
+      //获取年份  
+      var Y = date.getFullYear();
+      //获取月份  
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+      //获取当日日期 
+      var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+      var H = date.getHours < 10 ? '0' + date.getHours() : date.getHours();
+      var N = date.getMinutes < 10 ? '0' + date.getMinutes() : date.getMinutes();
+      console.log("日期:" + Y + M + D + H + N);
+      var body = {
+        mobilenumber: '18262041404',
+        city: '0512',
+        cityname: that.data.origin.provinceCityDistrict.city,
+        distance: '1500',
+        ordertime: Y+M+D+H+N,
+        ordertype: '0',
+        veltype: 1,
+        mLongitude: dep_wgs84[0],
+        mLatitude: dep_wgs84[1]
+      }
+      that.setData({
+        showCost: true,
+        isLoading: true
+      });
+      app.webCallForTexi('getEstimatedCost', body, timestamp, QUERY_PRICE_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
+    } else {
+      var body = {
+        "data": [{
+          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "cartype": callVehicleLevel,
+          "depProvince": that.data.origin.provinceCityDistrict.province,
+          "depCity": that.data.origin.provinceCityDistrict.city,
+          "depCounty": that.data.origin.provinceCityDistrict.district,
+          "depDetails": that.data.origin.addressInfo,
+          "depLong": dep_wgs84[0],
+          "depLat": dep_wgs84[1],
+          "desProvince": that.data.destination.provinceCityDistrict.province,
+          "desCity": that.data.destination.provinceCityDistrict.city,
+          "desCounty": that.data.destination.provinceCityDistrict.district,
+          "desDetails": that.data.destination.addressInfo,
+          "desLong": des_wgs84[0],
+          "desLat": des_wgs84[1],
+          "isBook": that.data.isNow,
+          "estimateTralvelDistance": util.getDistance(that.data.origin.addressLocation.lat, that.data.origin.addressLocation.lng, that.data.destination.addressLocation.lat, that.data.destination.addressLocation.lng)
+        }],
+        "datatype": "priceEstimate",
+        "op": "getdata"
+      }
+      that.setData({
+        showCost: true,
+        isLoading: true
+      });
+      app.webCall(null, body, QUERY_BANNER, that.onSuccess, that.onErrorBefore, that.onComplete);
+    }
   },
   onSuccess: function(res, requestCode) {
     switch (requestCode) {
       case QUERY_BANNER:
         that.setData({
-          cost: res.data[0].price
+          cost: res.data[0].price,
+          costLoading: "预计行程花费约" + res.data[0].price + "元"
         })
         break;
       case QUERY_NEAR_CAR:
@@ -409,7 +459,10 @@ Page({
         var points = [];
         for (var i in datas) {
           var loc_gcj02 = lt.wgs84togcj02(datas[i].long, datas[i].lat);
-          points.push({ latitude: loc_gcj02[1], longitude: loc_gcj02[0]});
+          points.push({
+            latitude: loc_gcj02[1],
+            longitude: loc_gcj02[0]
+          });
           that.setData({
             markers: [{
               iconPath: "../../image/map_car.png",
@@ -422,6 +475,12 @@ Page({
           })
         }
         break;
+      case QUERY_PRICE_TEXI:
+        that.setData({
+          cost: res.pay_fee,
+          costLoading: res.note
+        })
+      break;
     }
 
   },
@@ -499,25 +558,33 @@ Page({
 
     //关闭
     if (currentStatu == "close") {
-      console.log("好奇怪:" + that.data.sType);
       if (that.data.sType == 0) {
         this.setData({
+          isRefresh: true,
           showModalStatus: false,
           carType: that.data.radioValue
         });
       } else {
         this.setData({
+          isRefresh: true,
           showModalStatus: false,
           passagerNum: that.data.radioValue
         });
+      }
+      if (timeout == null) {
+        console.log("重启定时任务")
+        that.refreshCar();
       }
     }
     // }.bind(this), 200)
 
     // 显示
     if (currentStatu == "open") {
+      clearTimeout(timeout);
+      timeout = null;
       this.setData({
-        showModalStatus: true
+        showModalStatus: true,
+        isRefresh: false
       });
     }
   },
@@ -553,6 +620,8 @@ Page({
   regionchangeListener: function(e) {
     console.log(e);
     if (e.type == "begin") {
+      clearTimeout(timeout);
+      timeout = null;
       that.setData({
         isRefresh: false
       })
@@ -561,6 +630,9 @@ Page({
       that.setData({
         isRefresh: true
       });
+      if (timeout == null) {
+        that.refreshCar();
+      }
       that.mapCtx.getCenterLocation({ //getCenterLocation可以获取地图中点的经纬度
         type: "gcj02",
         success: function(res) {
@@ -587,9 +659,9 @@ Page({
       })
     }
   },
-  movetoPosition: function() {
-    that.mapCtx.moveToLocation();
-  },
+  // movetoPosition: function() {
+  //   that.mapCtx.moveToLocation();
+  // },
   //叫车的方法
   callCarClickListener: function() {
     var callVehicleLevel = null;
@@ -650,6 +722,7 @@ Page({
     wx.navigateTo({
       url: '../wait/wait?originJson=' + originJson + '&destinctionJson=' + destinctionJson + '&paramsJson=' + paramsJson,
     })
+    that.stop();
   },
   refreshCar: function() {
     if (!that.data.isRefresh) return;
@@ -658,9 +731,24 @@ Page({
     //   that.setData({
     //     time: that.parseTime(seconds),
     //   })
-    that.showNearCar();
+    if (that.data.carType == '出租车') {
+      that.showNearTexi();
+    } else {
+      that.showNearCar();
+    }
     //10秒刷新一下附近的车
-    setTimeout(that.refreshCar, 10000);
+    timeout = setTimeout(that.refreshCar, 10000);
+  },
+  showNearTexi: function() {
+    var curWGS = lt.gcj02towgs84(that.data.cur_lng, that.data.cur_lat);
+    var body = {
+      "mobilenumber": "18262041404",
+      "mLongitude": curWGS[0],
+      "mLatitude": curWGS[1],
+      "findRadius": 5000
+    }
+    var timestamp = Date.parse(new Date());
+    app.webCallForTexi('queryNearCars', body, timestamp, QUERY_NEAR_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
   },
   showNearCar: function() {
     var square = util.returnLLSquarePoint(that.data.cur_lng, that.data.cur_lat, 5000);
