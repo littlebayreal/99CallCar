@@ -76,13 +76,16 @@ Page({
     var type;
     if (options.type == FROM_PAY) {
       type = FROM_PAY;
-
       wx.getStorage({
         key: 'order_info',
         success: function (res) {
+          console.log("订单参数:"+ JSON.stringify(res));
           that.setData({
             orderInfo: res.data,
           });
+
+          that.request();
+          that.requestBill();
         },
       })
     } else {
@@ -100,8 +103,7 @@ Page({
       isAlreadyEval: false,
       bottomRightButton: options.type == FROM_PAY ? '结束行程' : '查看轨迹'
     });
-    that.request();
-    that.requestBill();
+   
   },
   request: function() {
     var body = {

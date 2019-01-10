@@ -15,7 +15,8 @@
     "pages/evaluation/evaluation",
     "pages/orderDetail/orderDetail",
     "pages/billingMethod/billingMethod",
-    "pages/bill/bill"
+    "pages/bill/bill",
+    "pages/orderServiceForTexi/orderServiceForTexi"
   ],
   "window": {
     "navigationStyle": "custom"

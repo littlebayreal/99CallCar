@@ -1,6 +1,6 @@
 // pages/orderDetail.js
 var that;
-var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+// var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var locTrans = require('../../utils/locationTrans.js');
 var qqmapsdk;
 const REQUEST_TRAIL = 'request_trail'
@@ -25,9 +25,9 @@ Page({
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     });
     // 实例化API核心类
-    qqmapsdk = new QQMapWX({
-      key: getApp().globalData.key
-    });
+    // qqmapsdk = new QQMapWX({
+    //   key: getApp().globalData.key
+    // });
     // wx.getLocation({
     //   type: "gcj02",
     //   success: function (res) {

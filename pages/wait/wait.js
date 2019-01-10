@@ -94,22 +94,25 @@ Page({
     if (that.data.params.callVehicleOpType == 1) {
       //出租车招车
       var body = {
-        mLongitude: orgigin_wgs84[0],
-        mLatitude: orgigin_wgs84[1],
-        addr: that.data.origin.addressInfo,
-        mobilenumber: '18262041404',
-        findRadius: 1000,
-        des: that.data.destinction.addressInfo,
-        destlng: destinction_wgs84[0],
-        destlat: destinction_wgs84[1],
-        callfee: 0,
-        ddtj: 6,
-        tip: 0,
-        carpool: 0,
-        veltype: 0
+        "mLongitude": orgigin_wgs84[0],
+        "mLatitude": orgigin_wgs84[1],
+        "addr": that.data.origin.addressInfo,
+        "mobilenumber": '18262041404',
+        "findRadius": 1000,
+        "des": that.data.destinction.addressInfo,
+        "destlng": destinction_wgs84[0],
+        "destlat": destinction_wgs84[1],
+        "callfee": 0,
+        "ddtj": 6,
+        "tip": 0,
+        "carpool": 0,
+        "veltype": 0
       }
       var timestamp = Date.parse(new Date());
-      getApp().webCallForTexi('callCarMyself', body, timestamp, PLACE_ORDER_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
+      getApp().webCallForTexi('callCarMyself', body, timestamp, PLACE_ORDER_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1);
+      that.setData({
+        requestParam: body
+      })
     } else {
       var body = {
         "data": [{
@@ -217,11 +220,11 @@ Page({
         }
         break;
       case REQUEST_ORDER_TEXI:
-        if (res.code == 0 && res.data.status == 1) {
+        // if (res.orderstate == 5) {
           wx.redirectTo({
-            url: '../waitDriver/waitDriver',
+            url: '../orderServiceForTexi/orderServiceForTexi',
           })
-        }
+        // }
         break;
       case PLACE_ORDER_TEXI:
         if (res.success) {
@@ -233,29 +236,19 @@ Page({
           //保存订单号以及订单信息到本地
           var d = {
             "orderNumber": res.orderid,
-            // "token": that.data.requestParam.token,
-            "depProvince": that.data.requestParam.depProvince,
-            "depCity": that.data.requestParam.depCity,
-            "depCounty": that.data.requestParam.depCounty,
-            "depDetails": that.data.requestParam.depDetails,
-            "depLong": that.data.requestParam.depLong,
-            "depLat": that.data.requestParam.depLat,
-            "desProvince": that.data.requestParam.desProvince,
-            "desCity": that.data.requestParam.desCity,
-            "desCounty": that.data.requestParam.desCounty,
-            "desDetails": that.data.requestParam.desDetails,
-            "desLong": that.data.requestParam.desLong,
-            "desLat": that.data.requestParam.desLat,
-            "passengerNumber": that.data.requestParam.passengerNumber,
-            "addtime": that.data.requestParam.addtime,
-            "price": that.data.requestParam.pricie,
-            "callVehicleLevel": that.data.requestParam.callVehicleLevel,
-            "callVehicleOpType": that.data.requestParam.callVehicleOpType,
-            "bookTime": that.data.requestParam.bookTime,
-            // "driverCode": null,
-            // "codetime": null,
-            "orderSource": that.data.requestParam.orderSource,
-            "orderMethod": that.data.requestParam.orderMethod
+            "mLongitude": that.data.params.mLongitude,
+            "mLatitude": that.data.params.mLatitude,
+            "addr": that.data.params.addr,
+            "mobilenumber": that.data.params.mobilenumber,
+            "findRadius": that.data.params.findRadius,
+            "des": that.data.params.des,
+            "destlng": that.data.params.destlng,
+            "destlat": that.data.params.destlat,
+            "callfee": that.data.params.callfee,
+            "ddtj": that.data.params.ddtj,
+            "tip": that.data.params.tip,
+            "carpool": that.data.params.carpool,
+            "veltype": that.data.params.veltype
           }
           wx.setStorage({
             key: 'order_info',

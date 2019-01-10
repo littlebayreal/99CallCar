@@ -400,11 +400,13 @@ Page({
       var H = date.getHours < 10 ? '0' + date.getHours() : date.getHours();
       var N = date.getMinutes < 10 ? '0' + date.getMinutes() : date.getMinutes();
       console.log("日期:" + Y + M + D + H + N);
+      var distance = util.getDistance(dep_wgs84[1], dep_wgs84[0], des_wgs84[1], des_wgs84[0]);
+      console.log("距离："+ distance);
       var body = {
         mobilenumber: '18262041404',
         city: '0512',
         cityname: that.data.origin.provinceCityDistrict.city,
-        distance: '1500',
+        distance: distance*1000,
         ordertime: Y+M+D+H+N,
         ordertype: '0',
         veltype: 1,

@@ -1,8 +1,6 @@
 // pages/orderservice/orderservice.js
 var that;
-var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 var lt = require('../../utils/locationTrans.js');
-var qqmapsdk;
 const REQUEST_ORDER = 'request_order';
 const REQUEST_ORDER_NUMBER = 'request_order_number';
 const REQUEST_DRIVER_LOCATION = 'request_driver_location'
@@ -26,9 +24,6 @@ Page({
       bodyHeight: getApp().globalData.windowHeight - getApp().globalData.navHeight,
     });
     // 实例化API核心类
-    qqmapsdk = new QQMapWX({
-      key: getApp().globalData.key
-    });
     wx.getLocation({
       type: "gcj02",
       success: function(res) {
