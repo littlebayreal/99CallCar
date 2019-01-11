@@ -1,0 +1,64 @@
+<!--pages/orderServiceForTexi/orderServiceForTexi.wxml-->
+<view class='nav bg-black' style='height:{{navH}}px'>
+  <view class='nav-title'>
+    {showTitle}
+    <!-- <image src='../../image/back.png' mode='aspectFit' class='back' bindtap='navBack'></image> -->
+  </view>
+</view>
+<view class='container_wait_driver' style='height:{{bodyHeight}}px;margin-top:{{navH}}px'>
+  <view class='title_class'>
+    <view class='title_title_class'>
+      <image class='title_image_class' src='../../image/demo_header.png'></image>
+      <text>{{driverName}}</text>
+      <text style='font-size:10px;color:red'>好评率{{driverRate}}%</text>
+    </view>
+    <view class='title_content_class'>
+      <text>{{carNo}}</text>
+      <text style='font-size:12px'>车型:{{carType}}</text>
+      <text style='font-size:12px'>单位:{{unit}}</text>
+      <text style='font-size:12px'>证件:{{empcode}}</text>
+      <text style='font-size:12px'>{{totalAndCancel}}</text>
+      <!-- <view class='title_content_name_class'>
+        <image class='title_name_image_class' src='../../image/star.png'></image>
+        <text class='title_content_number_class'>{{stars}} {{orderNum}}单</text>
+      </view>
+      <view class='title_content_carnum_class'>{{licensePlate}}</view>
+      <view class='title_content_cartype_class'>{{carcolor}}·{{vehicleModel}}</view> -->
+    </view>
+    <view>
+      <image class='title_right_class' src='../../image/call_phone.png'></image>
+    </view>
+  </view>
+  <view class='toast_class'>{{showToast}}</view>
+  <map id="99CallCarMap" class="map_class" longitude='{{origin_lng}}' latitude='{{origin_lat}}' scale='{{scale}}' show-location markers='{{markers}}'>
+    <!-- <cover-image id='personal_center' class='map_personal_center' src='../../image/personalcenter.png' bindtap='mapClickListener'></cover-image> -->
+    <!-- <cover-image id='phone_call' class='map_phone' src='../../image/phone.png' bindtap='mapClickListener'></cover-image> -->
+    <cover-image id='current_location' class='map_location' src='../../image/current_location.png' bindtap='mapClickListener'></cover-image>
+
+    <cover-view wx:if="{{isShowButton}}" class='already_in_car' bindtap='getInCar'>我已上车</cover-view>
+  </map>
+  <!-- <view class='bottom_class'>
+   <view class='bottom_button_class'>一键报警</view>
+   <view class='bottom_button_class'>行程分享</view>
+   <view class='bottom_button_class' bindtap='powerDrawer' data-statu="open">取消订单</view>
+   <view class='bottom_button_class'>需要帮助</view>
+  </view>  -->
+
+  <!--mask-->
+  <!-- <cover-view class="drawer_screen"  wx:if="{{showModalStatus}}"></cover-view>
+  <cover-view class="drawer_box" wx:if="{{showModalStatus}}">
+    <cover-view class="drawer_title">选择撤销订单的原因</cover-view>
+    <cover-view class='car_type_radio_group'>
+      <block wx:for="{{carTypeList}}">
+        <cover-view class="car_type_radio" bindtap='radioChange' data-value='{{item.value}}' data-pos='{{index}}'>
+          <cover-image class='car_type_select' src="{{item.checked?'../../image/select.png':'../../image/unselect.png'}}"></cover-image> 
+          <cover-view>{{item.value}}</cover-view>
+        </cover-view>
+      </block>
+    </cover-view>
+    <cover-view class='btn_class'>
+    <cover-view id='btn_cancel' class="btn_ok" bindtap="powerDrawer" data-statu="close">取消</cover-view>
+    <cover-view id='btn_ok' class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</cover-view>
+    </cover-view>
+  </cover-view> -->
+</view>

@@ -1,0 +1,112 @@
+/* pages/orderServiceForTexi/orderServiceForTexi.wxss */
+.container_wait_driver{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.title_class {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #d5d5d5;
+}
+.title_title_class{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.title_image_class {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.title_content_class {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 10rpx;
+}
+
+.title_content_name_class {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title_name_image_class {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 20rpx;
+}
+
+.title_content_carnum_class {
+  font-size: 28rpx;
+  background: #e0e0e0;
+  border: 1rpx solid #000;
+  width: 200rpx;
+  margin: 10rpx 0;
+}
+.title_content_cartype_class{
+  text-align: left;
+  font-size: 28rpx;
+  color: #d5d5d5
+}
+.title_right_class{
+  width: 80rpx;
+  height: 80rpx;
+}
+.map_class {
+  position: relative;
+  height: 66vh;
+  width: 100%;
+}
+.map_location{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  bottom: 45rpx;
+  right: 30rpx;
+}
+.bottom_class{
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+}
+.bottom_button_class{
+  line-height: 80rpx;
+  font-size: 28rpx;
+  padding: 10rpx;
+}
+.toast_class{
+  height: 60rpx;
+  width: 100%;
+  line-height: 60rpx;
+  font-size: 30rpx;
+  text-align: center
+}
+.title_content_number_class{
+  font-size: 24rpx;
+}
+.already_in_car{
+  background: #fc975c;
+  width: 80%;
+  height: 80rpx;
+  border-radius: 10rpx;
+  position: absolute;
+  bottom: 0rpx;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  line-height: 80rpx;
+  color: white
+}

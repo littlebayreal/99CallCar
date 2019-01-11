@@ -403,7 +403,7 @@ Page({
       var distance = util.getDistance(dep_wgs84[1], dep_wgs84[0], des_wgs84[1], des_wgs84[0]);
       console.log("距离："+ distance);
       var body = {
-        mobilenumber: '18262041404',
+        mobilenumber: getApp().globalData.mobilenumber,
         city: '0512',
         cityname: that.data.origin.provinceCityDistrict.city,
         distance: distance*1000,
@@ -598,7 +598,7 @@ Page({
           url: '../personcenter/personcenter',
         })
         // wx.navigateTo({
-        //   url: '../pay/pay',
+        //   url: '../orderServiceForTexi/orderServiceForTexi',
         // })
         break;
       case "phone_call":
@@ -744,7 +744,7 @@ Page({
   showNearTexi: function() {
     var curWGS = lt.gcj02towgs84(that.data.cur_lng, that.data.cur_lat);
     var body = {
-      "mobilenumber": "18262041404",
+      "mobilenumber": getApp().globalData.mobilenumber,
       "mLongitude": curWGS[0],
       "mLatitude": curWGS[1],
       "findRadius": 5000

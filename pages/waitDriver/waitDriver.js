@@ -58,21 +58,6 @@ Page({
         // var des_wgs84 = lt.gcj02towgs84(res.data.desLong, res.data.desLat);
         that.setData({
           orderInfo: res.data,
-          // markers: [{
-          //   iconPath: "../../image/str.png",
-          //   id: 0,
-          //   latitude: dep_wgs84[1],
-          //   longitude: dep_wgs84[0],
-          //   width: 30,
-          //   height: 30
-          // }, {
-          //   iconPath: "../../image/end.png",
-          //   id: 1,
-          //   latitude: des_wgs84[1],
-          //   longitude: des_wgs84[0],
-          //   width: 30,
-          //   height: 30
-          // }],
         });
         setTimeout(that.requestDriverLocation, 0);
         setTimeout(that.request, 0);
@@ -152,13 +137,6 @@ Page({
             id: 0,
             latitude: dep_gcj02[1],
             longitude: dep_gcj02[0],
-            width: 30,
-            height: 30
-          }, {
-            iconPath: "../../image/end.png",
-            id: 1,
-            latitude: des_gcj02[1],
-            longitude: des_gcj02[0],
             width: 30,
             height: 30
           }]

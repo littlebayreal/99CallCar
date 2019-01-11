@@ -97,7 +97,7 @@ Page({
         "mLongitude": orgigin_wgs84[0],
         "mLatitude": orgigin_wgs84[1],
         "addr": that.data.origin.addressInfo,
-        "mobilenumber": '18262041404',
+        "mobilenumber": getApp().globalData.mobilenumber,
         "findRadius": 1000,
         "des": that.data.destinction.addressInfo,
         "destlng": destinction_wgs84[0],
@@ -154,7 +154,7 @@ Page({
     if (that.data.params.callVehicleOpType == 1) {
       var body = {
         orderId: that.data.orderNumber,
-        mobilenumber:'18262041404',
+        mobilenumber: getApp().globalData.mobilenumber,
       }
       var timestamp = Date.parse(new Date());
       getApp().webCallForTexi('queryCallCarResultByOrderId', body, timestamp, REQUEST_ORDER_TEXI, that.onSuccess, that.onErrorBefore, that.onComplete, true, 'GET', 1)
