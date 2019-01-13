@@ -236,19 +236,19 @@ Page({
           //保存订单号以及订单信息到本地
           var d = {
             "orderNumber": res.orderid,
-            "mLongitude": that.data.params.mLongitude,
-            "mLatitude": that.data.params.mLatitude,
-            "addr": that.data.params.addr,
-            "mobilenumber": that.data.params.mobilenumber,
-            "findRadius": that.data.params.findRadius,
-            "des": that.data.params.des,
-            "destlng": that.data.params.destlng,
-            "destlat": that.data.params.destlat,
-            "callfee": that.data.params.callfee,
-            "ddtj": that.data.params.ddtj,
-            "tip": that.data.params.tip,
-            "carpool": that.data.params.carpool,
-            "veltype": that.data.params.veltype
+            "mLongitude": that.data.requestParam.mLongitude,
+            "mLatitude": that.data.requestParam.mLatitude,
+            "addr": that.data.requestParam.addr,
+            "mobilenumber": that.data.requestParam.mobilenumber,
+            "findRadius": that.data.requestParam.findRadius,
+            "des": that.data.requestParam.des,
+            "destlng": that.data.requestParam.destlng,
+            "destlat": that.data.requestParam.destlat,
+            "callfee": that.data.requestParam.callfee,
+            "ddtj": that.data.requestParam.ddtj,
+            "tip": that.data.requestParam.tip,
+            "carpool": that.data.requestParam.carpool,
+            "veltype": that.data.requestParam.veltype
           }
           wx.setStorage({
             key: 'order_info',
@@ -345,12 +345,13 @@ Page({
       })
     }
   },
-  // cancelOrder: function() {
-  //   var body = {
+  //取消订单
+  cancelOrder: function() {
+    // var body = {
 
-  //   }
-  //   getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
-  // },
+    // }
+    // getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
   util: function(currentStatu) {
     if (currentStatu == 'close') {
       this.setData({

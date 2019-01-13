@@ -10,7 +10,8 @@ const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
 const QUERY_NEAR_CAR = 'query_near_car';
 const QUERY_NEAR_TEXI = 'query_near_texi';
-const QUERY_PRICE_TEXI = 'query_price_texi'
+const QUERY_PRICE_TEXI = 'query_price_texi';
+const QUERY_ORDER_STATE = 'query_order_state';
 var timeout = null;
 Page({
   data: {
@@ -96,6 +97,32 @@ Page({
     //手动载入一遍 否则第一次点击出来是空白
     that.orderTimeListener();
     // that.requestLogin();
+  },
+  onShow: function() {
+    console.log("显示的时候我被执行了");
+    wx.getStorage({
+      key: 'order_info',
+      success(res) {
+        console.log("检查行车订单:" + JSON.stringify(res));
+        if (res.data != null && res.data.orderNumber != null) {
+          var arr = Object.keys(res.data);
+          //出租车订单
+          if (res.length == 14) {
+
+          } else { //网约车订单
+            var body = {
+              "data": [{
+                "token": "979347F6010C4F8C42BDD0C3535A5735",
+                "orderNumber": res.data.orderNumber
+              }],
+              "datatype": "wxUserOrderStatus",
+              "op": "getdata"
+            }
+            getApp().webCall(null, body, QUERY_ORDER_STATE, that.onSuccess, that.onErrorBefore, that.onComplete);
+          }
+        }
+      }
+    })
   },
   stop: function() {
     clearTimeout(timeout);
@@ -401,13 +428,13 @@ Page({
       var N = date.getMinutes < 10 ? '0' + date.getMinutes() : date.getMinutes();
       console.log("日期:" + Y + M + D + H + N);
       var distance = util.getDistance(dep_wgs84[1], dep_wgs84[0], des_wgs84[1], des_wgs84[0]);
-      console.log("距离："+ distance);
+      console.log("距离：" + distance);
       var body = {
         mobilenumber: getApp().globalData.mobilenumber,
         city: '0512',
         cityname: that.data.origin.provinceCityDistrict.city,
-        distance: distance*1000,
-        ordertime: Y+M+D+H+N,
+        distance: distance * 1000,
+        ordertime: Y + M + D + H + N,
         ordertype: '0',
         veltype: 1,
         mLongitude: dep_wgs84[0],
@@ -482,7 +509,49 @@ Page({
           cost: res.pay_fee,
           costLoading: res.note
         })
-      break;
+        break;
+      case QUERY_ORDER_STATE:
+        if (res.code == 0) {
+          wx.showModal({
+            title: '提示',
+            content: '您还有一个正在进行的订单，是否进入？',
+            showCancel: true,
+            success(u) {
+              if (u.confirm) {
+                console.log("跳转啊");
+                switch (res.data.status) {
+                  case '1':
+                  case '2':
+                  case '3':
+                    wx.redirectTo({
+                      url: '../waitDriver/waitDriver',
+                    })
+                    break;
+                  case '4':
+                    wx.redirectTo({
+                      url: '../orderservice/orderservice',
+                    })
+                    break;
+                  case '5':
+                  case '10':
+                    wx.redirectTo({
+                      url: '../pay/pay',
+                    })
+                    break;
+                  default:
+                    wx.setStorage({
+                      key: 'order_info',
+                      data: '',
+                    })
+                    break;
+                }
+              } else if (u.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+        }
+        break;
     }
 
   },
