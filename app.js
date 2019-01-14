@@ -231,7 +231,9 @@ App({
   },
   globalData: {
     key: '7OBV901GBwqGiW6uAeRVonRhC6ERr2SO',
-    userInfo: null,
+    userInfo: {
+      token:'979347F6010C4F8C42BDD0C3535A5735'
+    },
     mobilenumber:"18262041404",
     requestCount: [],
     verifyCount: [],

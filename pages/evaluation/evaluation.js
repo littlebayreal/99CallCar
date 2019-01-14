@@ -108,7 +108,7 @@ Page({
   request: function() {
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.orderInfo.orderNumber
       }],
       "datatype": "pTraveldetailQuery",
@@ -119,7 +119,7 @@ Page({
   requestBill: function () {
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.orderInfo.orderNumber
       }],
       "datatype": "passengerBill",
@@ -130,7 +130,7 @@ Page({
   submitEval: function() {
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.orderInfo.orderNumber,
         "userType": 0,
         "grade": that.data.star,

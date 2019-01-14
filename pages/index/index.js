@@ -421,7 +421,7 @@ Page({
     } else {
       var body = {
         "data": [{
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "token": getApp().globalData.userInfo.token,
           "cartype": callVehicleLevel,
           "depProvince": that.data.origin.provinceCityDistrict.province,
           "depCity": that.data.origin.provinceCityDistrict.city,
@@ -771,9 +771,10 @@ Page({
         callVehicleLevel = 3;
         break;
     }
+    console.log("我的token呢：" + JSON.stringify(getApp().globalData.userInfo));
     var body = {
       "data": [{
-        "token": "9B58BBB28337BA5FB30D245F53448F04",
+        "token": getApp().globalData.userInfo.token,
         "currLong": curWGS[0].toString(),
         "currLat": curWGS[1].toString(),
         "leftTopLong": leftTopWGS[0].toFixed(6),

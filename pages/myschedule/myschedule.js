@@ -139,7 +139,7 @@ Page({
     console.log("页码:" + page);
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "userType": 0,
         "page": page,
         "pageSize": pageSize

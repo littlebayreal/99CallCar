@@ -49,7 +49,7 @@ Page({
   request: function() {
     var body = {
       "data": [{
-        "token": "20181002094556OSQNUWGSG-XXICG3EIQP3DA-VQPS",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.schedulebean.orderNumber
       }],
       "datatype": "queryTrack",

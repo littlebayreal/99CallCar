@@ -69,7 +69,7 @@ Page({
   requestOrderDetail: function() {
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.orderInfo.orderNumber
       }],
       "datatype": "pTraveldetailQuery",
@@ -82,7 +82,7 @@ Page({
     if (that.data.isRecycle) {
       var body = {
         "data": [{
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "token": getApp().globalData.userInfo.token,
           "orderNumber": that.data.orderInfo.orderNumber
         }],
         "datatype": "wxUserOrderStatus",
@@ -97,7 +97,7 @@ Page({
     if (that.data.isDriverLocRecycle) {
       var body = {
         "data": [{
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "token": getApp().globalData.userInfo.token,
           "orderNumber": that.data.orderInfo.orderNumber
         }],
         "datatype": "queryDriverPosition",
@@ -269,7 +269,7 @@ Page({
   cancelOrder: function() {
     var body = {
       "data": [{
-        "token": "979347F6010C4F8C42BDD0C3535A5735",
+        "token": getApp().globalData.userInfo.token,
         "orderNumber": that.data.orderInfo.orderNumber,
         "userType": 0,
         "reason": that.data.carType

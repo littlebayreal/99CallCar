@@ -116,7 +116,7 @@ Page({
     } else {
       var body = {
         "data": [{
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "token": getApp().globalData.userInfo.token,
           "depProvince": that.data.origin.provinceCityDistrict.province,
           "depCity": that.data.origin.provinceCityDistrict.city,
           "depCounty": that.data.origin.provinceCityDistrict.district,
@@ -161,7 +161,7 @@ Page({
     } else {
       var body = {
         "data": [{
-          "token": "979347F6010C4F8C42BDD0C3535A5735",
+          "token": getApp().globalData.userInfo.token,
           "orderNumber": that.data.orderNumber
         }],
         "datatype": "wxUserOrderStatus",
@@ -256,6 +256,19 @@ Page({
           })
         }
         break;
+      case REQUEST_CANCEL:
+        //取消订单  返回主页
+        if (res.code == 0) {
+          var pages = getCurrentPages();
+          wx.navigateBack({
+            delta: pages.length - 1
+          })
+        } else {
+          wx.showToast({
+            title: res.desc,
+          })
+        }
+        break;
     }
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {
@@ -338,19 +351,26 @@ Page({
     that.util(currentStatu);
 
     if (e.currentTarget.id == 'btn_ok') {
-      // that.cancelOrder();
+      that.cancelOrder();
       //取消订单  返回主页
-      wx.navigateBack({
-        delta: 1
-      })
+      // wx.navigateBack({
+      //   delta: 1
+      // })
     }
   },
-  // cancelOrder: function() {
-  //   var body = {
-
-  //   }
-  //   getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
-  // },
+  cancelOrder: function () {
+    var body = {
+      "data": [{
+        "token": getApp().globalData.userInfo.token,
+        "orderNumber": that.data.orderInfo.orderNumber,
+        "userType": 0,
+        "reason": that.data.carType
+      }],
+      "datatype": "cancelOrder",
+      "op": "setdata"
+    }
+    getApp().webCall(null, body, REQUEST_CANCEL, that.onSuccess, that.onErrorBefore, that.onComplete);
+  },
   util: function(currentStatu) {
     if (currentStatu == 'close') {
       this.setData({
