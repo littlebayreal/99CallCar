@@ -10,8 +10,10 @@ const QUERY_BANNER = 'query_banner';
 const QUERY_LOGIN = 'query_login';
 const QUERY_NEAR_CAR = 'query_near_car';
 const QUERY_NEAR_TEXI = 'query_near_texi';
-const QUERY_PRICE_TEXI = 'query_price_texi'
+const QUERY_PRICE_TEXI = 'query_price_texi';
+const QUERY_ORDER_STATE = 'query_order_state';
 var timeout = null;
+var isCanCall = true;
 Page({
   data: {
     passagerList: [{
@@ -96,6 +98,33 @@ Page({
     //手动载入一遍 否则第一次点击出来是空白
     that.orderTimeListener();
     // that.requestLogin();
+  },
+  onShow: function() {
+    console.log("显示的时候我被执行了");
+    wx.getStorage({
+      key: 'order_info',
+      success(res) {
+        console.log("检查行车订单:" + JSON.stringify(res));
+        if (res.data != null && res.data.orderNumber != null) {
+          isCanCall = false;
+          var arr = Object.keys(res.data);
+          //出租车订单
+          if (res.length == 14) {
+
+          } else { //网约车订单
+            var body = {
+              "data": [{
+                "token": getApp().globalData.userInfo.token,
+                "orderNumber": res.data.orderNumber
+              }],
+              "datatype": "wxUserOrderStatus",
+              "op": "getdata"
+            }
+            getApp().webCall(null, body, QUERY_ORDER_STATE, that.onSuccess, that.onErrorBefore, that.onComplete);
+          }
+        }
+      }
+    })
   },
   stop: function() {
     clearTimeout(timeout);
@@ -365,7 +394,8 @@ Page({
       } else {
         list[i].checked = false;
       }
-    }
+    };
+    console.log("选择之后的列表" + JSON.stringify(list));
     that.setData({
       showList: list,
       radioValue: e.currentTarget.dataset.value
@@ -401,13 +431,13 @@ Page({
       var N = date.getMinutes < 10 ? '0' + date.getMinutes() : date.getMinutes();
       console.log("日期:" + Y + M + D + H + N);
       var distance = util.getDistance(dep_wgs84[1], dep_wgs84[0], des_wgs84[1], des_wgs84[0]);
-      console.log("距离："+ distance);
+      console.log("距离：" + distance);
       var body = {
         mobilenumber: getApp().globalData.mobilenumber,
         city: '0512',
         cityname: that.data.origin.provinceCityDistrict.city,
-        distance: distance*1000,
-        ordertime: Y+M+D+H+N,
+        distance: distance * 1000,
+        ordertime: Y + M + D + H + N,
         ordertype: '0',
         veltype: 1,
         mLongitude: dep_wgs84[0],
@@ -482,7 +512,49 @@ Page({
           cost: res.pay_fee,
           costLoading: res.note
         })
-      break;
+        break;
+      case QUERY_ORDER_STATE:
+        if (res.code == 0) {
+          wx.showModal({
+            title: '提示',
+            content: '您还有一个正在进行的订单，是否进入？',
+            showCancel: true,
+            success(u) {
+              if (u.confirm) {
+                switch (res.data.status) {
+                  case '1':
+                  case '2':
+                  case '3':
+                    wx.redirectTo({
+                      url: '../waitDriver/waitDriver',
+                    })
+                    break;
+                  case '4':
+                    wx.redirectTo({
+                      url: '../orderservice/orderservice',
+                    })
+                    break;
+                  case '5':
+                  case '10':
+                    wx.redirectTo({
+                      url: '../pay/pay',
+                    })
+                    break;
+                  default:
+                    isCanCall = true;
+                    wx.setStorage({
+                      key: 'order_info',
+                      data: '',
+                    })
+                    break;
+                }
+              } else if (u.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+        }
+        break;
     }
 
   },
@@ -501,35 +573,27 @@ Page({
     var sType = e.currentTarget.dataset.type;
     that.util(sType, currentStatu);
 
-    if (currentStatu == 'open') return;
+    // if (currentStatu == 'open') return;
     //每次选中车型都计算一次预计行程花费
     that.onResume();
-    // if (that.data.origin == null) {
-    //   wx.showToast({
-    //     title: '请输入出发点',
-    //   })
-    //   return;
-    // }
-    // if (that.data.destination == null) {
-    //   wx.showToast({
-    //     title: '请输入目的地',
-    //   })
-    //   return;
-    // }
-    // that.calcuteCost();
   },
   util: function(sType, currentStatu) {
-    if (sType == 0) {
-      that.setData({
-        sType: 0,
-        showList: that.data.carTypeList
-      })
-    } else {
-      that.setData({
-        sType: 1,
-        showList: that.data.passagerList
-      })
+    if (currentStatu == 'open') {
+      if (sType == 0) {
+        that.setData({
+          sType: 0,
+          showList: that.data.carTypeList,
+          radioValue: that.data.carType
+        })
+      } else {
+        that.setData({
+          sType: 1,
+          showList: that.data.passagerList,
+          radioValue: that.data.passagerNum
+        })
+      }
     }
+    console.log("列表打开：" + JSON.stringify(that.data.showList));
     // /* 动画部分 */
     // // 第1步：创建动画实例 
     // var animation = wx.createAnimation({
@@ -560,17 +624,20 @@ Page({
 
     //关闭
     if (currentStatu == "close") {
+      console.log("选中的数组状态:" + JSON.stringify(that.data.showList))
       if (that.data.sType == 0) {
         this.setData({
           isRefresh: true,
           showModalStatus: false,
-          carType: that.data.radioValue
+          carType: that.data.radioValue,
+          carTypeList: that.data.showList
         });
       } else {
         this.setData({
           isRefresh: true,
           showModalStatus: false,
-          passagerNum: that.data.radioValue
+          passagerNum: that.data.radioValue,
+          passagerList: that.data.showList
         });
       }
       if (timeout == null) {
@@ -666,6 +733,14 @@ Page({
   // },
   //叫车的方法
   callCarClickListener: function() {
+    if (!isCanCall) {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '您还有未完成的订单，请先结束订单',
+      })
+      return;
+    }
     var callVehicleLevel = null;
     switch (that.data.carType) {
       case '豪华车':

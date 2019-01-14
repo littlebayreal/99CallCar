@@ -83,7 +83,6 @@ Page({
           that.setData({
             orderInfo: res.data,
           });
-
           that.request();
           that.requestBill();
         },
@@ -94,6 +93,8 @@ Page({
       that.setData({
         orderInfo: schedulebean,
       })
+      that.request();
+      that.requestBill();
       // console.log(schedulebean);
     }
     that.setData({

@@ -30,7 +30,8 @@ Page({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               console.log("请求结果" + JSON.stringify(res));
-              // getApp().globalData.userInfo = res.userInfo
+              getApp().globalData.userInfo.nickName = res.userInfo.nickName;
+              getApp().globalData.userInfo.avatarUrl = res.userInfo.avatarUrl;
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
