@@ -3,7 +3,8 @@ var that;
 const PLACE_ORDER = 'place_order';
 const PLACE_ORDER_TEXI = 'place_order_texi';
 const REQUEST_ORDER = 'request_order';
-const REQUEST_ORDER_TEXI = 'request_order_texi'
+const REQUEST_ORDER_TEXI = 'request_order_texi';
+const REQUEST_CANCEL = 'request_cancel';
 var util = require('../../utils/util.js')
 var lt = require('../../utils/locationTrans.js')
 Page({
@@ -99,7 +100,7 @@ Page({
         "addr": that.data.origin.addressInfo,
         "mobilenumber": getApp().globalData.mobilenumber,
         "findRadius": 1000,
-        "des": that.data.destinction.addressInfo,
+        "des": that.data.destinction.addressName,
         "destlng": destinction_wgs84[0],
         "destlat": destinction_wgs84[1],
         "callfee": 0,
@@ -126,7 +127,7 @@ Page({
           "desProvince": that.data.destinction.provinceCityDistrict.province,
           "desCity": that.data.destinction.provinceCityDistrict.city,
           "desCounty": that.data.destinction.provinceCityDistrict.district,
-          "desDetails": that.data.destinction.addressInfo,
+          "desDetails": that.data.destinction.addressName,
           "desLong": destinction_wgs84[0],
           "desLat": destinction_wgs84[1],
           "passengerNumber": that.data.params.passagerNumber,
@@ -146,6 +147,7 @@ Page({
       that.setData({
         requestParam: body.data[0]
       })
+      console.log("网约车请求参数:"+ JSON.stringify(body));
       getApp().webCall(null, body, PLACE_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
     }
   },
@@ -362,7 +364,7 @@ Page({
     var body = {
       "data": [{
         "token": getApp().globalData.userInfo.token,
-        "orderNumber": that.data.orderInfo.orderNumber,
+        "orderNumber": that.data.orderNumber,
         "userType": 0,
         "reason": that.data.carType
       }],

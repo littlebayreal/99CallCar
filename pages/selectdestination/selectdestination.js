@@ -83,6 +83,7 @@ Page({
         prevPage.switchNav(e.currentTarget.dataset.item)
         break;
       case 1:
+        console.log("选中的终点：" + JSON.stringify(e.currentTarget.dataset.item));
         prevPage.setData({
           destination: e.currentTarget.dataset.item
         });

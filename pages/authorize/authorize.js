@@ -51,7 +51,10 @@ Page({
   authorize: function(e) {
     //点击了授权登陆
     if (e.detail.userInfo) {
-      getApp().globalData.userInfo = e.detail.userInfo;
+      console.log("点击了授权登陆:" + JSON.stringify(e.detail.userInfo));
+      // getApp().globalData.userInfo = e.detail.userInfo;
+      getApp().globalData.userInfo.nickName = e.detail.userInfo.nickName;
+      getApp().globalData.userInfo.avatarUrl = e.detail.userInfo.avatarUrl;
       if (this.userInfoReadyCallback) {
         this.userInfoReadyCallback(null)
       }

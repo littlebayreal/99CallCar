@@ -1,6 +1,8 @@
 // pages/pay/pay.js
 var that;
 const QUERY_BILL = 'query_bill';
+const QUERY_PASSENGER_PAY = 'passengerPay';
+const REQUEST_ORDER = 'request_order';
 Page({
 
   /**
@@ -75,9 +77,38 @@ Page({
     })
   },
   payClickListener() {
-    wx.navigateTo({
-      url: '../evaluation/evaluation?type=0',
-    })
+    var body = {
+      "data": [{
+        "token": getApp().globalData.userInfo.token,
+        "orderNumber": that.data.orderInfo.orderNumber
+      }],
+      "datatype": "wxUserOrderStatus",
+      "op": "getdata"
+    }
+    getApp().webCall(null, body, REQUEST_ORDER, that.onSuccess, that.onErrorBefore, that.onComplete);
+    // wx.navigateTo({
+    //   url: '../evaluation/evaluation?type=0',
+    // })
+  },
+  requestPay: function() {
+    var body = {
+      "data": [{
+        "token": getApp().globalData.userInfo.token,
+        "orderNumber": that.data.orderInfo.orderNumber,
+        "payType": "wx",
+        // "couponList": [
+        // {
+        //   "couponNumber": "*****",
+        // },
+        // {
+        //   "couponNumber": "*****",
+        // }
+        // ]
+      }],
+      "datatype": "passengerPay",
+      "op": "getdata"
+    }
+    getApp().webCall(null, body, QUERY_PASSENGER_PAY, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   request: function() {
     var body = {
@@ -91,17 +122,50 @@ Page({
     getApp().webCall(null, body, QUERY_BILL, that.onSuccess, that.onErrorBefore, that.onComplete);
   },
   onSuccess: function(res, requestCode) {
-    //真正接到订单的时候
-    if (res.code == 0) {
-      var list = [];
-      for (var i in res.data[0].tripFee.items) {
-        list.push(res.data[0].tripFee.items[i])
-      }
-      that.setData({
-        list:list,
-        tripFee:res.data[0].tripFee.price,
-        totalFee:res.data[0].totalFee
-      })
+    switch (requestCode) {
+      case QUERY_BILL:
+        //真正接到订单的时候
+        if (res.code == 0) {
+          var list = [];
+          for (var i in res.data[0].tripFee.items) {
+            list.push(res.data[0].tripFee.items[i])
+          }
+          that.setData({
+            list: list,
+            tripFee: res.data[0].tripFee.price,
+            totalFee: res.data[0].totalFee
+          })
+        }
+        break;
+      case QUERY_PASSENGER_PAY:
+        console.log("passenger_pay:" + JSON.stringify(res.data[0].orderStr.timestamp))
+        if (res.code == 0) {
+          console.log("空的吗" + res.data[0].orderStr.timestamp)
+          wx.requestPayment({
+            timeStamp: res.data[0].orderStr.timestamp,
+            nonceStr: res.data[0].orderStr.noncestr,
+            package: res.data[0].orderStr.package,
+            signType: 'MD5',
+            paySign: res.data[0].orderStr.sign,
+            'success': function(res) {
+              console.log("支付成功:" + JSON.stringify(res))
+            },
+            'fail': function(res) {
+              console.log("支付失败:"+ JSON.stringify(res))
+            }
+          })
+        }
+        break;
+      case REQUEST_ORDER:
+        if (res.code == 0 && res.data.status == 10 || res.data.status == 5) {
+          //走支付流程
+          that.requestPay();
+        } else {
+          wx.navigateTo({
+            url: '../evaluation/evaluation?type=0',
+          })
+        }
+        break;
     }
   },
   onErrorBefore: function(statusCode, errorMessage, requestCode) {
